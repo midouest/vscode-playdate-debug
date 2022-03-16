@@ -1,0 +1,119 @@
+{
+  "name": "playdate-debug",
+  "displayName": "Playdate Debug",
+  "version": "0.0.1",
+  "publisher": "midouest",
+  "description": "Unofficial Playdate debug extension",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.64.0"
+  },
+  "categories": [
+    "Debuggers"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midouest/vscode-playdate-debug.git"
+  },
+  "bugs": {
+    "url": "https://github.com/midouest/vscode-playdate-debug/issues"
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=node --outfile=dist/extension.js",
+    "watch": "npm run -S esbuild-base -- --sourcemap --sources-content=false --watch",
+    "esbuild-web": "esbuild ./src/web-extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=browser --outfile=dist/web-extension.js",
+    "watch-web": "npm run -S esbuild-web -- --sourcemap --sources-content=false --watch",
+    "build": "npm run -S esbuild-base -- --sourcemap --sources-content=false && npm run -S esbuild-web -- --sourcemap --sources-content=false",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "publish-pre-release": "vsce publish --pre-release",
+    "vscode:prepublish": "rimraf dist && npm run -S esbuild-base -- --minify && npm run -S esbuild-web -- --minify",
+    "test": "npm run typecheck"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^14.14.37",
+    "@types/vscode": "^1.64.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "@vscode/debugadapter": "^1.55.0-pre.1",
+    "@vscode/debugadapter-testsupport": "^1.55.0-pre.1",
+    "await-notify": "1.0.1",
+    "base64-js": "^1.5.1",
+    "esbuild": "^0.14.21",
+    "eslint": "^8.9.0",
+    "events": "^3.3.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.0",
+    "path-browserify": "^1.0.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5",
+    "url": "^0.11.0",
+    "vsce": "^2.6.7"
+  },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onDebugResolve:playdate"
+  ],
+  "workspaceTrust": {
+    "request": "never"
+  },
+  "contributes": {
+    "breakpoints": [
+      {
+        "language": "lua"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "playdate",
+        "languages": [
+          "lua"
+        ],
+        "label": "Playdate Debug",
+        "configurationAttributes": {
+          "launch": {
+            "properties": {
+              "sdkPath": {
+                "type": "string",
+                "description": "Path to the Playdate SDK"
+              },
+              "sourcePath": {
+                "type": "string",
+                "description": "Path to the game's source directory",
+                "default": "${workspaceFolder}/source"
+              },
+              "gamePath": {
+                "type": "string",
+                "description": "Path to the compiled game .pdx bundle"
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "playdate",
+            "request": "launch",
+            "name": "Debug (Simulator)"
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Playdate Debug: Launch",
+            "description": "Launch the game in the Playdate Simulator",
+            "body": {
+              "type": "playdate",
+              "request": "launch",
+              "name": "Debug (Simulator)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

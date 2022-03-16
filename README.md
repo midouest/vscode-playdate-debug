@@ -4,6 +4,8 @@ Unofficial Playdate debug extension
 
 ## Configuration
 
+The Playdate Simulator must be launched manually before launching the debugger.
+
 ```json
 {
   "version": "0.2.0",
@@ -19,3 +21,9 @@ Unofficial Playdate debug extension
   ]
 }
 ```
+
+## Known Issues
+
+- VS Code continues to display a progress bar after connecting to the debugger. The progress bar goes away after a breakpoint is hit.
+- Breakpoints are in an unverified state.
+- An error message is displayed after clicking the stop button the first time. Clicking the stop button a second time correctly stops the game in the Simulator.

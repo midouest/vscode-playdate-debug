@@ -1,7 +1,7 @@
 {
   "name": "playdate-debug",
   "displayName": "Playdate Debug",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "publisher": "midouest",
   "description": "Unofficial Playdate debug extension",
   "license": "MIT",

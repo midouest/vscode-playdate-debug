@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 
 import { getGamePath } from "./getGamePath";
 import { getSDKPath } from "./getSDKPath";
+import { getSourcePath } from "./getSourcePath";
 
 export class PlaydateDebugConfigurationProvider
   implements vscode.DebugConfigurationProvider
@@ -27,7 +28,7 @@ export class PlaydateDebugConfigurationProvider
 
     let sourcePath = config.sourcePath;
     if (!sourcePath) {
-      sourcePath = path.resolve(workspaceRoot, "source");
+      sourcePath = getSourcePath(workspaceRoot);
     }
 
     let gamePath = config.gamePath;

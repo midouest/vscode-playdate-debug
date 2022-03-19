@@ -56,6 +56,7 @@
   },
   "main": "./dist/extension.js",
   "activationEvents": [
+    "onCommand:workbench.action.tasks.runTask",
     "onDebugResolve:playdate"
   ],
   "workspaceTrust": {
@@ -65,6 +66,34 @@
     "breakpoints": [
       {
         "language": "lua"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "pdc",
+        "properties": {}
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "pdc-lua",
+        "owner": "lua",
+        "pattern": {
+          "regexp": "^(warning|error):\\s+(.*):(\\d+):\\s+(.*)$",
+          "severity": 1,
+          "file": 2,
+          "line": 3,
+          "message": 4
+        }
+      },
+      {
+        "name": "pdc-external",
+        "owner": "external",
+        "pattern": {
+          "regexp": "^(error):\\s+(.*)$",
+          "severity": 1,
+          "message": 2
+        }
       }
     ],
     "debuggers": [
@@ -97,7 +126,8 @@
           {
             "type": "playdate",
             "request": "launch",
-            "name": "Debug (Simulator)"
+            "name": "Debug (Simulator)",
+            "preLaunchTask": "pdc: build"
           }
         ],
         "configurationSnippets": [
@@ -107,7 +137,8 @@
             "body": {
               "type": "playdate",
               "request": "launch",
-              "name": "Debug (Simulator)"
+              "name": "Debug (Simulator)",
+              "preLaunchTask": "pdc: build"
             }
           }
         ]

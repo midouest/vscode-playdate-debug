@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { DEBUG_PORT } from "./constants";
 
 export class PlaydateDebugAdapterDescriptorFactory
   implements vscode.DebugAdapterDescriptorFactory
@@ -7,6 +8,6 @@ export class PlaydateDebugAdapterDescriptorFactory
     _session: vscode.DebugSession,
     _executable: vscode.DebugAdapterExecutable | undefined
   ): vscode.ProviderResult<vscode.DebugAdapterDescriptor> {
-    return new vscode.DebugAdapterServer(55934);
+    return new vscode.DebugAdapterServer(DEBUG_PORT);
   }
 }

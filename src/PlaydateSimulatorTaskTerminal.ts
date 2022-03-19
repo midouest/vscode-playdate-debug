@@ -5,6 +5,8 @@ import * as vscode from "vscode";
 
 import { getSDKPath } from "./getSDKPath";
 import { exec, isExecError } from "./exec";
+import { waitForDebugPort } from "./waitForDebugPort";
+import { DEBUG_PORT } from "./constants";
 
 export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
   private writeEmitter = new vscode.EventEmitter<string>();
@@ -59,6 +61,8 @@ async function openMacOS(sdkPath: string): Promise<string | undefined> {
       return err.stderr;
     }
   }
+
+  await waitForDebugPort(DEBUG_PORT);
 }
 
 const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator.exe/g;

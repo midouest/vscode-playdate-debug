@@ -5,19 +5,18 @@ import { PDCTaskTerminal } from "./PDCTaskTerminal";
 export class PDCTaskProvider implements vscode.TaskProvider {
   static taskType = "pdc";
 
-  private playdatePromise: Thenable<vscode.Task[]> | undefined = undefined;
+  private pdcPromise: Thenable<vscode.Task[]> | undefined = undefined;
 
   constructor(private workspaceRoot: string) {}
 
   public provideTasks(
     _token: vscode.CancellationToken
   ): Thenable<vscode.Task[]> | undefined {
-    if (!this.playdatePromise) {
-      this.playdatePromise = Promise.resolve([
-        createPDCTask(this.workspaceRoot),
-      ]);
+    if (!this.pdcPromise) {
+      const task = createPDCTask(this.workspaceRoot);
+      this.pdcPromise = Promise.resolve([task]);
     }
-    return this.playdatePromise;
+    return this.pdcPromise;
   }
 
   public resolveTask(task: vscode.Task): vscode.Task | undefined {

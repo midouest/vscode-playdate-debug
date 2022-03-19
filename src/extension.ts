@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { PlaydateDebugAdapterDescriptorFactory } from "./PlaydateDebugAdapterDescriptorFactory";
-import { PlaydateTaskProvider } from "./PlaydateTaskProvider";
+import { PDCTaskProvider } from "./PDCTaskProvider";
 
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
@@ -23,12 +23,9 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  const taskProvider = new PlaydateTaskProvider(workspaceRoot);
+  const taskProvider = new PDCTaskProvider(workspaceRoot);
   context.subscriptions.push(
-    vscode.tasks.registerTaskProvider(
-      PlaydateTaskProvider.PlaydateType,
-      taskProvider
-    )
+    vscode.tasks.registerTaskProvider(PDCTaskProvider.taskType, taskProvider)
   );
 }
 

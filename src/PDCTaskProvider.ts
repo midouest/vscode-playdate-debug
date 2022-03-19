@@ -4,8 +4,9 @@ import * as vscode from "vscode";
 
 import { PDCTaskTerminal } from "./PDCTaskTerminal";
 
-export class PlaydateTaskProvider implements vscode.TaskProvider {
-  static PlaydateType = "pdc";
+export class PDCTaskProvider implements vscode.TaskProvider {
+  static taskType = "pdc";
+
   private playdatePromise: Thenable<vscode.Task[]> | undefined = undefined;
 
   constructor(private workspaceRoot: string) {
@@ -34,12 +35,19 @@ export class PlaydateTaskProvider implements vscode.TaskProvider {
 
 function createPDCTask(workspaceRoot: string, task?: vscode.Task): vscode.Task {
   const definition = task?.definition ?? {
-    type: PlaydateTaskProvider.PlaydateType,
+    type: PDCTaskProvider.taskType,
   };
   const scope = task?.scope ?? vscode.TaskScope.Workspace;
   const execution = new vscode.CustomExecution(
     async (_task) => new PDCTaskTerminal(workspaceRoot)
   );
   const problemMatchers = ["$pdc-lua", "$pdc-external"];
-  return new vscode.Task(definition, scope, "build", "pdc", execution, problemMatchers);
+  return new vscode.Task(
+    definition,
+    scope,
+    "build",
+    "pdc",
+    execution,
+    problemMatchers
+  );
 }

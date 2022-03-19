@@ -1,5 +1,3 @@
-import * as path from "path";
-
 import * as vscode from "vscode";
 
 import { getGamePath } from "./getGamePath";
@@ -14,7 +12,6 @@ export class PlaydateDebugConfigurationProvider
     config: vscode.DebugConfiguration,
     _token?: vscode.CancellationToken
   ): Promise<vscode.DebugConfiguration | undefined | null> {
-    const { type, request, name } = config;
     const workspaceRoot = folder?.uri.fsPath;
     if (!workspaceRoot) {
       // Folder-less setups are not supported
@@ -37,9 +34,7 @@ export class PlaydateDebugConfigurationProvider
     }
 
     return {
-      type,
-      request,
-      name,
+      ...config,
       sdkPath,
       sourcePath,
       gamePath,

@@ -72,6 +72,10 @@
       {
         "type": "pdc",
         "properties": {}
+      },
+      {
+        "type": "playdate-simulator",
+        "properties": {}
       }
     ],
     "problemMatchers": [
@@ -126,8 +130,7 @@
           {
             "type": "playdate",
             "request": "launch",
-            "name": "Debug (Simulator)",
-            "preLaunchTask": "pdc: build"
+            "name": "Debug (Simulator)"
           }
         ],
         "configurationSnippets": [
@@ -137,8 +140,7 @@
             "body": {
               "type": "playdate",
               "request": "launch",
-              "name": "Debug (Simulator)",
-              "preLaunchTask": "pdc: build"
+              "name": "Debug (Simulator)"
             }
           }
         ]

@@ -9,7 +9,7 @@ export interface WaitForDebugPortOptions {
 
 const DEFAULT_OPTIONS: WaitForDebugPortOptions = {
   connectTimeout: 1000,
-  retryTimeout: 0,
+  retryTimeout: 100,
   maxRetries: 5,
 };
 

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { PLAYDATE_SOURCE } from "./constants";
 import { PlaydateSimulatorTaskTerminal } from "./PlaydateSimulatorTaskTerminal";
 
 export class PlaydateSimulatorTaskProvider implements vscode.TaskProvider {
@@ -47,8 +48,8 @@ function createPlaydateSimulatorTask(
   return new vscode.Task(
     definition,
     scope,
-    "open",
-    PlaydateSimulatorTaskProvider.taskType,
+    "Simulator",
+    PLAYDATE_SOURCE,
     execution,
     problemMatchers
   );

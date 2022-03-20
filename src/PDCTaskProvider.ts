@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { PLAYDATE_SOURCE } from "./constants";
 
 import { PDCTaskTerminal } from "./PDCTaskTerminal";
 
@@ -42,8 +43,8 @@ function createPDCTask(workspaceRoot: string, task?: vscode.Task): vscode.Task {
   return new vscode.Task(
     definition,
     scope,
-    "build",
-    "pdc",
+    "Build",
+    PLAYDATE_SOURCE,
     execution,
     problemMatchers
   );

@@ -55,7 +55,7 @@ async function openPlaydateSimulator(
 
   switch (process.platform) {
     case "darwin":
-      return openMacOS(sdkPath, gamePath);
+      return openMacOS(sdkPath, gamePath, debug);
 
     case "win32":
       return openWin32(sdkPath, gamePath);

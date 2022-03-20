@@ -78,12 +78,11 @@
           },
           "sourcePath": {
             "type": "string",
-            "description": "Path to the game's source directory",
-            "default": "${workspaceFolder}/source"
+            "description": "Path to the game's source directory"
           },
           "outputPath": {
             "type": "string",
-            "description": "Path to the compiled game .pdx bundle"
+            "description": "Path to the output directory that will be created by the compiler. This path should NOT include the .pdx extension"
           }
         }
       },
@@ -100,7 +99,7 @@
           },
           "debug": {
             "type": "boolean",
-            "description": "True if the task should wait for the debugger",
+            "description": "True if the task should wait for the debug server to start",
             "default": true
           }
         }
@@ -144,8 +143,7 @@
               },
               "sourcePath": {
                 "type": "string",
-                "description": "Path to the game's source directory",
-                "default": "${workspaceFolder}/source"
+                "description": "Path to the game's source directory"
               },
               "gamePath": {
                 "type": "string",

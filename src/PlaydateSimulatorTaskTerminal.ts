@@ -7,6 +7,7 @@ import { getSDKPath } from "./getSDKPath";
 import { exec, isExecError } from "./exec";
 import { waitForDebugPort } from "./waitForDebugPort";
 import { DEBUG_PORT } from "./constants";
+import { quote } from "./quote";
 
 export interface PlaydateSimulatorTaskTerminalOptions {
   workspaceRoot: string;
@@ -71,9 +72,9 @@ async function openMacOS(
   debug?: boolean
 ): Promise<string | undefined> {
   const simulatorPath = path.resolve(sdkPath, "bin", "Playdate Simulator.app");
-  const args = ["-a", `"${simulatorPath}"`];
+  const args = ["-a", quote(simulatorPath)];
   if (gamePath) {
-    args.push(`"${gamePath}`);
+    args.push(quote(gamePath));
   }
   const command = `/usr/bin/open ${args.join(" ")}`;
 
@@ -114,9 +115,9 @@ async function openWin32(
   }
 
   const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator.exe");
-  const args = gamePath ? [`"${gamePath}"`] : [];
+  const args = gamePath ? [quote(gamePath)] : [];
 
-  const child = child_process.spawn(`"${simulatorPath}"`, args, {
+  const child = child_process.spawn(quote(simulatorPath), args, {
     shell: true,
     detached: true,
     stdio: "ignore",

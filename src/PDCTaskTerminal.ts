@@ -38,7 +38,7 @@ export class PDCTaskTerminal implements vscode.Pseudoterminal {
 
     let status = 0;
     if (errorMessage) {
-      this.writeEmitter.fire(errorMessage);
+      this.writeEmitter.fire(errorMessage + "\n");
       status = 1;
     }
 

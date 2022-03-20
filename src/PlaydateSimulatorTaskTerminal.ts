@@ -36,7 +36,7 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
     const errorMessage = await openPlaydateSimulator(this.options);
     let status = 0;
     if (errorMessage) {
-      this.writeEmitter.fire(errorMessage);
+      this.writeEmitter.fire(errorMessage + "\n");
       status = 1;
     }
     this.closeEmitter.fire(status);

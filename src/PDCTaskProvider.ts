@@ -30,7 +30,13 @@ function createPDCTask(workspaceRoot: string, task?: vscode.Task): vscode.Task {
   };
   const scope = task?.scope ?? vscode.TaskScope.Workspace;
   const execution = new vscode.CustomExecution(
-    async (_task) => new PDCTaskTerminal(workspaceRoot)
+    async (_task) =>
+      new PDCTaskTerminal({
+        workspaceRoot,
+        sdkPath: definition.sdkPath,
+        sourcePath: definition.sourcePath,
+        outputPath: definition.outputPath,
+      })
   );
   const problemMatchers = ["$pdc-lua", "$pdc-external"];
   return new vscode.Task(

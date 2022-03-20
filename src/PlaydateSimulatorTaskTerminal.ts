@@ -8,6 +8,13 @@ import { exec, isExecError } from "./exec";
 import { waitForDebugPort } from "./waitForDebugPort";
 import { DEBUG_PORT } from "./constants";
 
+export interface PlaydateSimulatorTaskTerminalOptions {
+  workspaceRoot: string;
+  sdkPath?: string;
+  gamePath?: string;
+  debug?: boolean;
+}
+
 export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
   private writeEmitter = new vscode.EventEmitter<string>();
   onDidWrite: vscode.Event<string> = this.writeEmitter.event;
@@ -15,7 +22,7 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
   private closeEmitter = new vscode.EventEmitter<number>();
   onDidClose?: vscode.Event<number> = this.closeEmitter.event;
 
-  constructor() {}
+  constructor(private options: PlaydateSimulatorTaskTerminalOptions) {}
 
   open(_initialDimensions: vscode.TerminalDimensions | undefined): void {
     this.run();
@@ -26,7 +33,7 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
   }
 
   private async run(): Promise<void> {
-    const errorMessage = await openPlaydateSimulator();
+    const errorMessage = await openPlaydateSimulator(this.options);
     let status = 0;
     if (errorMessage) {
       this.writeEmitter.fire(errorMessage);
@@ -36,25 +43,41 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
   }
 }
 
-async function openPlaydateSimulator(): Promise<string | undefined> {
-  const sdkPath = await getSDKPath();
+async function openPlaydateSimulator(
+  options: PlaydateSimulatorTaskTerminalOptions
+): Promise<string | undefined> {
+  let { sdkPath, gamePath, debug } = options;
+  if (!sdkPath) {
+    sdkPath = await getSDKPath();
+  }
+
+  debug = debug || debug === undefined;
 
   switch (process.platform) {
     case "darwin":
-      return openMacOS(sdkPath);
+      return openMacOS(sdkPath, gamePath);
 
     case "win32":
-      return openWin32(sdkPath);
+      return openWin32(sdkPath, gamePath);
 
     default:
       throw new Error(`error: platform '${process.platform}' is not supported`);
   }
 }
 
-async function openMacOS(sdkPath: string): Promise<string | undefined> {
+async function openMacOS(
+  sdkPath: string,
+  gamePath?: string,
+  debug?: boolean
+): Promise<string | undefined> {
   const simulatorPath = path.resolve(sdkPath, "bin", "Playdate Simulator.app");
+  const args = ["-a", `"${simulatorPath}"`];
+  if (gamePath) {
+    args.push(`"${gamePath}`);
+  }
+  const command = `/usr/bin/open ${args.join(" ")}`;
+
   try {
-    const command = `/usr/bin/open -a "${simulatorPath}"`;
     await exec(command);
   } catch (err) {
     if (isExecError(err)) {
@@ -62,12 +85,17 @@ async function openMacOS(sdkPath: string): Promise<string | undefined> {
     }
   }
 
-  await waitForDebugPort(DEBUG_PORT);
+  if (debug) {
+    await waitForDebugPort(DEBUG_PORT);
+  }
 }
 
-const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator.exe/g;
+const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;
 
-async function openWin32(sdkPath: string): Promise<string | undefined> {
+async function openWin32(
+  sdkPath: string,
+  gamePath?: string
+): Promise<string | undefined> {
   try {
     const { stdout } = await exec("tasklist");
     if (stdout.match(PLAYDATE_SIMULATOR_EXE_RE)) {
@@ -81,7 +109,9 @@ async function openWin32(sdkPath: string): Promise<string | undefined> {
   }
 
   const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator.exe");
-  const child = child_process.spawn(simulatorPath, [], {
+  const args = gamePath ? [gamePath] : [];
+
+  const child = child_process.spawn(simulatorPath, args, {
     shell: true,
     detached: true,
     stdio: "ignore",

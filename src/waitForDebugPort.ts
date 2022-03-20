@@ -1,4 +1,5 @@
 import * as net from "net";
+import { wait } from "./wait";
 
 export interface WaitForDebugPortOptions {
   connectTimeout: number;
@@ -31,12 +32,6 @@ export async function waitForDebugPort(
   }
 
   throw new Error(`error: could not connect to port ${port}`);
-}
-
-function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 }
 
 function tryConnect(port: number, connectTimeout: number): Promise<void> {

@@ -109,9 +109,9 @@ async function openWin32(
   }
 
   const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator.exe");
-  const args = gamePath ? [gamePath] : [];
+  const args = gamePath ? [`"${gamePath}"`] : [];
 
-  const child = child_process.spawn(simulatorPath, args, {
+  const child = child_process.spawn(`"${simulatorPath}"`, args, {
     shell: true,
     detached: true,
     stdio: "ignore",

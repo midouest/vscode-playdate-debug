@@ -28,7 +28,7 @@ async function getSDKPathConfig(): Promise<string | undefined> {
   for (const line of configLines) {
     const components = line.split("\t");
     if (components[0] === "SDKRoot") {
-      return components[1];
+      return components[1].trim();
     }
   }
 }

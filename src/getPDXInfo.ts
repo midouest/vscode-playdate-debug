@@ -24,7 +24,7 @@ export async function getPDXInfo(sourcePath: string): Promise<PDXInfo> {
 
     const key = line.slice(0, i);
     const value = line.slice(i + 1);
-    pdxInfo[key] = value;
+    pdxInfo[key] = value.trim();
   }
 
   return pdxInfo;

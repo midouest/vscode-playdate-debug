@@ -18,12 +18,10 @@ export class PlaydateSimulatorTaskProvider implements vscode.TaskProvider {
     task: vscode.Task,
     _token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.Task> {
-    return this.createPlaydateSimulatorTask(task.definition);
+    return this.createPlaydateSimulatorTask(task);
   }
 
-  private createPlaydateSimulatorTask(
-    task?: vscode.TaskDefinition
-  ): vscode.Task {
+  private createPlaydateSimulatorTask(task?: vscode.Task): vscode.Task {
     const definition = task?.definition ?? {
       type: PlaydateSimulatorTaskProvider.taskType,
     };

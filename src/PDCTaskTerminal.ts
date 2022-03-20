@@ -7,6 +7,7 @@ import * as vscode from "vscode";
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
 import { getSourcePath } from "./getSourcePath";
+import { waitForPDX } from "./waitForPDX";
 
 export interface PDCTaskTerminalOptions {
   workspaceRoot: string;
@@ -79,5 +80,11 @@ async function runPDC(
     if (isPDCError(err)) {
       return err.stderr;
     }
+  }
+
+  const gamePath = outputPath + ".pdx";
+  const exists = await waitForPDX(gamePath);
+  if (!exists) {
+    return `error: could not find ${gamePath}`;
   }
 }

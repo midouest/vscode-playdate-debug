@@ -4,7 +4,7 @@ import { PLAYDATE_SOURCE } from "./constants";
 import { PDCTaskTerminal } from "./PDCTaskTerminal";
 
 export class PDCTaskProvider implements vscode.TaskProvider {
-  static taskType = "pdc";
+  static readonly taskType = "pdc";
 
   private pdcPromise: Thenable<vscode.Task[]> | undefined = undefined;
 

@@ -3,7 +3,7 @@ import { PLAYDATE_SOURCE } from "./constants";
 import { PlaydateSimulatorTaskTerminal } from "./PlaydateSimulatorTaskTerminal";
 
 export class PlaydateSimulatorTaskProvider implements vscode.TaskProvider {
-  static taskType = "playdate-simulator";
+  static readonly taskType = "playdate-simulator";
 
   private playdateSimulatorPromise: Thenable<vscode.Task[]> | undefined =
     undefined;
@@ -11,7 +11,7 @@ export class PlaydateSimulatorTaskProvider implements vscode.TaskProvider {
   constructor(private workspaceRoot: string) {}
 
   public provideTasks(
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.Task[]> {
     if (!this.playdateSimulatorPromise) {
       const task = createPlaydateSimulatorTask(this.workspaceRoot);

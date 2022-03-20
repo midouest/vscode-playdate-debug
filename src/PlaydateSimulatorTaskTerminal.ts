@@ -61,7 +61,7 @@ async function openPlaydateSimulator(
       return openWin32(sdkPath, gamePath);
 
     default:
-      throw new Error(`error: platform '${process.platform}' is not supported`);
+      return `error: platform '${process.platform}' is not supported`;
   }
 }
 

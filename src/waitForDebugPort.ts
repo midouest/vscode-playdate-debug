@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS: WaitForDebugPortOptions = {
 export async function waitForDebugPort(
   port: number,
   options: Partial<WaitForDebugPortOptions> = DEFAULT_OPTIONS
-): Promise<void> {
+): Promise<boolean> {
   const { connectTimeout, retryTimeout, maxRetries } = {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -25,13 +25,13 @@ export async function waitForDebugPort(
   for (let i = 0; i < maxRetries; i++) {
     try {
       await tryConnect(port, connectTimeout);
-      return;
+      return true;
     } catch (err) {
       await wait(retryTimeout);
     }
   }
 
-  throw new Error(`error: could not connect to port ${port}`);
+  return false;
 }
 
 function tryConnect(port: number, connectTimeout: number): Promise<void> {

@@ -85,8 +85,13 @@ async function openMacOS(
     }
   }
 
-  if (debug) {
-    await waitForDebugPort(DEBUG_PORT);
+  if (!debug) {
+    return;
+  }
+
+  const connected = await waitForDebugPort(DEBUG_PORT);
+  if (!connected) {
+    return `error: could not connect to port ${DEBUG_PORT}`;
   }
 }
 

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { PLAYDATE_SOURCE } from "./constants";
-
-import { PDCTaskTerminal } from "./PDCTaskTerminal";
+import { PDCTaskRunner } from "./PDCTaskRunner";
+import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
 export class PDCTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "pdc";
@@ -24,13 +24,14 @@ export class PDCTaskProvider implements vscode.TaskProvider {
       type: PDCTaskProvider.taskType,
     };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
-    const execution = new vscode.CustomExecution(
-      async (_task) =>
-        new PDCTaskTerminal({
-          workspaceRoot: this.workspaceRoot,
-          timeout: definition.timeout,
-        })
-    );
+    const execution = new vscode.CustomExecution(async (_task) => {
+      const runner = new PDCTaskRunner({
+        workspaceRoot: this.workspaceRoot,
+        timeout: definition.timeout,
+      });
+      return new TaskRunnerTerminal(runner);
+    });
+
     const problemMatchers = ["$pdc-lua", "$pdc-external"];
     return new vscode.Task(
       definition,

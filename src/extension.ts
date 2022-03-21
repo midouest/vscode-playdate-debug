@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { PlaydateDebugAdapterDescriptorFactory } from "./PlaydateDebugAdapterDescriptorFactory";
 import { PDCTaskProvider } from "./PDCTaskProvider";
-import { PlaydateSimulatorTaskProvider } from "./PlaydateSimulatorTaskProvider";
+import { SimulatorTaskProvider } from "./SimulatorTaskProvider";
 
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
@@ -29,12 +29,12 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.tasks.registerTaskProvider(PDCTaskProvider.taskType, pdcTaskProvider)
   );
 
-  const playdateSimulatorTaskProvider = new PlaydateSimulatorTaskProvider(
+  const playdateSimulatorTaskProvider = new SimulatorTaskProvider(
     workspaceRoot
   );
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(
-      PlaydateSimulatorTaskProvider.taskType,
+      SimulatorTaskProvider.taskType,
       playdateSimulatorTaskProvider
     )
   );

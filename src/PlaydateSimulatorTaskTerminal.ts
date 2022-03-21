@@ -5,15 +5,13 @@ import * as vscode from "vscode";
 
 import { getSDKPath } from "./getSDKPath";
 import { exec, isExecError } from "./exec";
-import { waitForDebugPort } from "./waitForDebugPort";
-import { DEBUG_PORT } from "./constants";
+import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { quote } from "./quote";
+import { getPDXInfo } from "./getPDXInfo";
+import { getSourcePath } from "./getSourcePath";
 
 export interface PlaydateSimulatorTaskTerminalOptions {
   workspaceRoot: string;
-  sdkPath?: string;
-  gamePath?: string;
-  debug?: boolean;
 }
 
 export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
@@ -47,16 +45,31 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
 async function openPlaydateSimulator(
   options: PlaydateSimulatorTaskTerminalOptions
 ): Promise<string | undefined> {
-  let { sdkPath, gamePath, debug } = options;
+  const { workspaceRoot } = options;
+  let { sdkPath, sourcePath, outputPath, productName } =
+    vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
   if (!sdkPath) {
     sdkPath = await getSDKPath();
   }
 
-  debug = debug || debug === undefined;
+  if (!outputPath) {
+    outputPath = workspaceRoot;
+  }
+
+  if (!sourcePath) {
+    sourcePath = await getSourcePath(workspaceRoot);
+  }
+
+  if (!productName) {
+    const pdxInfo = await getPDXInfo(sourcePath);
+    productName = pdxInfo.name;
+  }
+
+  const gamePath = path.resolve(outputPath, productName + ".pdx");
 
   switch (process.platform) {
     case "darwin":
-      return openMacOS(sdkPath, gamePath, debug);
+      return openMacOS(sdkPath, gamePath);
 
     case "win32":
       return openWin32(sdkPath, gamePath);
@@ -68,8 +81,7 @@ async function openPlaydateSimulator(
 
 async function openMacOS(
   sdkPath: string,
-  gamePath?: string,
-  debug?: boolean
+  gamePath?: string
 ): Promise<string | undefined> {
   const simulatorPath = path.resolve(sdkPath, "bin", "Playdate Simulator.app");
   const args = ["-a", quote(simulatorPath)];
@@ -84,15 +96,6 @@ async function openMacOS(
     if (isExecError(err)) {
       return err.stderr;
     }
-  }
-
-  if (!debug) {
-    return;
-  }
-
-  const connected = await waitForDebugPort(DEBUG_PORT);
-  if (!connected) {
-    return `error: could not connect to port ${DEBUG_PORT}`;
   }
 }
 

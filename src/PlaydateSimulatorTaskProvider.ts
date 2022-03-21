@@ -30,8 +30,6 @@ export class PlaydateSimulatorTaskProvider implements vscode.TaskProvider {
       async (_task) =>
         new PlaydateSimulatorTaskTerminal({
           workspaceRoot: this.workspaceRoot,
-          sdkPath: definition.sdkPath,
-          gamePath: definition.gamePath,
         })
     );
     const problemMatchers = ["$pdc-external"];

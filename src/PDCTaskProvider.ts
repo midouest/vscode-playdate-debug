@@ -28,9 +28,6 @@ export class PDCTaskProvider implements vscode.TaskProvider {
       async (_task) =>
         new PDCTaskTerminal({
           workspaceRoot: this.workspaceRoot,
-          sdkPath: definition.sdkPath,
-          sourcePath: definition.sourcePath,
-          outputPath: definition.outputPath,
         })
     );
     const problemMatchers = ["$pdc-lua", "$pdc-external"];

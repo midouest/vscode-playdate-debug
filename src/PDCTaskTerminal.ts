@@ -1,19 +1,15 @@
 import * as path from "path";
-import * as child_process from "child_process";
-import * as util from "util";
 
 import * as vscode from "vscode";
 
 import { getPDXInfo } from "./getPDXInfo";
-import { getSDKPath } from "./getSDKPath";
 import { getSourcePath } from "./getSourcePath";
-import { waitForPDX } from "./waitForPDX";
+import { PLAYDATE_DEBUG_SECTION } from "./constants";
+import { quote } from "./quote";
+import { exec, isExecError } from "./exec";
 
 export interface PDCTaskTerminalOptions {
   workspaceRoot: string;
-  sdkPath?: string;
-  sourcePath?: string;
-  outputPath?: string;
 }
 
 export class PDCTaskTerminal implements vscode.Pseudoterminal {
@@ -46,45 +42,39 @@ export class PDCTaskTerminal implements vscode.Pseudoterminal {
   }
 }
 
-interface PDCError {
-  stderr: string;
-}
-
-function isPDCError(err: unknown): err is PDCError {
-  return (err as PDCError).stderr !== undefined;
-}
-
 async function runPDC(
   options: PDCTaskTerminalOptions
 ): Promise<string | undefined> {
-  let { workspaceRoot, sdkPath, sourcePath, outputPath } = options;
-
-  if (!sdkPath) {
-    sdkPath = await getSDKPath();
-  }
+  const { workspaceRoot } = options;
+  let { sdkPath, sourcePath, outputPath, productName } =
+    vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
 
   if (!sourcePath) {
     sourcePath = getSourcePath(workspaceRoot);
   }
 
   if (!outputPath) {
-    const pdxInfo = await getPDXInfo(sourcePath);
-    outputPath = path.resolve(workspaceRoot, pdxInfo.name);
+    outputPath = workspaceRoot;
   }
 
-  const command = `pdc -sdkpath "${sdkPath}" "${sourcePath}" "${outputPath}"`;
-  const exec = util.promisify(child_process.exec);
+  if (!productName) {
+    const pdxInfo = await getPDXInfo(sourcePath);
+    productName = pdxInfo.name;
+  }
+
+  const productPath = path.resolve(outputPath, productName);
+
+  const args = [quote(sourcePath), quote(productPath)];
+  if (sdkPath) {
+    args.splice(0, 0, "-sdkpath", quote(sdkPath));
+  }
+
+  const command = `pdc ${args.join(" ")}`;
   try {
     await exec(command);
   } catch (err) {
-    if (isPDCError(err)) {
+    if (isExecError(err)) {
       return err.stderr;
     }
-  }
-
-  const gamePath = outputPath + ".pdx";
-  const exists = await waitForPDX(gamePath);
-  if (!exists) {
-    return `error: could not find ${gamePath}`;
   }
 }

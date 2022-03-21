@@ -29,7 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.tasks.registerTaskProvider(PDCTaskProvider.taskType, pdcTaskProvider)
   );
 
-  const playdateSimulatorTaskProvider = new PlaydateSimulatorTaskProvider();
+  const playdateSimulatorTaskProvider = new PlaydateSimulatorTaskProvider(
+    workspaceRoot
+  );
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(
       PlaydateSimulatorTaskProvider.taskType,

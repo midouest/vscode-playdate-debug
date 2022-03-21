@@ -63,6 +63,27 @@
     "request": "never"
   },
   "contributes": {
+    "configuration": {
+      "title": "Playdate Debug",
+      "properties": {
+        "playdate-debug.sdkPath": {
+          "type": "string",
+          "description": "Path to the Playdate SDK. By default, the extension will use the PLAYDATE_SDK_PATH environment variable to find the Playdate SDK."
+        },
+        "playdate-debug.sourcePath": {
+          "type": "string",
+          "description": "Path to the game's source directory. By default, the extension will use the `source` folder in the workspace root directory as the source path."
+        },
+        "playdate-debug.outputPath": {
+          "type": "string",
+          "description": "Output directory for the compiled game bundle. By default, the extension will use the workspace root folder as the output path."
+        },
+        "playdate-debug.productName": {
+          "type": "string",
+          "description": "Compiled game bundle name without the .pdx extension. By default, the extension will use the value of the `name` field in the game's `pdxinfo` file."
+        }
+      }
+    },
     "breakpoints": [
       {
         "language": "lua"
@@ -71,38 +92,11 @@
     "taskDefinitions": [
       {
         "type": "pdc",
-        "properties": {
-          "sdkPath": {
-            "type": "string",
-            "description": "Path to the Playdate SDK"
-          },
-          "sourcePath": {
-            "type": "string",
-            "description": "Path to the game's source directory"
-          },
-          "outputPath": {
-            "type": "string",
-            "description": "Path to the output directory that will be created by the compiler. This path should NOT include the .pdx extension"
-          }
-        }
+        "properties": {}
       },
       {
         "type": "playdate-simulator",
-        "properties": {
-          "sdkPath": {
-            "type": "string",
-            "description": "Path to the Playdate SDK"
-          },
-          "gamePath": {
-            "type": "string",
-            "description": "Path to the compiled game .pdx bundle"
-          },
-          "debug": {
-            "type": "boolean",
-            "description": "True if the task should wait for the debug server to start",
-            "default": true
-          }
-        }
+        "properties": {}
       }
     ],
     "problemMatchers": [
@@ -136,20 +130,7 @@
         "label": "Playdate Debug",
         "configurationAttributes": {
           "launch": {
-            "properties": {
-              "sdkPath": {
-                "type": "string",
-                "description": "Path to the Playdate SDK"
-              },
-              "sourcePath": {
-                "type": "string",
-                "description": "Path to the game's source directory"
-              },
-              "gamePath": {
-                "type": "string",
-                "description": "Path to the compiled game .pdx bundle"
-              }
-            }
+            "properties": {}
           }
         },
         "initialConfigurations": [

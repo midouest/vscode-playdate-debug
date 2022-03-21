@@ -31,11 +31,11 @@ By default, the tasks and launch configuration will attempt to automatically fin
     {
       "type": "playdate-simulator",
       "problemMatcher": ["$pdc-external"],
-      "label": "Open Simulator"
+      "label": "Run"
     },
     {
-      "label": "Build and Open Simulator",
-      "dependsOn": ["Build", "Open Simulator"],
+      "label": "Build and Run",
+      "dependsOn": ["Build", "Run"],
       "dependsOrder": "sequence",
       "problemMatcher": [],
       "group": {
@@ -57,7 +57,7 @@ By default, the tasks and launch configuration will attempt to automatically fin
       "type": "playdate",
       "request": "launch",
       "name": "Debug (Simulator)",
-      "preLaunchTask": "Build and Open Simulator"
+      "preLaunchTask": "${defaultBuildTask}"
     }
   ]
 }
@@ -65,16 +65,16 @@ By default, the tasks and launch configuration will attempt to automatically fin
 
 ## Advanced Configuration
 
-The default SDK path, game source path, and compiled game path can be overridden for each task and the launch configuration using the following properties:
+The default SDK path, game source path, and compiled game path can be overridden in your workspace's `settings.json` file:
 
-- `sdkPath`: Path to the Playdate SDK
-- `sourcePath`: Path to the game's source directory
-- `outputPath`: Path to the output directory that will be created by the compiler. This path should NOT include the .pdx extension
-- `gamePath`: Path to the compiled game .pdx bundle
-
-Only a subset of these options are supported on each task and the launch configuration. See the configuration auto-complete for more information.
-
-The `playdate-simulator` task type supports an additional parameter, `debug`. When set to `true`, this property causes the task to wait for the Playdate Simulator debugger to respond before completing. This is useful for preventing the debug launch configuration from starting before the Playdate Simulator is ready to accept debug connections. This property defaults to `true`. This property currently has no effect on Windows.
+```json
+{
+  "sdkPath": "/path/to/PlaydateSDK",
+  "sourcePath": "/path/to/MyGame/source",
+  "outputPath": "/path/to/MyGame",
+  "productName": "My Game"
+}
+```
 
 ## Known Issues
 

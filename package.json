@@ -92,11 +92,21 @@
     "taskDefinitions": [
       {
         "type": "pdc",
-        "properties": {}
+        "properties": {
+          "timeout": {
+            "type": "number",
+            "description": "Milliseconds to wait after `pdc` completes before exiting the task."
+          }
+        }
       },
       {
         "type": "playdate-simulator",
-        "properties": {}
+        "properties": {
+          "timeout": {
+            "type": "number",
+            "description": "Milliseconds to wait after the Playdate Simulator opens before exiting the task."
+          }
+        }
       }
     ],
     "problemMatchers": [

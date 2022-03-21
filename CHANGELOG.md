@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Moved task configuration properties to workspace settings under `playdate-debug` section
+- Remove waitFor configuration in tasks in favor of simple timeouts
 
 ## [0.2.1] - 2022-03-20
 

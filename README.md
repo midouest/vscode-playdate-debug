@@ -83,3 +83,5 @@ The default SDK path, game source path, and compiled game path can be overridden
 - Breakpoints are in an unverified state.
 - An error message is displayed after clicking the stop button the first time. Clicking the stop button a second time correctly stops the game in the Simulator.
 - Stepping into C functions causes the debugger to continue executing.
+- The debugger might start before the Playdate Simulator debug port is available. The `timeout` property on the `playdate-simulator` task can be used to wait for the debug port to become available. Alternatively, you can open the Playdate Simulator manually.
+- The `.pdx` bundle might not be visible to the Playdate Simulator immediately after the `pdc` task completes. The `timeout` property on the `pdc` task can be used to wait for the `.pdx` bundle to become available.

@@ -9,9 +9,11 @@ import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { quote } from "./quote";
 import { getPDXInfo } from "./getPDXInfo";
 import { getSourcePath } from "./getSourcePath";
+import { wait } from "./wait";
 
 export interface PlaydateSimulatorTaskTerminalOptions {
   workspaceRoot: string;
+  timeout?: number;
 }
 
 export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
@@ -45,7 +47,7 @@ export class PlaydateSimulatorTaskTerminal implements vscode.Pseudoterminal {
 async function openPlaydateSimulator(
   options: PlaydateSimulatorTaskTerminalOptions
 ): Promise<string | undefined> {
-  const { workspaceRoot } = options;
+  const { workspaceRoot, timeout } = options;
   let { sdkPath, sourcePath, outputPath, productName } =
     vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
   if (!sdkPath) {
@@ -69,7 +71,7 @@ async function openPlaydateSimulator(
 
   switch (process.platform) {
     case "darwin":
-      return openMacOS(sdkPath, gamePath);
+      return openMacOS(sdkPath, gamePath, timeout);
 
     case "win32":
       return openWin32(sdkPath, gamePath);
@@ -81,13 +83,14 @@ async function openPlaydateSimulator(
 
 async function openMacOS(
   sdkPath: string,
-  gamePath?: string
+  gamePath?: string,
+  timeout?: number
 ): Promise<string | undefined> {
   const simulatorPath = path.resolve(sdkPath, "bin", "Playdate Simulator.app");
   const args = ["-a", quote(simulatorPath)];
-  if (gamePath) {
-    args.push(quote(gamePath));
-  }
+  // if (gamePath) {
+  //   args.push(quote(gamePath));
+  // }
   const command = `/usr/bin/open ${args.join(" ")}`;
 
   try {
@@ -97,6 +100,12 @@ async function openMacOS(
       return err.stderr;
     }
   }
+
+  if (!timeout) {
+    return;
+  }
+
+  await wait(timeout);
 }
 
 const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;

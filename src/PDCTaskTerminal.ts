@@ -7,9 +7,11 @@ import { getSourcePath } from "./getSourcePath";
 import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { quote } from "./quote";
 import { exec, isExecError } from "./exec";
+import { wait } from "./wait";
 
 export interface PDCTaskTerminalOptions {
   workspaceRoot: string;
+  timeout?: number;
 }
 
 export class PDCTaskTerminal implements vscode.Pseudoterminal {
@@ -45,7 +47,7 @@ export class PDCTaskTerminal implements vscode.Pseudoterminal {
 async function runPDC(
   options: PDCTaskTerminalOptions
 ): Promise<string | undefined> {
-  const { workspaceRoot } = options;
+  const { workspaceRoot, timeout } = options;
   let { sdkPath, sourcePath, outputPath, productName } =
     vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
 
@@ -77,4 +79,10 @@ async function runPDC(
       return err.stderr;
     }
   }
+
+  if (!timeout) {
+    return;
+  }
+
+  await wait(timeout);
 }

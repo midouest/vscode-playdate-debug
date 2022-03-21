@@ -1,45 +1,29 @@
-import * as path from "path";
+import { ConfigurationResolver } from "./ConfigurationResolver";
 
-import * as vscode from "vscode";
-
-import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { exec, isExecError } from "./exec";
-import { getPDXInfo } from "./getPDXInfo";
-import { getSourcePath } from "./getSourcePath";
 import { quote } from "./quote";
 import { TaskRunner } from "./TaskRunner";
 import { wait } from "./wait";
 
 export interface PDCTaskRunnerOptions {
-  workspaceRoot: string;
   timeout?: number;
 }
 
 export class PDCTaskRunner implements TaskRunner {
-  constructor(private options: PDCTaskRunnerOptions) {}
+  constructor(
+    private config: ConfigurationResolver,
+    private options: PDCTaskRunnerOptions
+  ) {}
 
   async run(): Promise<string | undefined> {
-    const { workspaceRoot, timeout } = this.options;
+    const { timeout } = this.options;
 
-    let { sdkPath, sourcePath, outputPath, productName } =
-      vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
+    const sdkPath = await this.config.getSDKPath(false);
+    const sourcePath = await this.config.getSourcePath();
+    const productPath = await this.config.getProductPath();
 
-    if (!sourcePath) {
-      sourcePath = getSourcePath(workspaceRoot);
-    }
-
-    if (!outputPath) {
-      outputPath = workspaceRoot;
-    }
-
-    if (!productName) {
-      const pdxInfo = await getPDXInfo(sourcePath);
-      productName = pdxInfo.name;
-    }
-
-    const productPath = path.resolve(outputPath, productName);
-
-    const args = [quote(sourcePath), quote(productPath)];
+    // TODO: handle undefined
+    const args = [quote(sourcePath!), quote(productPath!)];
     if (sdkPath) {
       args.splice(0, 0, "-sdkpath", quote(sdkPath));
     }

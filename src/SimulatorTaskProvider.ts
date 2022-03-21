@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { ConfigurationResolver } from "./ConfigurationResolver";
 import { PLAYDATE_SOURCE } from "./constants";
 import { SimulatorTaskRunner } from "./SimulatorTaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
@@ -6,7 +7,7 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 export class SimulatorTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "playdate-simulator";
 
-  constructor(private workspaceRoot: string) {}
+  constructor(private config: ConfigurationResolver) {}
 
   public provideTasks(
     _token: vscode.CancellationToken
@@ -28,8 +29,7 @@ export class SimulatorTaskProvider implements vscode.TaskProvider {
     };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
     const execution = new vscode.CustomExecution(async (_task) => {
-      const runner = new SimulatorTaskRunner({
-        workspaceRoot: this.workspaceRoot,
+      const runner = new SimulatorTaskRunner(this.config, {
         timeout: definition.timeout,
       });
       return new TaskRunnerTerminal(runner);

@@ -1,58 +1,38 @@
 import * as path from "path";
 import * as child_process from "child_process";
 
-import * as vscode from "vscode";
-
-import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { exec, isExecError } from "./exec";
-import { getPDXInfo } from "./getPDXInfo";
-import { getSDKPath } from "./getSDKPath";
-import { getSourcePath } from "./getSourcePath";
 import { quote } from "./quote";
 import { TaskRunner } from "./TaskRunner";
 import { wait } from "./wait";
+import { ConfigurationResolver } from "./ConfigurationResolver";
 
 export interface SimulatorTaskRunnerOptions {
-  workspaceRoot: string;
   timeout?: number;
 }
 
 const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;
 
 export class SimulatorTaskRunner implements TaskRunner {
-  constructor(private options: SimulatorTaskRunnerOptions) {}
+  constructor(
+    private config: ConfigurationResolver,
+    private options: SimulatorTaskRunnerOptions
+  ) {}
 
   async run(): Promise<string | undefined> {
-    const { workspaceRoot, timeout } = this.options;
+    const { timeout } = this.options;
 
-    let { sdkPath, sourcePath, outputPath, productName } =
-      vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
-
-    if (!sdkPath) {
-      sdkPath = await getSDKPath();
-    }
-
-    if (!outputPath) {
-      outputPath = workspaceRoot;
-    }
-
-    if (!sourcePath) {
-      sourcePath = await getSourcePath(workspaceRoot);
-    }
-
-    if (!productName) {
-      const pdxInfo = await getPDXInfo(sourcePath);
-      productName = pdxInfo.name;
-    }
-
-    const gamePath = path.resolve(outputPath, productName + ".pdx");
+    const sdkPath = await this.config.getSDKPath();
+    const gamePath = await this.config.getGamePath();
 
     switch (process.platform) {
       case "darwin":
-        return this.openMacOS(sdkPath, gamePath, timeout);
+        // TODO: handle undefined
+        return this.openMacOS(sdkPath!, gamePath, timeout);
 
       case "win32":
-        return this.openWin32(sdkPath, gamePath);
+        // TODO: handle undefined
+        return this.openWin32(sdkPath!, gamePath);
 
       default:
         return `error: platform '${process.platform}' is not supported`;
@@ -70,6 +50,7 @@ export class SimulatorTaskRunner implements TaskRunner {
       "Playdate Simulator.app"
     );
     const args = ["-a", quote(simulatorPath)];
+    // TODO: task configuration
     // if (gamePath) {
     //   args.push(quote(gamePath));
     // }

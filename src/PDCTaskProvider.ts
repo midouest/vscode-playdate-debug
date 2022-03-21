@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { ConfigurationResolver } from "./ConfigurationResolver";
 import { PLAYDATE_SOURCE } from "./constants";
 import { PDCTaskRunner } from "./PDCTaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
@@ -6,7 +7,7 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 export class PDCTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "pdc";
 
-  constructor(private workspaceRoot: string) {}
+  constructor(private config: ConfigurationResolver) {}
 
   public provideTasks(
     _token: vscode.CancellationToken
@@ -25,8 +26,7 @@ export class PDCTaskProvider implements vscode.TaskProvider {
     };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
     const execution = new vscode.CustomExecution(async (_task) => {
-      const runner = new PDCTaskRunner({
-        workspaceRoot: this.workspaceRoot,
+      const runner = new PDCTaskRunner(this.config, {
         timeout: definition.timeout,
       });
       return new TaskRunnerTerminal(runner);

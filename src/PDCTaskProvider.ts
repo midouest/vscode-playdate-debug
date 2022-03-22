@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 
 import { PLAYDATE_SOURCE } from "./constants";
-import { PDCExecutionFactory } from "./PDCExecutionFactory";
+import { CustomExecutionFactory } from "./CustomExecutionFactory";
 
 export class PDCTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "pdc";
 
-  constructor(private factory: PDCExecutionFactory) {}
+  constructor(private factory: CustomExecutionFactory) {}
 
   public provideTasks(
     _token: vscode.CancellationToken

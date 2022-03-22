@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 
 import { PLAYDATE_SOURCE } from "./constants";
-import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
+import { CustomExecutionFactory } from "./CustomExecutionFactory";
 
 export class SimulatorTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "playdate-simulator";
 
-  constructor(private factory: SimulatorExecutionFactory) {}
+  constructor(private factory: CustomExecutionFactory) {}
 
   public provideTasks(
     _token: vscode.CancellationToken

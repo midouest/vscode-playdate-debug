@@ -1,13 +1,12 @@
 import * as vscode from "vscode";
-import { ConfigurationResolver } from "./ConfigurationResolver";
+
 import { PLAYDATE_SOURCE } from "./constants";
-import { SimulatorTaskRunner } from "./SimulatorTaskRunner";
-import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
+import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 
 export class SimulatorTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "playdate-simulator";
 
-  constructor(private config: ConfigurationResolver) {}
+  constructor(private factory: SimulatorExecutionFactory) {}
 
   public provideTasks(
     _token: vscode.CancellationToken
@@ -28,12 +27,8 @@ export class SimulatorTaskProvider implements vscode.TaskProvider {
       type: SimulatorTaskProvider.taskType,
     };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
-    const execution = new vscode.CustomExecution(async (_task) => {
-      const runner = new SimulatorTaskRunner(this.config, {
-        timeout: definition.timeout,
-      });
-      return new TaskRunnerTerminal(runner);
-    });
+    const execution = this.factory.createExecution(definition);
+
     const problemMatchers = ["$pdc-external"];
     return new vscode.Task(
       definition,

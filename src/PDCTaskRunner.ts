@@ -17,13 +17,11 @@ export class PDCTaskRunner implements TaskRunner {
 
   async run(): Promise<string | undefined> {
     const { timeout } = this.options;
+    const { sdkPath, sourcePath, productPath } = await this.config.resolve({
+      sdkPath: false,
+    });
 
-    const sdkPath = await this.config.getSDKPath(false);
-    const sourcePath = await this.config.getSourcePath();
-    const productPath = await this.config.getProductPath();
-
-    // TODO: handle undefined
-    const args = [quote(sourcePath!), quote(productPath!)];
+    const args = [quote(sourcePath), quote(productPath)];
     if (sdkPath) {
       args.splice(0, 0, "-sdkpath", quote(sdkPath));
     }

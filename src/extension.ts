@@ -5,6 +5,8 @@ import { PlaydateDebugAdapterDescriptorFactory } from "./PlaydateDebugAdapterDes
 import { PDCTaskProvider } from "./PDCTaskProvider";
 import { SimulatorTaskProvider } from "./SimulatorTaskProvider";
 import { ConfigurationResolver } from "./ConfigurationResolver";
+import { PDCExecutionFactory } from "./PDCExecutionFactory";
+import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
@@ -27,16 +29,18 @@ export function activate(context: vscode.ExtensionContext) {
 
   const config = new ConfigurationResolver(workspaceRoot);
 
-  const pdcTaskProvider = new PDCTaskProvider(config);
+  const pdcFactory = new PDCExecutionFactory(config);
+  const pdcTaskProvider = new PDCTaskProvider(pdcFactory);
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(PDCTaskProvider.taskType, pdcTaskProvider)
   );
 
-  const playdateSimulatorTaskProvider = new SimulatorTaskProvider(config);
+  const simulatorFactory = new SimulatorExecutionFactory(config);
+  const simulatorTaskProvider = new SimulatorTaskProvider(simulatorFactory);
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(
       SimulatorTaskProvider.taskType,
-      playdateSimulatorTaskProvider
+      simulatorTaskProvider
     )
   );
 }

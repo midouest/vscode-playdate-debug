@@ -21,18 +21,16 @@ export class SimulatorTaskRunner implements TaskRunner {
 
   async run(): Promise<string | undefined> {
     const { timeout } = this.options;
-
-    const sdkPath = await this.config.getSDKPath();
-    const gamePath = await this.config.getGamePath();
+    const { sdkPath, gamePath } = await this.config.resolve();
 
     switch (process.platform) {
       case "darwin":
         // TODO: handle undefined
-        return this.openMacOS(sdkPath!, gamePath, timeout);
+        return this.openMacOS(sdkPath, gamePath, timeout);
 
       case "win32":
         // TODO: handle undefined
-        return this.openWin32(sdkPath!, gamePath);
+        return this.openWin32(sdkPath, gamePath);
 
       default:
         return `error: platform '${process.platform}' is not supported`;

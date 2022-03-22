@@ -1,13 +1,12 @@
 import * as vscode from "vscode";
-import { ConfigurationResolver } from "./ConfigurationResolver";
+
 import { PLAYDATE_SOURCE } from "./constants";
-import { PDCTaskRunner } from "./PDCTaskRunner";
-import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
+import { PDCExecutionFactory } from "./PDCExecutionFactory";
 
 export class PDCTaskProvider implements vscode.TaskProvider {
   static readonly taskType = "pdc";
 
-  constructor(private config: ConfigurationResolver) {}
+  constructor(private factory: PDCExecutionFactory) {}
 
   public provideTasks(
     _token: vscode.CancellationToken
@@ -25,12 +24,7 @@ export class PDCTaskProvider implements vscode.TaskProvider {
       type: PDCTaskProvider.taskType,
     };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
-    const execution = new vscode.CustomExecution(async (_task) => {
-      const runner = new PDCTaskRunner(this.config, {
-        timeout: definition.timeout,
-      });
-      return new TaskRunnerTerminal(runner);
-    });
+    const execution = this.factory.createExecution(definition);
 
     const problemMatchers = ["$pdc-lua", "$pdc-external"];
     return new vscode.Task(

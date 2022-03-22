@@ -30,19 +30,19 @@ export class ConfigurationResolver {
     let { sdkPath, sourcePath, outputPath, productName } =
       vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
 
-    if (!sdkPath && fallbackOptions?.sdkPath) {
+    if (!sdkPath && fallbackOptions?.sdkPath !== false) {
       sdkPath = await getSDKPath();
     }
 
-    if (!sourcePath && fallbackOptions?.sourcePath) {
+    if (!sourcePath && fallbackOptions?.sourcePath !== false) {
       sourcePath = getSourcePath(this.workspaceRoot);
     }
 
-    if (!outputPath && fallbackOptions?.outputPath) {
+    if (!outputPath && fallbackOptions?.outputPath !== false) {
       outputPath = this.workspaceRoot;
     }
 
-    if (!productName && fallbackOptions?.productName) {
+    if (!productName && fallbackOptions?.productName !== false) {
       const pdxInfo = await getPDXInfo(sourcePath);
       productName = pdxInfo.name;
     }

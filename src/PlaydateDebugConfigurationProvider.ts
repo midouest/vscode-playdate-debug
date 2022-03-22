@@ -1,15 +1,12 @@
-import * as path from "path";
-
 import * as vscode from "vscode";
-import { PLAYDATE_DEBUG_SECTION } from "./constants";
 
-import { getPDXInfo } from "./getPDXInfo";
-import { getSDKPath } from "./getSDKPath";
-import { getSourcePath } from "./getSourcePath";
+import { ConfigurationResolver } from "./ConfigurationResolver";
 
 export class PlaydateDebugConfigurationProvider
   implements vscode.DebugConfigurationProvider
 {
+  constructor(private config: ConfigurationResolver) {}
+
   async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration,
@@ -20,26 +17,8 @@ export class PlaydateDebugConfigurationProvider
       // Folder-less setups are not supported
       return null;
     }
-    let { sdkPath, sourcePath, outputPath, productName } =
-      vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
-    if (!sdkPath) {
-      sdkPath = await getSDKPath();
-    }
 
-    if (!outputPath) {
-      outputPath = workspaceRoot;
-    }
-
-    if (!sourcePath) {
-      sourcePath = await getSourcePath(workspaceRoot);
-    }
-
-    if (!productName) {
-      const pdxInfo = await getPDXInfo(sourcePath);
-      productName = pdxInfo.name;
-    }
-
-    const gamePath = path.resolve(outputPath, productName + ".pdx");
+    const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
 
     return {
       ...config,

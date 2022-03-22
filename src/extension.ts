@@ -14,7 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  const configProvider = new PlaydateDebugConfigurationProvider();
+  const configResolver = new ConfigurationResolver(workspaceRoot);
+
+  const configProvider = new PlaydateDebugConfigurationProvider(configResolver);
   context.subscriptions.push(
     vscode.debug.registerDebugConfigurationProvider("playdate", configProvider)
   );
@@ -27,15 +29,13 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  const config = new ConfigurationResolver(workspaceRoot);
-
-  const pdcFactory = new PDCExecutionFactory(config);
+  const pdcFactory = new PDCExecutionFactory(configResolver);
   const pdcTaskProvider = new PDCTaskProvider(pdcFactory);
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(PDCTaskProvider.taskType, pdcTaskProvider)
   );
 
-  const simulatorFactory = new SimulatorExecutionFactory(config);
+  const simulatorFactory = new SimulatorExecutionFactory(configResolver);
   const simulatorTaskProvider = new SimulatorTaskProvider(simulatorFactory);
   context.subscriptions.push(
     vscode.tasks.registerTaskProvider(

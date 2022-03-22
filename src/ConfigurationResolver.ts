@@ -18,9 +18,6 @@ export interface Configuration {
 
 export type FallbackOptions = {
   sdkPath?: boolean;
-  sourcePath?: boolean;
-  outputPath?: boolean;
-  productName?: boolean;
 };
 
 export class ConfigurationResolver {
@@ -34,15 +31,15 @@ export class ConfigurationResolver {
       sdkPath = await getSDKPath();
     }
 
-    if (!sourcePath && fallbackOptions?.sourcePath !== false) {
+    if (!sourcePath) {
       sourcePath = getSourcePath(this.workspaceRoot);
     }
 
-    if (!outputPath && fallbackOptions?.outputPath !== false) {
+    if (!outputPath) {
       outputPath = this.workspaceRoot;
     }
 
-    if (!productName && fallbackOptions?.productName !== false) {
+    if (!productName) {
       const pdxInfo = await getPDXInfo(sourcePath);
       productName = pdxInfo.name;
     }

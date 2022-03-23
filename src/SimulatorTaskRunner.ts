@@ -25,11 +25,9 @@ export class SimulatorTaskRunner implements TaskRunner {
 
     switch (process.platform) {
       case "darwin":
-        // TODO: handle undefined
         return this.openMacOS(sdkPath, gamePath, timeout);
 
       case "win32":
-        // TODO: handle undefined
         return this.openWin32(sdkPath, gamePath);
 
       default:
@@ -48,10 +46,9 @@ export class SimulatorTaskRunner implements TaskRunner {
       "Playdate Simulator.app"
     );
     const args = ["-a", quote(simulatorPath)];
-    // TODO: task configuration
-    // if (gamePath) {
-    //   args.push(quote(gamePath));
-    // }
+    if (gamePath) {
+      args.push(quote(gamePath));
+    }
     const command = `/usr/bin/open ${args.join(" ")}`;
 
     try {

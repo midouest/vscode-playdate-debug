@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
-import { PlaydateDebugAdapterDescriptorFactory } from "./PlaydateDebugAdapterDescriptorFactory";
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
@@ -14,6 +13,7 @@ import {
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
 } from "./constants";
+import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
 
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const config = new ConfigurationResolver(workspaceRoot);
 
-  registerDebuger(context, config);
+  registerDebugger(context, config);
   registerPDCTask(context, config);
   registerSimulatorTask(context, config);
 }
@@ -41,7 +41,7 @@ function getWorkspaceRoot(): string | undefined {
   return folders[0].uri.fsPath;
 }
 
-function registerDebuger(
+function registerDebugger(
   context: vscode.ExtensionContext,
   config: ConfigurationResolver
 ): void {
@@ -53,7 +53,7 @@ function registerDebuger(
     )
   );
 
-  const descriptorFactory = new PlaydateDebugAdapterDescriptorFactory();
+  const descriptorFactory = new ProxyDebugAdapterDescriptorFactory();
   context.subscriptions.push(
     vscode.debug.registerDebugAdapterDescriptorFactory(
       PLAYDATE_DEBUG_TYPE,

@@ -134,8 +134,6 @@
     "debuggers": [
       {
         "type": "playdate",
-        "program": "./out/PlaydateDebugAdapterProxy.js",
-        "runtime": "node",
         "languages": [
           "lua"
         ],

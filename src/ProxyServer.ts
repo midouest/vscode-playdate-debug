@@ -1,29 +1,25 @@
 import * as net from "net";
 
-import { PROXY_DEBUG_PORT, SIMULATOR_DEBUG_PORT } from "./constants";
+import { SIMULATOR_DEBUG_PORT } from "./constants";
 
-class PlaydateDebugAdapterProxy {
-  private server: net.Server;
-
+export class ProxyServer {
   private clientSocket!: net.Socket;
   private simulatorSocket!: net.Socket;
   private simulatorSeq!: number;
   private simulatorSeqOffset = 0;
 
-  constructor() {
-    this.server = net.createServer((socket) => {
-      if (this.clientSocket) {
+  static async start(): Promise<net.Server> {
+    const proxy = new ProxyServer();
+    await proxy.connect(SIMULATOR_DEBUG_PORT);
+
+    return net.createServer((socket) => {
+      if (proxy.clientSocket) {
         return;
       }
 
-      this.clientSocket = socket;
-      this.clientSocket.on("data", (data) => this.proxyClientData(data));
+      proxy.clientSocket = socket;
+      proxy.clientSocket.on("data", (data) => proxy.proxyClientData(data));
     });
-  }
-
-  async start(): Promise<void> {
-    await this.connect(SIMULATOR_DEBUG_PORT);
-    this.server.listen(PROXY_DEBUG_PORT);
   }
 
   private connect(port: number): Promise<void> {
@@ -96,6 +92,3 @@ function encodeMessage(message: any): Buffer {
   const payload = components.join(SEPARATOR);
   return Buffer.from(payload);
 }
-
-const proxy = new PlaydateDebugAdapterProxy();
-proxy.start();

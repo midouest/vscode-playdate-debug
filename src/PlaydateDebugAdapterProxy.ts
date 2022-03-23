@@ -5,9 +5,9 @@ import { PROXY_DEBUG_PORT, SIMULATOR_DEBUG_PORT } from "./constants";
 class PlaydateDebugAdapterProxy {
   private server: net.Server;
 
-  private clientSocket: net.Socket | undefined;
-  private simulatorSocket: net.Socket | undefined;
-  private simulatorSeq: number | undefined;
+  private clientSocket!: net.Socket;
+  private simulatorSocket!: net.Socket;
+  private simulatorSeq!: number;
   private simulatorSeqOffset = 0;
 
   constructor() {
@@ -37,11 +37,7 @@ class PlaydateDebugAdapterProxy {
   private proxyClientData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
 
-    if (
-      message.type === "request" &&
-      message.command === "launch" &&
-      this.simulatorSeq !== undefined
-    ) {
+    if (message.type === "request" && message.command === "launch") {
       // The Playdate Simulator never sends a success response to VS Code when
       // it receives a launch request. This causes VS Code to appear to hang
       // indefinitely. We immediately respond to the client with a success

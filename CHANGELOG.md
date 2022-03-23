@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `playdate-simulator` task accepts optional `openGame` parameter
+
 ### Changed
 
 - `playdate-simulator` task opens the game by default on macOS
-- `playdate-simulator` task accepts optional `openGame` parameter
+- Fix issue where debugger did not stop after Simulator was closed
 
 ## [0.2.3] - 2022-03-22
 

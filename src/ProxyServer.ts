@@ -27,6 +27,7 @@ export class ProxyServer {
       this.simulatorSocket = net.createConnection({ port }, resolve);
       this.simulatorSocket.once("error", reject);
       this.simulatorSocket.on("data", (data) => this.proxySimulatorData(data));
+      this.simulatorSocket.on("close", () => this.clientSocket?.end());
     });
   }
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Workaround bugs in the Playdate Simulator debug adapter protocol by proxying messages to/from VS Code
 - Moved task configuration properties to workspace settings under `playdate-debug` section
 - Remove waitFor configuration in tasks in favor of simple timeouts
 

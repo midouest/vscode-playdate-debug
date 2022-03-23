@@ -1,5 +1,7 @@
 export const PLAYDATE_DEBUG_TYPE = "playdate";
-export const DEBUG_PORT = 55934;
+
+export const SIMULATOR_DEBUG_PORT = 55934;
+export const PROXY_DEBUG_PORT = 55935;
 
 export const PLAYDATE_DEBUG_SECTION = "playdate-debug";
 

@@ -13,10 +13,12 @@ export class ProxyDebugAdapterDescriptorFactory
     _session: vscode.DebugSession,
     _executable: vscode.DebugAdapterExecutable | undefined
   ): Promise<vscode.DebugAdapterDescriptor> {
-    if (!this.server) {
-      this.server = await ProxyServer.start();
-      this.server.listen(0);
+    if (this.server) {
+      this.server.close();
     }
+
+    this.server = await ProxyServer.start();
+    this.server.listen(0);
 
     const address = this.server.address() as net.AddressInfo;
     const port = address.port;

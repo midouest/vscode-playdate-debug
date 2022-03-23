@@ -9,6 +9,7 @@ import { ConfigurationResolver } from "./ConfigurationResolver";
 
 export interface SimulatorTaskRunnerOptions {
   timeout?: number;
+  openGame?: boolean;
 }
 
 const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;
@@ -20,25 +21,40 @@ export class SimulatorTaskRunner implements TaskRunner {
   ) {}
 
   async run(): Promise<string | undefined> {
-    const { timeout } = this.options;
+    const { timeout, openGame } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
+    const openGamePath = openGame !== false ? gamePath : undefined;
 
+    let errorMessage;
     switch (process.platform) {
-      case "darwin":
-        return this.openMacOS(sdkPath, gamePath, timeout);
+      case "darwin": {
+        errorMessage = await this.openMacOS(sdkPath, openGamePath);
+        break;
+      }
 
-      case "win32":
-        return this.openWin32(sdkPath, gamePath);
+      case "win32": {
+        errorMessage = await this.openWin32(sdkPath, openGamePath);
+        break;
+      }
 
       default:
         return `error: platform '${process.platform}' is not supported`;
     }
+
+    if (errorMessage) {
+      return errorMessage;
+    }
+
+    if (!timeout) {
+      return;
+    }
+
+    await wait(timeout);
   }
 
   private async openMacOS(
     sdkPath: string,
-    gamePath?: string,
-    timeout?: number
+    gamePath?: string
   ): Promise<string | undefined> {
     const simulatorPath = path.resolve(
       sdkPath,
@@ -58,12 +74,6 @@ export class SimulatorTaskRunner implements TaskRunner {
         return err.stderr;
       }
     }
-
-    if (!timeout) {
-      return;
-    }
-
-    await wait(timeout);
   }
 
   private async openWin32(

@@ -76,6 +76,8 @@ The `pdc` and `playdate-simulator` tasks can be configured using the `settings.j
 
 Additionally, the `pdc` and `playdate-simulator` tasks support an optional `timeout` property. When set, the `timeout` property causes the task to wait for the given number of milliseconds after executing before completing. This can be used to work around timing issues between VS Code, `pdc` and the Playdate Simulator.
 
+The `openGame` property on the `playdate-simulator` task controls whether or not the Playdate Simulator executable is called with the path to the game or not. This does not prevent the Playdate Simulator from reopening the last opened game when it starts up.
+
 ```json
 // tasks.json
 {
@@ -91,7 +93,8 @@ Additionally, the `pdc` and `playdate-simulator` tasks support an optional `time
       "type": "playdate-simulator",
       "problemMatcher": ["$pdc-external"],
       "label": "Run",
-      "timeout": 250
+      "timeout": 250,
+      "openGame": true
     }
   ]
 }

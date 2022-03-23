@@ -100,9 +100,7 @@ Additionally, the `pdc` and `playdate-simulator` tasks support an optional `time
 ## Known Issues
 
 - Debugging is not supported on Windows or Linux.
-- VS Code continues to display a progress bar after connecting to the debugger. The progress bar goes away after a breakpoint is hit.
 - Breakpoints are in an unverified state.
-- An error message is displayed after clicking the stop button the first time. Clicking the stop button a second time correctly stops the game in the Simulator.
 - Stepping into C functions causes the debugger to continue executing.
 - The debugger might start before the Playdate Simulator debug port is available. The `timeout` property on the `playdate-simulator` task can be used to wait for the debug port to become available. Alternatively, you can open the Playdate Simulator manually.
 - The `.pdx` bundle might not be visible to the Playdate Simulator immediately after the `pdc` task completes. The `timeout` property on the `pdc` task can be used to wait for the `.pdx` bundle to become available.

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { CustomExecutionFactory } from "./CustomExecutionFactory";
 
 export interface CustomTaskProviderOptions {
@@ -14,17 +15,12 @@ export class CustomTaskProvider implements vscode.TaskProvider {
     private options: CustomTaskProviderOptions
   ) {}
 
-  provideTasks(
-    _token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.Task[]> {
+  provideTasks(): vscode.ProviderResult<vscode.Task[]> {
     const task = this.createTask();
     return [task];
   }
 
-  resolveTask(
-    task: vscode.Task,
-    _token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.Task> {
+  resolveTask(task: vscode.Task): vscode.ProviderResult<vscode.Task> {
     return this.createTask(task);
   }
 

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { TaskRunner } from "./TaskRunner";
 
 export class TaskRunnerTerminal implements vscode.Pseudoterminal {
@@ -10,7 +11,7 @@ export class TaskRunnerTerminal implements vscode.Pseudoterminal {
 
   constructor(private runner: TaskRunner) {}
 
-  open(_initialDimensions: vscode.TerminalDimensions | undefined): void {
+  open(): void {
     this.run();
   }
 

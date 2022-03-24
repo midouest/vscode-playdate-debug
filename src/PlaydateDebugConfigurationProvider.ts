@@ -9,8 +9,7 @@ export class PlaydateDebugConfigurationProvider
 
   async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
-    config: vscode.DebugConfiguration,
-    _token?: vscode.CancellationToken
+    config: vscode.DebugConfiguration
   ): Promise<vscode.DebugConfiguration | undefined | null> {
     const workspaceRoot = folder?.uri.fsPath;
     if (!workspaceRoot) {

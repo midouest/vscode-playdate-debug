@@ -10,7 +10,7 @@ export class PDCExecutionFactory implements CustomExecutionFactory {
 
   createExecution(definition: vscode.TaskDefinition): vscode.CustomExecution {
     const { timeout } = definition;
-    return new vscode.CustomExecution(async (_task) => {
+    return new vscode.CustomExecution(async () => {
       const runner = new PDCTaskRunner(this.config, { timeout });
       return new TaskRunnerTerminal(runner);
     });

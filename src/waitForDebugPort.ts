@@ -1,4 +1,5 @@
 import * as net from "net";
+
 import { wait } from "./wait";
 
 export interface WaitForDebugPortOptions {

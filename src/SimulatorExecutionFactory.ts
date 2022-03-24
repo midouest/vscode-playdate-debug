@@ -10,7 +10,7 @@ export class SimulatorExecutionFactory implements CustomExecutionFactory {
 
   createExecution(definition: vscode.TaskDefinition): vscode.CustomExecution {
     const { openGame } = definition;
-    return new vscode.CustomExecution(async (_task) => {
+    return new vscode.CustomExecution(async () => {
       const runner = new SimulatorTaskRunner(this.config, {
         openGame,
       });

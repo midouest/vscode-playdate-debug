@@ -9,10 +9,7 @@ export class ProxyDebugAdapterDescriptorFactory
 {
   private server: net.Server | undefined;
 
-  async createDebugAdapterDescriptor(
-    _session: vscode.DebugSession,
-    _executable: vscode.DebugAdapterExecutable | undefined
-  ): Promise<vscode.DebugAdapterDescriptor> {
+  async createDebugAdapterDescriptor(): Promise<vscode.DebugAdapterDescriptor> {
     if (this.server) {
       this.server.close();
     }

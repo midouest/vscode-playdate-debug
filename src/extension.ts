@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
 
-import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ConfigurationResolver } from "./ConfigurationResolver";
-import { PDCExecutionFactory } from "./PDCExecutionFactory";
-import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 import { CustomTaskProvider } from "./CustomTaskProvider";
+import { PDCExecutionFactory } from "./PDCExecutionFactory";
+import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
+import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
+import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 import {
   PDC_TASK_NAME,
   PDC_TASK_TYPE,
@@ -13,7 +14,6 @@ import {
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
 } from "./constants";
-import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
 
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();

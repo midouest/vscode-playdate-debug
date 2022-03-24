@@ -1,6 +1,7 @@
 import * as fs from "fs/promises";
-import * as path from "path";
 import * as os from "os";
+import * as path from "path";
+import * as process from "process";
 
 export async function getSDKPath(): Promise<string> {
   let sdkPath: string | undefined;

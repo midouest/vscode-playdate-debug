@@ -1,8 +1,7 @@
 import { ConfigurationResolver } from "./ConfigurationResolver";
-
+import { TaskRunner } from "./TaskRunner";
 import { exec, isExecError } from "./exec";
 import { quote } from "./quote";
-import { TaskRunner } from "./TaskRunner";
 import { wait } from "./wait";
 
 export interface PDCTaskRunnerOptions {

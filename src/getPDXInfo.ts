@@ -15,7 +15,7 @@ export async function getPDXInfo(sourcePath: string): Promise<PDXInfo> {
   }
   const infoLines = infoText.split("\n");
 
-  const pdxInfo = {};
+  const pdxInfo: PDXInfo = {};
   for (const line of infoLines) {
     const i = line.indexOf("=");
     if (i === -1) {

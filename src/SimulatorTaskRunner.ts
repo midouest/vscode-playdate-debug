@@ -1,10 +1,11 @@
-import * as path from "path";
 import * as child_process from "child_process";
+import * as path from "path";
+import * as process from "process";
 
+import { ConfigurationResolver } from "./ConfigurationResolver";
+import { TaskRunner } from "./TaskRunner";
 import { exec, isExecError } from "./exec";
 import { quote } from "./quote";
-import { TaskRunner } from "./TaskRunner";
-import { ConfigurationResolver } from "./ConfigurationResolver";
 
 export interface SimulatorTaskRunnerOptions {
   openGame?: boolean;

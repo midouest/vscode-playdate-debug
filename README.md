@@ -1,6 +1,6 @@
-# VS Code Playdate Debug
+# Playdate Debug
 
-Unofficial Playdate debug extension
+Unofficial Playdate debug extension for Visual Studio Code
 
 ## Features
 

@@ -9,10 +9,9 @@ export class SimulatorExecutionFactory implements CustomExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 
   createExecution(definition: vscode.TaskDefinition): vscode.CustomExecution {
-    const { timeout, openGame } = definition;
+    const { openGame } = definition;
     return new vscode.CustomExecution(async (_task) => {
       const runner = new SimulatorTaskRunner(this.config, {
-        timeout,
         openGame,
       });
       return new TaskRunnerTerminal(runner);

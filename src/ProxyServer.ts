@@ -1,6 +1,7 @@
 import * as net from "net";
 
 import { SIMULATOR_DEBUG_PORT } from "./constants";
+import { waitForDebugPort } from "./waitForDebugPort";
 
 export class ProxyServer {
   private clientSocket!: net.Socket;
@@ -10,7 +11,7 @@ export class ProxyServer {
 
   static async start(): Promise<net.Server> {
     const proxy = new ProxyServer();
-    await proxy.connect(SIMULATOR_DEBUG_PORT);
+    await proxy.connect();
 
     return net.createServer((socket) => {
       if (proxy.clientSocket) {
@@ -22,13 +23,15 @@ export class ProxyServer {
     });
   }
 
-  private connect(port: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.simulatorSocket = net.createConnection({ port }, resolve);
-      this.simulatorSocket.once("error", reject);
-      this.simulatorSocket.on("data", (data) => this.proxySimulatorData(data));
-      this.simulatorSocket.on("close", () => this.clientSocket?.end());
-    });
+  private async connect(): Promise<void> {
+    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
+    if (!socket) {
+      throw new Error(`Could not connect to Playdate Simulator`);
+    }
+
+    this.simulatorSocket = socket;
+    this.simulatorSocket.on("data", (data) => this.proxySimulatorData(data));
+    this.simulatorSocket.on("close", () => this.clientSocket?.end());
   }
 
   private proxyClientData(dataIn: Buffer): void {

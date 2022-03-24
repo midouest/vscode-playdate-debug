@@ -4,11 +4,9 @@ import * as child_process from "child_process";
 import { exec, isExecError } from "./exec";
 import { quote } from "./quote";
 import { TaskRunner } from "./TaskRunner";
-import { wait } from "./wait";
 import { ConfigurationResolver } from "./ConfigurationResolver";
 
 export interface SimulatorTaskRunnerOptions {
-  timeout?: number;
   openGame?: boolean;
 }
 
@@ -21,35 +19,20 @@ export class SimulatorTaskRunner implements TaskRunner {
   ) {}
 
   async run(): Promise<string | undefined> {
-    const { timeout, openGame } = this.options;
+    const { openGame } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
     const openGamePath = openGame !== false ? gamePath : undefined;
 
-    let errorMessage;
     switch (process.platform) {
-      case "darwin": {
-        errorMessage = await this.openMacOS(sdkPath, openGamePath);
-        break;
-      }
+      case "darwin":
+        return await this.openMacOS(sdkPath, openGamePath);
 
-      case "win32": {
-        errorMessage = await this.openWin32(sdkPath, openGamePath);
-        break;
-      }
+      case "win32":
+        return await this.openWin32(sdkPath, openGamePath);
 
       default:
         return `error: platform '${process.platform}' is not supported`;
     }
-
-    if (errorMessage) {
-      return errorMessage;
-    }
-
-    if (!timeout) {
-      return;
-    }
-
-    await wait(timeout);
   }
 
   private async openMacOS(

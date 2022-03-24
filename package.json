@@ -102,11 +102,6 @@
       {
         "type": "playdate-simulator",
         "properties": {
-          "timeout": {
-            "type": "number",
-            "description": "Milliseconds to wait after the Playdate Simulator opens before exiting the task. The debugger typically takes about 250ms to start up before it will accept connections.",
-            "default": 250
-          },
           "openGame": {
             "type": "boolean",
             "description": "True if the simulator executable should launch with the game open. Defaults to true.",

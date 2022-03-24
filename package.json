@@ -4,6 +4,7 @@
   "version": "0.3.0",
   "publisher": "midouest",
   "description": "Unofficial Playdate debug extension",
+  "icon": "images/icon@2x.png",
   "license": "MIT",
   "engines": {
     "vscode": "^1.64.0"

@@ -104,5 +104,4 @@ The `openGame` property on the `playdate-simulator` task controls whether or not
 - Debugging is not supported on Windows or Linux.
 - Breakpoints are in an unverified state.
 - Stepping into C functions causes the debugger to continue executing.
-- The debugger might start before the Playdate Simulator debug port is available. The `timeout` property on the `playdate-simulator` task can be used to wait for the debug port to become available. Alternatively, you can open the Playdate Simulator manually.
 - The `.pdx` bundle might not be visible to the Playdate Simulator immediately after the `pdc` task completes. The `timeout` property on the `pdc` task can be used to wait for the `.pdx` bundle to become available.

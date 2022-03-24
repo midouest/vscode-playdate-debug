@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `playdate-simulator` task opens the game by default on macOS
 - Fix issue where debugger did not stop after Simulator was closed
-- `playdate-simulator` task timeout defaults to 250ms when set
 - Debugger proxy server waits for simulator port before starting
 - Removed `timeout` property on `playdate-simulator` task
 

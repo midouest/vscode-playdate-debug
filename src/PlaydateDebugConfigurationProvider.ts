@@ -2,6 +2,11 @@ import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
 
+/**
+ * PlaydateDebugConfigurationProvider injects the configuration necessary to
+ * debug a Playdate game into the launch configuration for the playdate
+ * debugger.
+ */
 export class PlaydateDebugConfigurationProvider
   implements vscode.DebugConfigurationProvider
 {

@@ -5,6 +5,10 @@ import { CustomExecutionFactory } from "./CustomExecutionFactory";
 import { SimulatorTaskRunner } from "./SimulatorTaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
+/**
+ * The SimulatorExecutionFactory is responsible for configuring the VS Code
+ * pseudoterminal that executes the `playdate-simulator` task.
+ */
 export class SimulatorExecutionFactory implements CustomExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 

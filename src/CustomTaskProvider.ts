@@ -2,6 +2,10 @@ import * as vscode from "vscode";
 
 import { CustomExecutionFactory } from "./CustomExecutionFactory";
 
+/**
+ * CustomTaskProviderOptions stores the vscode Task options that a
+ * CustomTaskProvider uses to create a Task instance.
+ */
 export interface CustomTaskProviderOptions {
   type: string;
   problemMatchers: string[];
@@ -9,6 +13,10 @@ export interface CustomTaskProviderOptions {
   source: string;
 }
 
+/**
+ * CustomTaskProvider is a generic TaskProvider that can be configured for
+ * different tasks using the options argument of the constructor.
+ */
 export class CustomTaskProvider implements vscode.TaskProvider {
   constructor(
     private factory: CustomExecutionFactory,

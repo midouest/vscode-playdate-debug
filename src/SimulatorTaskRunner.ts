@@ -7,12 +7,18 @@ import { TaskRunner } from "./TaskRunner";
 import { exec, isExecError } from "./exec";
 import { quote } from "./quote";
 
+/**
+ * SimulatorTaskRunnerOptions contains extra properties asigned to the
+ * `playdate-simulator` task in `tasks.json`.
+ */
 export interface SimulatorTaskRunnerOptions {
   openGame?: boolean;
 }
 
-const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;
-
+/**
+ * SimulatorTaskRunner is responsible for launching the Playdate Simulator
+ * executable if it is not already running.
+ */
 export class SimulatorTaskRunner implements TaskRunner {
   constructor(
     private config: ConfigurationResolver,
@@ -87,3 +93,10 @@ export class SimulatorTaskRunner implements TaskRunner {
     child.unref();
   }
 }
+
+/**
+ * PLAYDATE_SIMULATOR_EXE_RE is used on Windows to parse the output of the
+ * tasklist command. We know the Playdate Simulator is already running when the
+ * regex matches the output of the command.
+ */
+const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;

@@ -7,14 +7,19 @@ import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfiguration
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 import {
-  PDC_TASK_NAME,
+  PDC_EXTERNAL_PROBLEM_MATCHER,
+  PDC_LUA_PROBLEM_MATCHER,
   PDC_TASK_TYPE,
   PLAYDATE_DEBUG_TYPE,
-  SIMULATOR_TASK_NAME,
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
 } from "./constants";
 
+/**
+ * activate is called when VS Code activates this extension. The
+ * `activationEvents` property in the project's package.json specifies the
+ * events that cause the extension to be activated.
+ */
 export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
   if (!workspaceRoot) {
@@ -28,6 +33,9 @@ export function activate(context: vscode.ExtensionContext) {
   registerSimulatorTask(context, config);
 }
 
+/**
+ * deactivate is called by VS Code when the extension is being disabled.
+ */
 export function deactivate() {
   // noop
 }
@@ -69,8 +77,8 @@ function registerPDCTask(
   const pdcFactory = new PDCExecutionFactory(config);
   const pdcTaskProvider = new CustomTaskProvider(pdcFactory, {
     type: PDC_TASK_TYPE,
-    problemMatchers: ["$pdc-lua", "$pdc-external"],
-    name: PDC_TASK_NAME,
+    problemMatchers: [PDC_LUA_PROBLEM_MATCHER, PDC_EXTERNAL_PROBLEM_MATCHER],
+    name: "Build",
     source: TASK_SOURCE,
   });
   context.subscriptions.push(
@@ -85,8 +93,8 @@ function registerSimulatorTask(
   const simulatorFactory = new SimulatorExecutionFactory(config);
   const simulatorTaskProvider = new CustomTaskProvider(simulatorFactory, {
     type: SIMULATOR_TASK_TYPE,
-    problemMatchers: ["$pdc-external"],
-    name: SIMULATOR_TASK_NAME,
+    problemMatchers: [PDC_EXTERNAL_PROBLEM_MATCHER],
+    name: "Simulator",
     source: TASK_SOURCE,
   });
   context.subscriptions.push(

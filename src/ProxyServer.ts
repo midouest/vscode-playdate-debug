@@ -3,12 +3,26 @@ import * as net from "net";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
 import { waitForDebugPort } from "./waitForDebugPort";
 
+/**
+ * ProxyServer is used to improve the experience of debugging Playdate games
+ * in VS Code. It works around some issues caused by bugs in the Playdate
+ * Simulator debug adapter protocol server and limitations in VS Code.
+ *
+ * See https://microsoft.github.io/debug-adapter-protocol/ for details about
+ * the Debug Adapter Protocol.
+ */
 export class ProxyServer {
   private clientSocket!: net.Socket;
   private simulatorSocket!: net.Socket;
   private simulatorSeq!: number;
   private simulatorSeqOffset = 0;
 
+  /**
+   * Connect to the Playdate Simulator debugger and then start the proxy server.
+   *
+   * @returns The proxy socket server instance. Calling code must call `listen`
+   * on the socket server to accept incoming connections from VS Code.
+   */
   static async start(): Promise<net.Server> {
     const proxy = new ProxyServer();
     await proxy.connect();
@@ -24,6 +38,12 @@ export class ProxyServer {
   }
 
   private async connect(): Promise<void> {
+    // The Playdate Simulator's debug adapter protocol server takes ~250ms to
+    // respond on the debug port after launching the app. waitForDebugPort will
+    // attempt to continuously connect to the Playdate Simulator up to a certain
+    // number of times with a short timeout. We return the connected socket
+    // because closing it immediately after a successful connection can cause
+    // the Playdate Simulator to become unresponsive to new connections.
     const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
     if (!socket) {
       throw new Error(`Could not connect to Playdate Simulator`);
@@ -82,12 +102,15 @@ export class ProxyServer {
   }
 }
 
-const SEPARATOR = "\r\n\r\n";
+// See https://microsoft.github.io/debug-adapter-protocol/overview#base-protocol
+// for a description of the base protocol used to transmit Debug Adapter
+// Protocol messages.
 
 function decodeMessage(data: Buffer): any {
   const payload = data.toString();
   const components = payload.split(SEPARATOR);
-  return JSON.parse(components[1]);
+  const content = components[1];
+  return JSON.parse(content);
 }
 
 function encodeMessage(message: any): Buffer {
@@ -96,3 +119,5 @@ function encodeMessage(message: any): Buffer {
   const payload = components.join(SEPARATOR);
   return Buffer.from(payload);
 }
+
+const SEPARATOR = "\r\n\r\n";

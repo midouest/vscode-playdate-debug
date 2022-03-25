@@ -2,6 +2,10 @@ import * as vscode from "vscode";
 
 import { TaskRunner } from "./TaskRunner";
 
+/**
+ * TaskRunnerTerminal is a generic VS Code pseduoterminal that runs a task once
+ * and displays its error output, if any.
+ */
 export class TaskRunnerTerminal implements vscode.Pseudoterminal {
   private writeEmitter = new vscode.EventEmitter<string>();
   onDidWrite: vscode.Event<string> = this.writeEmitter.event;

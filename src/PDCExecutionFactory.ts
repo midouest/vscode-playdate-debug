@@ -5,6 +5,10 @@ import { CustomExecutionFactory } from "./CustomExecutionFactory";
 import { PDCTaskRunner } from "./PDCTaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
+/**
+ * The PDCExecutionFactory is responsible for configuring the VS Code
+ * pseudoterminal that executes the `pdc` task.
+ */
 export class PDCExecutionFactory implements CustomExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 

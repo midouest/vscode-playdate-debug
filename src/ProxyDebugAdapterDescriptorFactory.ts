@@ -4,15 +4,17 @@ import * as vscode from "vscode";
 
 import { ProxyServer } from "./ProxyServer";
 
+/**
+ * ProxyDebugAdapterDescriptorFactory launches the Playdate debugger proxy
+ * server and tells VS Code how to connect to it.
+ */
 export class ProxyDebugAdapterDescriptorFactory
-  implements vscode.DebugAdapterDescriptorFactory
+  implements vscode.DebugAdapterDescriptorFactory, vscode.Disposable
 {
   private server: net.Server | undefined;
 
   async createDebugAdapterDescriptor(): Promise<vscode.DebugAdapterDescriptor> {
-    if (this.server) {
-      this.server.close();
-    }
+    this.server?.close();
 
     this.server = await ProxyServer.start();
     this.server.listen(0);

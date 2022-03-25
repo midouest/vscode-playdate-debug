@@ -2,10 +2,8 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { PLAYDATE_DEBUG_SECTION } from "./constants";
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
-import { getSourcePath } from "./getSourcePath";
 
 export interface Configuration {
   sdkPath: string;
@@ -16,23 +14,33 @@ export interface Configuration {
   gamePath: string;
 }
 
+/**
+ * FallbackOptions allow the calling code to control whether or not the
+ * ConfigurationResolver attempts to lookup an undefined configuration variable
+ * in the user's environment.
+ */
 export type FallbackOptions = {
   sdkPath?: boolean;
 };
 
+/**
+ * ConfigurationResolver is responsible for resolving the final PlaydateSDK and
+ * game configuration. It resolves configuration from the VS Code workspace
+ * configuration and the user's environment.
+ */
 export class ConfigurationResolver {
   constructor(private workspaceRoot: string) {}
 
   async resolve(fallbackOptions?: FallbackOptions): Promise<Configuration> {
     let { sdkPath, sourcePath, outputPath, productName } =
-      vscode.workspace.getConfiguration(PLAYDATE_DEBUG_SECTION);
+      vscode.workspace.getConfiguration("playdate-debug");
 
     if (!sdkPath && fallbackOptions?.sdkPath !== false) {
       sdkPath = await getSDKPath();
     }
 
     if (!sourcePath) {
-      sourcePath = getSourcePath(this.workspaceRoot);
+      sourcePath = path.resolve(this.workspaceRoot, "source");
     }
 
     if (!outputPath) {

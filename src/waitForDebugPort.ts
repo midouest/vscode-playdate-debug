@@ -2,9 +2,29 @@ import * as net from "net";
 
 import { wait } from "./wait";
 
+/**
+ * WaitForDebugPortOptions is used to configure the timeouts and number of
+ * retries performed by waitForDebugPort.
+ */
 export interface WaitForDebugPortOptions {
+  /**
+   * connectTimeout is the idle timeout in milliseconds set on the socket before
+   * connecting. This won't have much of an effect in most cases because the
+   * Simulator will usually respond immediately with a RST packet if the Debug
+   * Adapter Protocol server is not ready.
+   */
   connectTimeout: number;
+
+  /**
+   * retryTimeout is the timeout in milliseconds before the next connection
+   * attempt after the previous attempt fails.
+   */
   retryTimeout: number;
+
+  /**
+   * maxRetries is the maximum number of retries that can occur before
+   * waitForDebugPort stops attempting to connect.
+   */
   maxRetries: number;
 }
 
@@ -14,6 +34,14 @@ const DEFAULT_OPTIONS: WaitForDebugPortOptions = {
   maxRetries: 5,
 };
 
+/**
+ * waitForDebugPort attempts to connect to the given port up to a maximum
+ * number of retries with a brief timeout between retries.
+ *
+ * @param port The TCP port to connect to
+ * @param options Configuration for timeouts and maximum number of retries
+ * @returns The connected TCP socket if successful
+ */
 export async function waitForDebugPort(
   port: number,
   options: Partial<WaitForDebugPortOptions> = DEFAULT_OPTIONS

@@ -72,7 +72,7 @@ export class SimulatorTaskRunner implements TaskRunner {
   ): Promise<string | undefined> {
     try {
       const { stdout } = await exec("tasklist");
-      if (stdout.match(PLAYDATE_SIMULATOR_EXE_RE)) {
+      if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
         return;
       }
     } catch (err) {
@@ -99,4 +99,4 @@ export class SimulatorTaskRunner implements TaskRunner {
  * tasklist command. We know the Playdate Simulator is already running when the
  * regex matches the output of the command.
  */
-const PLAYDATE_SIMULATOR_EXE_RE = /PlaydateSimulator\.exe/g;
+const PLAYDATE_SIMULATOR_WIN32_RE = /^PlaydateSimulator\.exe/g;

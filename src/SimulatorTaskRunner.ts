@@ -37,6 +37,9 @@ export class SimulatorTaskRunner implements TaskRunner {
       case "win32":
         return await this.openWin32(sdkPath, openGamePath);
 
+      case "linux":
+        return await this.openLinux(sdkPath, openGamePath);
+
       default:
         return `error: platform '${process.platform}' is not supported`;
     }
@@ -92,11 +95,45 @@ export class SimulatorTaskRunner implements TaskRunner {
     });
     child.unref();
   }
+
+  private async openLinux(
+    sdkPath: string,
+    gamePath?: string
+  ): Promise<string | undefined> {
+    try {
+      const { stdout } = await exec("ps aux");
+      if (stdout.match(PLAYDATE_SIMULATOR_LINUX_RE)) {
+        return;
+      }
+    } catch (err) {
+      if (isExecError(err)) {
+        return err.stderr;
+      }
+      return;
+    }
+
+    const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator");
+    const args = gamePath ? [quote(gamePath)] : [];
+
+    const child = child_process.spawn(quote(simulatorPath), args, {
+      shell: true,
+      detached: true,
+      stdio: "ignore",
+    });
+    child.unref();
+  }
 }
 
 /**
- * PLAYDATE_SIMULATOR_EXE_RE is used on Windows to parse the output of the
+ * PLAYDATE_SIMULATOR_WIN32_RE is used on Windows to parse the output of the
  * tasklist command. We know the Playdate Simulator is already running when the
  * regex matches the output of the command.
  */
 const PLAYDATE_SIMULATOR_WIN32_RE = /^PlaydateSimulator\.exe/g;
+
+/**
+ * PLAYDATE_SIMULATOR_LINUX_RE is used on Linux to parse the output of the ps
+ * command. We know the Playdate Simulator is already running when the
+ * regex matches the output of the command.
+ */
+const PLAYDATE_SIMULATOR_LINUX_RE = /PlaydateSimulator$/g;

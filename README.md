@@ -114,6 +114,8 @@ The `kill` property on the `playdate-simulator` task causes the task to kill any
 ## Known Issues
 
 - Debugging is not supported on Windows or Linux.
+- The `playdate-simulator` task is not supported on Linux.
+- `make` and `cmake`-based projects are not supported.
 - Breakpoints are in an unverified state.
 - Stepping into C functions causes the debugger to continue executing.
 - The `.pdx` bundle might not be visible to the Playdate Simulator immediately after the `pdc` task completes. The `timeout` property on the `pdc` task can be used to wait for the `.pdx` bundle to become available.

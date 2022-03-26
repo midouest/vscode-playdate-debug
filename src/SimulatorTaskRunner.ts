@@ -38,8 +38,9 @@ export class SimulatorTaskRunner implements TaskRunner {
       case "win32":
         return await this.openWin32(sdkPath, openGamePath, kill);
 
-      case "linux":
-        return await this.openLinux(sdkPath, openGamePath, kill);
+      // FIXME: The Playdate Simulator currently segfaults when launched from VS Code
+      // case "linux":
+      //   return await this.openLinux(sdkPath, openGamePath, kill);
 
       default:
         return `error: platform '${process.platform}' is not supported`;

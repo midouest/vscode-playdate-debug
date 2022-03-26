@@ -19,14 +19,6 @@
       "problemMatcher": "$esbuild-watch",
       "isBackground": true,
       "label": "npm: watch"
-    },
-    {
-      "type": "npm",
-      "script": "watch-web",
-      "group": "build",
-      "problemMatcher": "$esbuild-watch",
-      "isBackground": true,
-      "label": "npm: watch web"
     }
   ]
 }

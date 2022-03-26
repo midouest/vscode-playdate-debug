@@ -13,6 +13,7 @@ import { quote } from "./quote";
  */
 export interface SimulatorTaskRunnerOptions {
   openGame?: boolean;
+  kill?: boolean;
 }
 
 /**
@@ -26,19 +27,19 @@ export class SimulatorTaskRunner implements TaskRunner {
   ) {}
 
   async run(): Promise<string | undefined> {
-    const { openGame } = this.options;
+    const { openGame, kill } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
     const openGamePath = openGame !== false ? gamePath : undefined;
 
     switch (process.platform) {
       case "darwin":
-        return await this.openMacOS(sdkPath, openGamePath);
+        return await this.openMacOS(sdkPath, openGamePath, kill);
 
       case "win32":
-        return await this.openWin32(sdkPath, openGamePath);
+        return await this.openWin32(sdkPath, openGamePath, kill);
 
       case "linux":
-        return await this.openLinux(sdkPath, openGamePath);
+        return await this.openLinux(sdkPath, openGamePath, kill);
 
       default:
         return `error: platform '${process.platform}' is not supported`;
@@ -47,8 +48,17 @@ export class SimulatorTaskRunner implements TaskRunner {
 
   private async openMacOS(
     sdkPath: string,
-    gamePath?: string
+    gamePath?: string,
+    kill?: boolean
   ): Promise<string | undefined> {
+    if (kill === true) {
+      try {
+        await exec('killall "Playdate Simulator"');
+      } catch (err) {
+        // noop
+      }
+    }
+
     const simulatorPath = path.resolve(
       sdkPath,
       "bin",
@@ -71,18 +81,27 @@ export class SimulatorTaskRunner implements TaskRunner {
 
   private async openWin32(
     sdkPath: string,
-    gamePath?: string
+    gamePath?: string,
+    kill?: boolean
   ): Promise<string | undefined> {
-    try {
-      const { stdout } = await exec("tasklist");
-      if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
+    if (kill === true) {
+      try {
+        await exec("taskkill /IM PlaydateSimulator.exe");
+      } catch (err) {
+        // noop
+      }
+    } else {
+      try {
+        const { stdout } = await exec("tasklist");
+        if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
+          return;
+        }
+      } catch (err) {
+        if (isExecError(err)) {
+          return err.stderr;
+        }
         return;
       }
-    } catch (err) {
-      if (isExecError(err)) {
-        return err.stderr;
-      }
-      return;
     }
 
     const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator.exe");
@@ -98,12 +117,22 @@ export class SimulatorTaskRunner implements TaskRunner {
 
   private async openLinux(
     sdkPath: string,
-    gamePath?: string
+    gamePath?: string,
+    kill?: boolean
   ): Promise<string | undefined> {
     try {
-      const { stdout } = await exec("ps aux");
-      if (stdout.match(PLAYDATE_SIMULATOR_LINUX_RE)) {
-        return;
+      const { stdout } = await exec("ps ax");
+      for (const match of stdout.matchAll(PLAYDATE_SIMULATOR_LINUX_RE)) {
+        if (kill === true) {
+          const pid = match[1];
+          try {
+            await exec(`kill -9 ${pid}`);
+          } catch (err) {
+            // noop
+          }
+        } else {
+          return;
+        }
       }
     } catch (err) {
       if (isExecError(err)) {
@@ -136,4 +165,4 @@ const PLAYDATE_SIMULATOR_WIN32_RE = /^PlaydateSimulator\.exe/g;
  * command. We know the Playdate Simulator is already running when the
  * regex matches the output of the command.
  */
-const PLAYDATE_SIMULATOR_LINUX_RE = /PlaydateSimulator$/g;
+const PLAYDATE_SIMULATOR_LINUX_RE = /\s*(\d+).*PlaydateSimulator/g;

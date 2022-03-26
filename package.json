@@ -111,6 +111,11 @@
             "type": "boolean",
             "description": "True if the simulator executable should launch with the game open. Defaults to true.",
             "default": true
+          },
+          "kill": {
+            "type": "boolean",
+            "description": "True if any running simulator processes should be killed before launching a new one. Defaults to false.",
+            "default": false
           }
         }
       }

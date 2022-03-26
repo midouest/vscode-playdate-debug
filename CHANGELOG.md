@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `playdate-simulator` task supports opening simulator on Linux platforms
+- `kill` property to `playdate-simulator` which kills running simulator instances before starting a new one
 
 ## [1.0.0] - 2022-03-23
 

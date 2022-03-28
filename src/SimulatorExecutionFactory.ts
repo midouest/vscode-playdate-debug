@@ -1,8 +1,10 @@
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
-import { SimulatorTaskRunner } from "./SimulatorTaskRunner";
+import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
+import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";
 import { TaskExecutionFactory } from "./TaskExecutionFactory";
+import { TaskRunner } from "./TaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
 /**
@@ -14,12 +16,31 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
 
   createExecution(definition: vscode.TaskDefinition): vscode.CustomExecution {
     const { openGame, kill } = definition;
-    return new vscode.CustomExecution(async () => {
-      const runner = new SimulatorTaskRunner(this.config, {
-        openGame,
-        kill,
-      });
-      return new TaskRunnerTerminal(runner);
-    });
+
+    let runner: TaskRunner;
+    switch (process.platform) {
+      case "darwin": {
+        runner = new SimulatorMacOSTaskRunner(this.config, { openGame, kill });
+        break;
+      }
+
+      case "win32": {
+        runner = new SimulatorWin32TaskRunner(this.config, { openGame, kill });
+        break;
+      }
+
+      // FIXME: The Playdate Simulator currently segfaults when launched from VS Code
+      // case "linux": {
+      //   runner = new SimulatorLinuxTaskRunner(this.config, { openGame, kill });
+      //   break;
+      // }
+
+      default:
+        return `error: platform '${process.platform}' is not supported`;
+    }
+
+    return new vscode.CustomExecution(
+      async () => new TaskRunnerTerminal(runner)
+    );
   }
 }

@@ -24,20 +24,22 @@ export class TaskProvider implements vscode.TaskProvider {
   ) {}
 
   provideTasks(): vscode.ProviderResult<vscode.Task[]> {
-    const task = this.createTask();
-    return [task];
+    return this.createTask().then((task) => [task]);
   }
 
-  resolveTask(task: vscode.Task): vscode.ProviderResult<vscode.Task> {
+  resolveTask(
+    task: vscode.Task,
+    _token: vscode.CancellationToken
+  ): vscode.ProviderResult<vscode.Task> {
     return this.createTask(task);
   }
 
-  private createTask(task?: vscode.Task): vscode.Task {
+  private async createTask(task?: vscode.Task): Promise<vscode.Task> {
     const { type, problemMatchers, name, source } = this.options;
 
     const definition = task?.definition ?? { type };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
-    const execution = this.factory.createExecution(definition);
+    const execution = await this.factory.createExecution(definition);
 
     return new vscode.Task(
       definition,

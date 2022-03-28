@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
 import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";
-import { TaskExecutionFactory } from "./TaskExecutionFactory";
+import { TaskExecution, TaskExecutionFactory } from "./TaskExecutionFactory";
 import { TaskRunner } from "./TaskRunner";
 import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
@@ -14,7 +14,7 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 export class SimulatorExecutionFactory implements TaskExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 
-  createExecution(definition: vscode.TaskDefinition): vscode.CustomExecution {
+  createExecution(definition: vscode.TaskDefinition): Promise<TaskExecution> {
     const { openGame, kill } = definition;
 
     let runner: TaskRunner;
@@ -36,11 +36,14 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       // }
 
       default:
-        return `error: platform '${process.platform}' is not supported`;
+        throw new Error(
+          `error: platform '${process.platform}' is not supported`
+        );
     }
 
-    return new vscode.CustomExecution(
+    const execution = new vscode.CustomExecution(
       async () => new TaskRunnerTerminal(runner)
     );
+    return Promise.resolve(execution);
   }
 }

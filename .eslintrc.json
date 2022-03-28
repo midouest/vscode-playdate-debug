@@ -32,6 +32,8 @@
     "no-throw-literal": "warn",
     "semi": "off",
 
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+
     "import/order": [
       "error",
       {

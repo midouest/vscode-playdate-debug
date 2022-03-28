@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 
-import { CustomExecutionFactory } from "./CustomExecutionFactory";
+import { TaskExecutionFactory } from "./TaskExecutionFactory";
 
 /**
- * CustomTaskProviderOptions stores the vscode Task options that a
- * CustomTaskProvider uses to create a Task instance.
+ * TaskProviderOptions stores the vscode Task options that a TaskProvider uses
+ * to create a Task instance.
  */
-export interface CustomTaskProviderOptions {
+export interface TaskProviderOptions {
   type: string;
   problemMatchers: string[];
   name: string;
@@ -14,13 +14,13 @@ export interface CustomTaskProviderOptions {
 }
 
 /**
- * CustomTaskProvider is a generic TaskProvider that can be configured for
+ * TaskProvider is a generic vscode.TaskProvider that can be configured for
  * different tasks using the options argument of the constructor.
  */
-export class CustomTaskProvider implements vscode.TaskProvider {
+export class TaskProvider implements vscode.TaskProvider {
   constructor(
-    private factory: CustomExecutionFactory,
-    private options: CustomTaskProviderOptions
+    private factory: TaskExecutionFactory,
+    private options: TaskProviderOptions
   ) {}
 
   provideTasks(): vscode.ProviderResult<vscode.Task[]> {

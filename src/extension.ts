@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
-import { CustomTaskProvider } from "./CustomTaskProvider";
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
+import { TaskProvider } from "./TaskProvider";
 import {
   PDC_EXTERNAL_PROBLEM_MATCHER,
   PDC_LUA_PROBLEM_MATCHER,
@@ -75,7 +75,7 @@ function registerPDCTask(
   config: ConfigurationResolver
 ): void {
   const pdcFactory = new PDCExecutionFactory(config);
-  const pdcTaskProvider = new CustomTaskProvider(pdcFactory, {
+  const pdcTaskProvider = new TaskProvider(pdcFactory, {
     type: PDC_TASK_TYPE,
     problemMatchers: [PDC_LUA_PROBLEM_MATCHER, PDC_EXTERNAL_PROBLEM_MATCHER],
     name: "Build",
@@ -91,7 +91,7 @@ function registerSimulatorTask(
   config: ConfigurationResolver
 ): void {
   const simulatorFactory = new SimulatorExecutionFactory(config);
-  const simulatorTaskProvider = new CustomTaskProvider(simulatorFactory, {
+  const simulatorTaskProvider = new TaskProvider(simulatorFactory, {
     type: SIMULATOR_TASK_TYPE,
     problemMatchers: [PDC_EXTERNAL_PROBLEM_MATCHER],
     name: "Simulator",

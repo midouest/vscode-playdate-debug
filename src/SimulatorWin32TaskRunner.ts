@@ -3,7 +3,7 @@ import * as path from "path";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
-import { exec, isExecError } from "./exec";
+import { exec } from "./exec";
 import { quote } from "./quote";
 
 /**
@@ -25,7 +25,7 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
     private options: SimulatorWin32TaskRunnerOptions
   ) {}
 
-  async run(): Promise<string | undefined> {
+  async run(): Promise<void> {
     const { openGame, kill } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
     const openGamePath = openGame !== false ? gamePath : undefined;
@@ -37,15 +37,8 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
         // noop
       }
     } else {
-      try {
-        const { stdout } = await exec("tasklist");
-        if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
-          return;
-        }
-      } catch (err) {
-        if (isExecError(err)) {
-          return err.stderr;
-        }
+      const { stdout } = await exec("tasklist");
+      if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
         return;
       }
     }

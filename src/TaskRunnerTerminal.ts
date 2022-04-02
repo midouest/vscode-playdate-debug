@@ -24,12 +24,23 @@ export class TaskRunnerTerminal implements vscode.Pseudoterminal {
   }
 
   private async run(): Promise<void> {
-    const errorMessage = await this.runner.run();
     let status = 0;
-    if (errorMessage) {
-      this.writeEmitter.fire(errorMessage + "\n");
+
+    try {
+      await this.runner.run();
+    } catch (err) {
       status = 1;
+      if (err instanceof Error) {
+        this.emit(err.message);
+      }
     }
     this.closeEmitter.fire(status);
+  }
+
+  private emit(message: string): void {
+    const lines = message.split("\n");
+    for (const line of lines) {
+      this.writeEmitter.fire(line + "\r\n");
+    }
   }
 }

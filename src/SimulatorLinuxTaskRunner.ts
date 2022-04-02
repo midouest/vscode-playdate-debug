@@ -3,7 +3,7 @@ import * as path from "path";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
-import { exec, isExecError } from "./exec";
+import { exec } from "./exec";
 import { quote } from "./quote";
 
 /**
@@ -25,30 +25,23 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
     private options: SimulatorLinuxTaskRunnerOptions
   ) {}
 
-  async run(): Promise<string | undefined> {
+  async run(): Promise<void> {
     const { openGame, kill } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
     const openGamePath = openGame !== false ? gamePath : undefined;
 
-    try {
-      const { stdout } = await exec("ps ax");
-      for (const match of stdout.matchAll(PLAYDATE_SIMULATOR_LINUX_RE)) {
-        if (kill === true) {
-          const pid = match[1];
-          try {
-            await exec(`kill -9 ${pid}`);
-          } catch (err) {
-            // noop
-          }
-        } else {
-          return;
+    const { stdout } = await exec("ps ax");
+    for (const match of stdout.matchAll(PLAYDATE_SIMULATOR_LINUX_RE)) {
+      if (kill === true) {
+        const pid = match[1];
+        try {
+          await exec(`kill -9 ${pid}`);
+        } catch (err) {
+          // noop
         }
+      } else {
+        return;
       }
-    } catch (err) {
-      if (isExecError(err)) {
-        return err.stderr;
-      }
-      return;
     }
 
     const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator");

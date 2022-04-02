@@ -2,7 +2,7 @@ import * as path from "path";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
-import { exec, isExecError } from "./exec";
+import { exec } from "./exec";
 import { quote } from "./quote";
 
 /**
@@ -24,7 +24,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
     private options: SimulatorMacOSTaskRunnerOptions
   ) {}
 
-  async run(): Promise<string | undefined> {
+  async run(): Promise<void> {
     const { openGame, kill } = this.options;
     const { sdkPath, gamePath } = await this.config.resolve();
     const openGamePath = openGame !== false ? gamePath : undefined;
@@ -48,12 +48,6 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
     }
     const command = `/usr/bin/open ${args.join(" ")}`;
 
-    try {
-      await exec(command);
-    } catch (err) {
-      if (isExecError(err)) {
-        return err.stderr;
-      }
-    }
+    await exec(command);
   }
 }

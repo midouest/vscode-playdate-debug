@@ -8,5 +8,5 @@ export interface TaskRunner {
    *
    * @returns An error message string if the task failed.
    */
-  run(): Promise<string | undefined>;
+  run(): Promise<void>;
 }

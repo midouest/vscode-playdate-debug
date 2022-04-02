@@ -1,6 +1,6 @@
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
-import { exec, isExecError } from "./exec";
+import { exec } from "./exec";
 import { quote } from "./quote";
 import { wait } from "./wait";
 
@@ -24,7 +24,7 @@ export class PDCTaskRunner implements TaskRunner {
     private options: PDCTaskRunnerOptions
   ) {}
 
-  async run(): Promise<string | undefined> {
+  async run(): Promise<void> {
     const { timeout } = this.options;
     const { sdkPath, sourcePath, productPath } = await this.config.resolve({
       sdkPath: false,
@@ -36,13 +36,7 @@ export class PDCTaskRunner implements TaskRunner {
     }
 
     const command = `pdc ${args.join(" ")}`;
-    try {
-      await exec(command);
-    } catch (err) {
-      if (isExecError(err)) {
-        return err.stderr;
-      }
-    }
+    await exec(command);
 
     if (!timeout) {
       return;

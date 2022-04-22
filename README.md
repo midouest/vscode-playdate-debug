@@ -13,32 +13,64 @@ Unofficial Playdate debug extension for Visual Studio Code
 
 - The [Playdate SDK](https://play.date/dev/) must be installed separately
 
-## Debugging
+## Setup
 
-### Basic Configuration
+### Debugging
 
-By default, the tasks and launch configuration will attempt to automatically find the Playdate SDK and compiled game name. For this to work, the `PLAYDATE_SDK_PATH` environment must be configured, the [pdxinfo](https://sdk.play.date/1.9.3/Inside%20Playdate.html#pdxinfo) file must exist in your game's `source` directory, and the `name` property must be set in `pdxinfo`.
+1. Click on the debug icon (play symbol with a bug) in the toolbar to open the "Run and Debug" view
+2. Click the link that says `Create a launch.json file`
+3. Select `Playdate Debug` in the dropdown to create the configuration in `.vscode/launch.json`
+4. _(Optional)_ Run the default build task before debugging by setting the `preLaunchTask` property in the `Debug (Simulator)` configuration:
 
 ```json
-// launch.json
+"preLaunchTask": "${defaultBuildTask}"
+```
+
+### Tasks _(Optional)_
+
+#### Build
+
+1. Enter `Cmd/Ctrl + Shift + P` on the keybord to open the Command Palette
+2. Type `Configure Task` and hit enter
+3. Select `Playdate: Build` in the dropdown to add it to `.vscode/tasks.json`
+
+#### Simulator
+
+1. Enter `Cmd/Ctrl + Shift + P` on the keybord to open the Command Palette
+2. Type `Configure Task` and hit enter
+3. Select `Playdate: Simulator` in the dropdown to add it to `.vscode/tasks.json`
+
+#### Build and Run
+
+1. Open `.vscode/tasks.json`
+2. Paste the following configuration into the `tasks` array after the `Playdate: Simulator` task:
+
+```json
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "playdate",
-      "request": "launch",
-      "name": "Debug (Simulator)"
-    }
-  ]
+  "label": "Playdate: Build and Run (Simulator)",
+  "dependsOn": ["Playdate: Build", "Playdate: Simulator"],
+  "dependsOrder": "sequence"
 }
 ```
 
-### Advanced Configuration
+3. Enter `Cmd/Ctrl + Shift + P` on the keybord to open the Command Palette
+4. Type `Configure Default Build Task` and hit enter
+5. Select `Playdate: Build and Run (Simulator)` in the dropdown
 
-The default SDK path, game source path, and compiled game path can be overridden in your workspace's `settings.json` file:
+## Configuration
+
+The tasks and debugger will attempt to automatically resolve the correct configuration using the environment. The following configuration must exist for this to work:
+
+- Either of the following:
+  - `~/.Playdate/config` exists and the `SDKRoot` property is set to the Playdate SDK path
+  - The `PLAYDATE_SDK_PATH` environment variable is set to the Playdate SDK path
+- The Playdate SDK `bin` directory is in your `PATH`
+- A [pdxinfo](https://sdk.play.date/1.9.3/Inside%20Playdate.html#pdxinfo) file exists in your game's `source` directory and the `name` property is set
+
+The default behavior can be overridden by setting the SDK path, game source path, compiled game path or game name in your workspace's `settings.json` file. The extension will fall back to the default behavior for any configuration fields that are not set.
 
 ```json
-// settings.json
+// .vscode/settings.json
 {
   "sdkPath": "/path/to/PlaydateSDK",
   "sourcePath": "/path/to/MyGame/source",
@@ -47,64 +79,17 @@ The default SDK path, game source path, and compiled game path can be overridden
 }
 ```
 
-## Tasks
-
-### Basic Configuration
+The Playdate Simulator task launches the Playdate Simulator once and leaves it running in the background by default. The `kill` property can be used to instead have the task stop running instances of the Playdate Simulator before launching a new one.
 
 ```json
-// tasks.json
-{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "pdc",
-      "problemMatcher": ["$pdc-lua", "$pdc-external"],
-      "label": "Build"
-    },
-    {
-      "type": "playdate-simulator",
-      "problemMatcher": ["$pdc-external"],
-      "label": "Run"
-    }
-  ]
-}
-```
-
-### Advanced Configuration
-
-The `pdc` and `playdate-simulator` tasks can be configured using the `settings.json` properties described above.
-
-The `pdc` task supports an optional `timeout` property. When set, the `timeout` property causes the task to wait for the given number of milliseconds after executing before completing. This can be used to work around timing issues between VS Code, `pdc` and the Playdate Simulator.
-
-```json
-// tasks.json
-{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "pdc",
-      "problemMatcher": ["$pdc-lua", "$pdc-external"],
-      "label": "Build",
-      "timeout": 250
-    }
-  ]
-}
-```
-
-The `openGame` property on the `playdate-simulator` task controls whether or not the Playdate Simulator executable is called with the path to the game or not. This does not prevent the Playdate Simulator from reopening the last opened game when it starts up.
-
-The `kill` property on the `playdate-simulator` task causes the task to kill any running instances of the Playdate Simulator before launching a new one.
-
-```json
-// tasks.json
+// .vscode/tasks.json
 {
   "version": "2.0.0",
   "tasks": [
     {
       "type": "playdate-simulator",
       "problemMatcher": ["$pdc-external"],
-      "label": "Run",
-      "openGame": true,
+      "label": "Playdate: Simulator",
       "kill": true
     }
   ]

@@ -26,6 +26,25 @@ Unofficial Playdate debug extension for Visual Studio Code
 "preLaunchTask": "${defaultBuildTask}"
 ```
 
+Your `.vscode/launch.json` should now look like this:
+
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "playdate",
+      "request": "launch",
+      "name": "Debug (Simulator)",
+      "preLaunchTask": "${defaultBuildTask}"
+    }
+  ]
+}
+```
+
 ### Tasks _(Optional)_
 
 #### Build
@@ -56,6 +75,36 @@ Unofficial Playdate debug extension for Visual Studio Code
 3. Enter `Cmd/Ctrl + Shift + P` on the keybord to open the Command Palette
 4. Type `Configure Default Build Task` and hit enter
 5. Select `Playdate: Build and Run (Simulator)` in the dropdown
+
+Your `.vscode/tasks.json` file should now look like this:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "pdc",
+      "problemMatcher": ["$pdc-lua", "$pdc-external"],
+      "label": "Playdate: Build"
+    },
+    {
+      "type": "playdate-simulator",
+      "problemMatcher": ["$pdc-external"],
+      "label": "Playdate: Simulator"
+    },
+    {
+      "label": "Playdate: Build and Run (Simulator)",
+      "dependsOn": ["Playdate: Build", "Playdate: Simulator"],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
+```
 
 ## Configuration
 

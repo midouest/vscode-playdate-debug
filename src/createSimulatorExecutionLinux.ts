@@ -2,7 +2,6 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskExecution } from "./TaskExecutionFactory";
 import { quote } from "./quote";
 
@@ -11,7 +10,8 @@ import { quote } from "./quote";
  * `playdate-simulator` task in `tasks.json`.
  */
 export interface SimulatorExecutionLinuxOptions {
-  openGame?: boolean;
+  sdkPath: string;
+  openGamePath?: string;
   kill?: boolean;
 }
 
@@ -25,12 +25,9 @@ export interface SimulatorExecutionLinuxOptions {
  * segmentation fault for unknown reasons.
  */
 export async function createSimulatorExecutionLinux(
-  config: ConfigurationResolver,
   options: SimulatorExecutionLinuxOptions
 ): Promise<TaskExecution> {
-  const { openGame, kill } = options;
-  const { sdkPath, gamePath } = await config.resolve();
-  const openGamePath = openGame !== false ? gamePath : undefined;
+  const { sdkPath, openGamePath, kill } = options;
 
   const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator");
   const args = openGamePath ? [openGamePath] : [];

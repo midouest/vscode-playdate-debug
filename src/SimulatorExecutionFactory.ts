@@ -18,11 +18,14 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
     definition: vscode.TaskDefinition
   ): Promise<TaskExecution> {
     const { openGame, kill } = definition;
+    const { sdkPath, gamePath } = await this.config.resolve();
+    const openGamePath = openGame !== false ? gamePath : undefined;
 
     switch (process.platform) {
       case "darwin": {
-        const runner = new SimulatorMacOSTaskRunner(this.config, {
-          openGame,
+        const runner = new SimulatorMacOSTaskRunner({
+          sdkPath,
+          openGamePath,
           kill,
         });
         return new vscode.CustomExecution(
@@ -31,8 +34,9 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       }
 
       case "win32": {
-        const runner = new SimulatorWin32TaskRunner(this.config, {
-          openGame,
+        const runner = new SimulatorWin32TaskRunner({
+          sdkPath,
+          openGamePath,
           kill,
         });
         return new vscode.CustomExecution(
@@ -41,8 +45,9 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       }
 
       case "linux": {
-        return await createSimulatorExecutionLinux(this.config, {
-          openGame,
+        return await createSimulatorExecutionLinux({
+          sdkPath,
+          openGamePath,
           kill,
         });
       }

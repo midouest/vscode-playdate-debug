@@ -1,7 +1,6 @@
 import * as child_process from "child_process";
 import * as path from "path";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
 import { exec } from "./exec";
 import { quote } from "./quote";
@@ -11,7 +10,8 @@ import { quote } from "./quote";
  * `playdate-simulator` task in `tasks.json`.
  */
 export interface SimulatorWin32TaskRunnerOptions {
-  openGame?: boolean;
+  sdkPath: string;
+  openGamePath?: string;
   kill?: boolean;
 }
 
@@ -20,15 +20,10 @@ export interface SimulatorWin32TaskRunnerOptions {
  * executable on Windows if it is not already running.
  */
 export class SimulatorWin32TaskRunner implements TaskRunner {
-  constructor(
-    private config: ConfigurationResolver,
-    private options: SimulatorWin32TaskRunnerOptions
-  ) {}
+  constructor(private options: SimulatorWin32TaskRunnerOptions) {}
 
   async run(): Promise<void> {
-    const { openGame, kill } = this.options;
-    const { sdkPath, gamePath } = await this.config.resolve();
-    const openGamePath = openGame !== false ? gamePath : undefined;
+    const { sdkPath, openGamePath, kill } = this.options;
 
     if (kill === true) {
       try {

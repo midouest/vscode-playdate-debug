@@ -148,7 +148,6 @@ The Playdate Simulator task launches the Playdate Simulator once and leaves it r
 ## Known Issues
 
 - Debugging is not supported on Windows or Linux.
-- The `playdate-simulator` task is not supported on Linux.
 - `make` and `cmake`-based projects are not supported.
 - Breakpoints are in an unverified state.
 - Stepping into C functions causes the debugger to continue executing.

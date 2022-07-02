@@ -1,5 +1,6 @@
 import * as net from "net";
 
+import { DebugAdapterLogger } from "./DebugAdapterLogger";
 import { Fixer } from "./Fixer";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
 import { waitForDebugPort } from "./waitForDebugPort";
@@ -16,7 +17,10 @@ export class ProxyServer {
   private clientSocket!: net.Socket;
   private simulatorSocket!: net.Socket;
 
-  private constructor(private fixer: Fixer) {}
+  private constructor(
+    private fixer: Fixer,
+    private logger: DebugAdapterLogger
+  ) {}
 
   /**
    * Connect to the Playdate Simulator debugger and then start the proxy server.
@@ -24,8 +28,11 @@ export class ProxyServer {
    * @returns The proxy socket server instance. Calling code must call `listen`
    * on the socket server to accept incoming connections from VS Code.
    */
-  static async start(fixer: Fixer): Promise<net.Server> {
-    const proxy = new ProxyServer(fixer);
+  static async start(
+    fixer: Fixer,
+    logger: DebugAdapterLogger
+  ): Promise<net.Server> {
+    const proxy = new ProxyServer(fixer, logger);
     await proxy.connect();
 
     return net.createServer((socket) => {
@@ -57,6 +64,7 @@ export class ProxyServer {
 
   private proxyClientData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
+    this.logger.log(message, "client");
 
     const response = this.fixer.onProxyClient(message);
     if (response) {
@@ -70,6 +78,7 @@ export class ProxyServer {
 
   private proxySimulatorData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
+    this.logger.log(message, "server");
 
     this.fixer.onProxyServer(message);
 

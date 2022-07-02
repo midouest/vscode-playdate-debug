@@ -151,7 +151,13 @@
         "label": "Playdate Debug",
         "configurationAttributes": {
           "launch": {
-            "properties": {}
+            "properties": {
+              "logDebugAdapter": {
+                "type": "boolean",
+                "description": "True if the extension should log messages to and from the Playdate Simulator while debugging",
+                "default": false
+              }
+            }
           }
         },
         "initialConfigurations": [

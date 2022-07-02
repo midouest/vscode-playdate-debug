@@ -1,8 +1,6 @@
 import * as net from "net";
 
-import { Fix, isClientFix, isServerFix } from "./Fix";
-import { OnProxyClient } from "./OnProxyClient";
-import { OnProxyServer } from "./OnProxyServer";
+import { Fixer } from "./Fixer";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
 import { waitForDebugPort } from "./waitForDebugPort";
 
@@ -18,20 +16,7 @@ export class ProxyServer {
   private clientSocket!: net.Socket;
   private simulatorSocket!: net.Socket;
 
-  private clientFixes: OnProxyClient[] = [];
-  private serverFixes: OnProxyServer[] = [];
-
-  private constructor(fixes: Fix[]) {
-    for (const fix of fixes) {
-      if (isClientFix(fix)) {
-        this.clientFixes.push(fix);
-      }
-
-      if (isServerFix(fix)) {
-        this.serverFixes.push(fix);
-      }
-    }
-  }
+  private constructor(private fixer: Fixer) {}
 
   /**
    * Connect to the Playdate Simulator debugger and then start the proxy server.
@@ -39,8 +24,8 @@ export class ProxyServer {
    * @returns The proxy socket server instance. Calling code must call `listen`
    * on the socket server to accept incoming connections from VS Code.
    */
-  static async start(fixes: Fix[] = []): Promise<net.Server> {
-    const proxy = new ProxyServer(fixes);
+  static async start(fixer: Fixer): Promise<net.Server> {
+    const proxy = new ProxyServer(fixer);
     await proxy.connect();
 
     return net.createServer((socket) => {
@@ -73,12 +58,8 @@ export class ProxyServer {
   private proxyClientData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
 
-    for (const fixer of this.clientFixes) {
-      const response = fixer.onProxyClient(message);
-      if (response === null) {
-        continue;
-      }
-
+    const response = this.fixer.onProxyClient(message);
+    if (response) {
       const dataOut = encodeMessage(response);
       this.clientSocket?.write(dataOut);
     }
@@ -90,9 +71,7 @@ export class ProxyServer {
   private proxySimulatorData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
 
-    for (const fixer of this.serverFixes) {
-      fixer.onProxyServer(message);
-    }
+    this.fixer.onProxyServer(message);
 
     const dataOut = encodeMessage(message);
     this.clientSocket?.write(dataOut);

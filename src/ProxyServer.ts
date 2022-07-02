@@ -93,6 +93,16 @@ export class ProxyServer {
       message.body.supportsTerminateRequest = false;
     }
 
+    // The Playdate Simulator omits the "variablesReference" property if a
+    // variable does not have children. VS Code expects this property to be zero
+    // if a variable does not have children. We default the property to zero
+    // if it is undefined.
+    if (message.type === "response" && message.command === "variables") {
+      for (const variable of message.body.variables) {
+        variable.variablesReference = variable.variablesReference ?? 0;
+      }
+    }
+
     // Offset messages from the simulator because we may have inserted a missing
     // response.
     message.seq += this.simulatorSeqOffset;

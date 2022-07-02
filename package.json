@@ -156,6 +156,11 @@
                 "type": "boolean",
                 "description": "True if the extension should log messages to and from the Playdate Simulator while debugging",
                 "default": false
+              },
+              "disableWorkarounds": {
+                "type": "boolean",
+                "description": "True if the extension should disable workarounds for issues communicating between VSCode and the Playdate Simulator",
+                "default": false
               }
             }
           }

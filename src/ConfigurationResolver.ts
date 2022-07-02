@@ -12,7 +12,6 @@ export interface Configuration {
   productName: string;
   productPath: string;
   gamePath: string;
-  logDebugAdapter: boolean;
 }
 
 /**
@@ -33,7 +32,7 @@ export class ConfigurationResolver {
   constructor(private workspaceRoot: string) {}
 
   async resolve(fallbackOptions?: FallbackOptions): Promise<Configuration> {
-    let { sdkPath, sourcePath, outputPath, productName, logDebugAdapter } =
+    let { sdkPath, sourcePath, outputPath, productName } =
       vscode.workspace.getConfiguration("playdate-debug");
 
     if (!sdkPath && fallbackOptions?.sdkPath !== false) {
@@ -63,7 +62,6 @@ export class ConfigurationResolver {
       productName,
       productPath,
       gamePath,
-      logDebugAdapter,
     };
   }
 }

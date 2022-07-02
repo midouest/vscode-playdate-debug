@@ -23,9 +23,9 @@ export class ProxyDebugAdapterDescriptorFactory
   ): Promise<vscode.DebugAdapterDescriptor> {
     this.server?.close();
 
-    const fixer = await this.fixerFactory.buildFixer();
+    const { disableWorkarounds, logDebugAdapter } = session.configuration;
 
-    const { logDebugAdapter } = session.configuration;
+    const fixer = await this.fixerFactory.buildFixer(disableWorkarounds);
     const logger = this.loggerFactory.createLogger(logDebugAdapter);
 
     this.server = await ProxyServer.start(fixer, logger);

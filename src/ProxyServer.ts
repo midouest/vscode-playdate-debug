@@ -1,6 +1,6 @@
 import * as net from "net";
 
-import { Fixer, isClientFix, isServerFix } from "./Fixer";
+import { Fix, isClientFix, isServerFix } from "./Fix";
 import { OnProxyClient } from "./OnProxyClient";
 import { OnProxyServer } from "./OnProxyServer";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
@@ -17,20 +17,18 @@ import { waitForDebugPort } from "./waitForDebugPort";
 export class ProxyServer {
   private clientSocket!: net.Socket;
   private simulatorSocket!: net.Socket;
-  private simulatorSeq!: number;
-  private simulatorSeqOffset = 0;
 
   private clientFixes: OnProxyClient[] = [];
   private serverFixes: OnProxyServer[] = [];
 
-  private constructor(fixers: Fixer[]) {
-    for (const fixer of fixers) {
-      if (isClientFix(fixer)) {
-        this.clientFixes.push(fixer);
+  private constructor(fixes: Fix[]) {
+    for (const fix of fixes) {
+      if (isClientFix(fix)) {
+        this.clientFixes.push(fix);
       }
 
-      if (isServerFix(fixer)) {
-        this.serverFixes.push(fixer);
+      if (isServerFix(fix)) {
+        this.serverFixes.push(fix);
       }
     }
   }
@@ -41,8 +39,8 @@ export class ProxyServer {
    * @returns The proxy socket server instance. Calling code must call `listen`
    * on the socket server to accept incoming connections from VS Code.
    */
-  static async start(fixers: Fixer[] = []): Promise<net.Server> {
-    const proxy = new ProxyServer(fixers);
+  static async start(fixes: Fix[] = []): Promise<net.Server> {
+    const proxy = new ProxyServer(fixes);
     await proxy.connect();
 
     return net.createServer((socket) => {

@@ -1,10 +1,10 @@
+import { Fix } from "./Fix";
 import { FixLaunchResponse } from "./FixLaunchResponse";
 import { FixSupportsTerminateRequest } from "./FixSupportsTerminateRequest";
 import { FixVariablesReference } from "./FixVariablesReference";
-import { Fixer } from "./Fixer";
 
-export class FixerFactory {
-  getFixers(): Promise<Fixer[]> {
+export class FixFactory {
+  getFixes(): Promise<Fix[]> {
     return Promise.resolve([
       new FixLaunchResponse(),
       new FixSupportsTerminateRequest(),

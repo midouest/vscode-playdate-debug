@@ -1,5 +1,8 @@
 import * as net from "net";
 
+import { Fixer, isClientFix, isServerFix } from "./Fixer";
+import { OnProxyClient } from "./OnProxyClient";
+import { OnProxyServer } from "./OnProxyServer";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
 import { waitForDebugPort } from "./waitForDebugPort";
 
@@ -17,14 +20,29 @@ export class ProxyServer {
   private simulatorSeq!: number;
   private simulatorSeqOffset = 0;
 
+  private clientFixes: OnProxyClient[] = [];
+  private serverFixes: OnProxyServer[] = [];
+
+  private constructor(fixers: Fixer[]) {
+    for (const fixer of fixers) {
+      if (isClientFix(fixer)) {
+        this.clientFixes.push(fixer);
+      }
+
+      if (isServerFix(fixer)) {
+        this.serverFixes.push(fixer);
+      }
+    }
+  }
+
   /**
    * Connect to the Playdate Simulator debugger and then start the proxy server.
    *
    * @returns The proxy socket server instance. Calling code must call `listen`
    * on the socket server to accept incoming connections from VS Code.
    */
-  static async start(): Promise<net.Server> {
-    const proxy = new ProxyServer();
+  static async start(fixers: Fixer[] = []): Promise<net.Server> {
+    const proxy = new ProxyServer(fixers);
     await proxy.connect();
 
     return net.createServer((socket) => {
@@ -57,20 +75,11 @@ export class ProxyServer {
   private proxyClientData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
 
-    if (message.type === "request" && message.command === "launch") {
-      // The Playdate Simulator never sends a success response to VS Code when
-      // it receives a launch request. This causes VS Code to appear to hang
-      // indefinitely. We immediately respond to the client with a success
-      // response and increase the sequence count of all future messages by one.
-      const response = {
-        type: "response",
-        command: "launch",
-        success: true,
-        seq: this.simulatorSeq + 1,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        request_seq: message.seq,
-      };
-      this.simulatorSeqOffset += 1;
+    for (const fixer of this.clientFixes) {
+      const response = fixer.onProxyClient(message);
+      if (response === null) {
+        continue;
+      }
 
       const dataOut = encodeMessage(response);
       this.clientSocket?.write(dataOut);
@@ -82,30 +91,10 @@ export class ProxyServer {
 
   private proxySimulatorData(dataIn: Buffer): void {
     const message = decodeMessage(dataIn);
-    this.simulatorSeq = message.seq;
 
-    if (message.type === "response" && message.command === "initialize") {
-      // The Playdate Simulator responds with "supportsTerminateRequest": true.
-      // However, when VS Code attempts to send a terminate request, it responds
-      // with "Unsupported method: terminate". Disabling the
-      // "supportsTerminateRequest" capability causes VS Code to send a
-      // disconnect request instead.
-      message.body.supportsTerminateRequest = false;
+    for (const fixer of this.serverFixes) {
+      fixer.onProxyServer(message);
     }
-
-    // The Playdate Simulator omits the "variablesReference" property if a
-    // variable does not have children. VS Code expects this property to be zero
-    // if a variable does not have children. We default the property to zero
-    // if it is undefined.
-    if (message.type === "response" && message.command === "variables") {
-      for (const variable of message.body.variables) {
-        variable.variablesReference = variable.variablesReference ?? 0;
-      }
-    }
-
-    // Offset messages from the simulator because we may have inserted a missing
-    // response.
-    message.seq += this.simulatorSeqOffset;
 
     const dataOut = encodeMessage(message);
     this.clientSocket?.write(dataOut);

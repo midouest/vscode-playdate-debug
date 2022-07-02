@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
+import { FixerFactory } from "./FixerFactory";
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
@@ -61,7 +62,10 @@ function registerDebugger(
     )
   );
 
-  const descriptorFactory = new ProxyDebugAdapterDescriptorFactory();
+  const fixerFactory = new FixerFactory();
+  const descriptorFactory = new ProxyDebugAdapterDescriptorFactory(
+    fixerFactory
+  );
   context.subscriptions.push(
     vscode.debug.registerDebugAdapterDescriptorFactory(
       PLAYDATE_DEBUG_TYPE,

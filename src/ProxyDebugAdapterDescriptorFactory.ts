@@ -2,9 +2,7 @@ import * as net from "net";
 
 import * as vscode from "vscode";
 
-import { FixLaunchResponse } from "./FixLaunchResponse";
-import { FixSupportsTerminateRequest } from "./FixSupportsTerminateRequest";
-import { FixVariablesReference } from "./FixVariablesReference";
+import { FixerFactory } from "./FixerFactory";
 import { ProxyServer } from "./ProxyServer";
 
 /**
@@ -16,15 +14,12 @@ export class ProxyDebugAdapterDescriptorFactory
 {
   private server: net.Server | undefined;
 
+  constructor(private fixerFactory: FixerFactory) {}
+
   async createDebugAdapterDescriptor(): Promise<vscode.DebugAdapterDescriptor> {
     this.server?.close();
 
-    const fixers = [
-      new FixLaunchResponse(),
-      new FixSupportsTerminateRequest(),
-      new FixVariablesReference(),
-    ];
-
+    const fixers = await this.fixerFactory.getFixers();
     this.server = await ProxyServer.start(fixers);
     this.server.listen(0);
 

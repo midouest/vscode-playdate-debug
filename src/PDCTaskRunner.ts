@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { TaskRunner } from "./TaskRunner";
 import { exec } from "./exec";
@@ -26,16 +28,11 @@ export class PDCTaskRunner implements TaskRunner {
 
   async run(): Promise<void> {
     const { timeout } = this.options;
-    const { sdkPath, sourcePath, productPath } = await this.config.resolve({
-      sdkPath: false,
-    });
+    const { sdkPath, sourcePath, productPath } = await this.config.resolve();
 
+    const cmd = path.join(sdkPath, "bin", "pdc");
     const args = [quote(sourcePath), quote(productPath)];
-    if (sdkPath) {
-      args.splice(0, 0, "-sdkpath", quote(sdkPath));
-    }
-
-    const command = `pdc ${args.join(" ")}`;
+    const command = `${cmd} ${args.join(" ")}`;
     await exec(command);
 
     if (!timeout) {

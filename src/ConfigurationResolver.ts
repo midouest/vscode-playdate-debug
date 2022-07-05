@@ -15,15 +15,6 @@ export interface Configuration {
 }
 
 /**
- * FallbackOptions allow the calling code to control whether or not the
- * ConfigurationResolver attempts to lookup an undefined configuration variable
- * in the user's environment.
- */
-export type FallbackOptions = {
-  sdkPath?: boolean;
-};
-
-/**
  * ConfigurationResolver is responsible for resolving the final PlaydateSDK and
  * game configuration. It resolves configuration from the VS Code workspace
  * configuration and the user's environment.
@@ -31,11 +22,11 @@ export type FallbackOptions = {
 export class ConfigurationResolver {
   constructor(private workspaceRoot: string) {}
 
-  async resolve(fallbackOptions?: FallbackOptions): Promise<Configuration> {
+  async resolve(): Promise<Configuration> {
     let { sdkPath, sourcePath, outputPath, productName } =
       vscode.workspace.getConfiguration("playdate-debug");
 
-    if (!sdkPath && fallbackOptions?.sdkPath !== false) {
+    if (!sdkPath) {
       sdkPath = await getSDKPath();
     }
 

@@ -13,7 +13,11 @@ Unofficial Playdate debug extension for Visual Studio Code
 
 - The [Playdate SDK](https://play.date/dev/) must be installed separately
 
-## Setup
+## Quick Setup
+
+Use [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) and [cookiecutter-playdate](https://github.com/midouest/cookiecutter-playdate) to quickly create a project skeleton.
+
+## Manual Setup
 
 ### Debugging
 

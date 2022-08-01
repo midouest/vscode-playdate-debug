@@ -1,10 +1,12 @@
 import { Fix } from "./Fix";
-import { FixLaunchResponse } from "./FixLaunchResponse";
-import { FixRestartResponse } from "./FixRestartResponse";
-import { FixSupportsRestartRequest } from "./FixSupportsRestartRequest";
-import { FixSupportsTerminateRequest } from "./FixSupportsTerminateRequest";
-import { FixVariablesReference } from "./FixVariablesReference";
 import { Fixer } from "./Fixer";
+import {
+  FixLaunchResponse,
+  FixRestartResponse,
+  FixSupportsRestartRequest,
+  FixSupportsTerminateRequest,
+  FixVariablesReference,
+} from "./fixes";
 
 export class FixerFactory {
   buildFixer(disableWorkarounds: boolean): Promise<Fixer> {

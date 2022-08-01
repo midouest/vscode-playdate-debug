@@ -1,4 +1,3 @@
-import { Fix } from "./Fix";
 import { Fixer } from "./Fixer";
 import {
   FixLaunchResponse,
@@ -10,18 +9,16 @@ import {
 
 export class FixerFactory {
   buildFixer(disableWorkarounds: boolean): Promise<Fixer> {
-    let fixes: Fix[] = [];
-    if (!disableWorkarounds) {
-      fixes = [
-        new FixLaunchResponse(),
-        new FixRestartResponse(),
-        new FixSupportsRestartRequest(),
-        new FixSupportsTerminateRequest(),
-        new FixVariablesReference(),
-      ];
-    }
+    const allFixes = [
+      new FixLaunchResponse(),
+      new FixRestartResponse(),
+      new FixSupportsRestartRequest(),
+      new FixSupportsTerminateRequest(),
+      new FixVariablesReference(),
+    ];
+    const enabledFixes = disableWorkarounds ? [] : allFixes;
 
-    const fixer = new Fixer(fixes);
+    const fixer = new Fixer(enabledFixes);
     return Promise.resolve(fixer);
   }
 }

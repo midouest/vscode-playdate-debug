@@ -6,7 +6,7 @@ import * as process from "process";
 /**
  * getSDKPath retrieves the path to the PlaydateSDK folder. The SDK folder can
  * be found using one of two methods:
- * - A tab-separated file at <userHome>/.Playdate/config containing a SDKRoot
+ * - A tab-separated file at $HOME/.Playdate/config containing a SDKRoot
  *   key and value (macOS)
  * - The PLAYDATE_SDK_PATH environment variable (macOS, Windows and Linux)
  */

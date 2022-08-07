@@ -12,9 +12,16 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 export class PDCExecutionFactory implements TaskExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 
-  createExecution(_definition: vscode.TaskDefinition): Promise<TaskExecution> {
+  createExecution(definition: vscode.TaskDefinition): Promise<TaskExecution> {
+    const { strip, noCompress, verbose, quiet, skipUnknown } = definition;
     const execution = new vscode.CustomExecution(async () => {
-      const runner = new PDCTaskRunner(this.config, {});
+      const runner = new PDCTaskRunner(this.config, {
+        strip,
+        noCompress,
+        verbose,
+        quiet,
+        skipUnknown,
+      });
       return new TaskRunnerTerminal(runner);
     });
     return Promise.resolve(execution);

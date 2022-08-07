@@ -97,7 +97,33 @@
     "taskDefinitions": [
       {
         "type": "pdc",
-        "properties": {}
+        "properties": {
+          "strip": {
+            "type": "boolean",
+            "description": "Strip debug symbols",
+            "default": false
+          },
+          "noCompress": {
+            "type": "boolean",
+            "description": "Don't compress output files",
+            "default": false
+          },
+          "verbose": {
+            "type": "boolean",
+            "description": "Verbose mode, gives info about what is happenin",
+            "default": false
+          },
+          "quiet": {
+            "type": "boolean",
+            "description": "Quiet mode, suppresses non-error output",
+            "default": false
+          },
+          "skipUnknown": {
+            "type": "boolean",
+            "description": "Skip unrecognized files instead of copying them to the pdx folder",
+            "default": false
+          }
+        }
       },
       {
         "type": "playdate-simulator",

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Ensure VSCode UI resets when restarting after an exception occurs
+- `pdc` task supports strip, no-compress, verbose, quiet and skip-unknown flags
 
 ### Removed
 

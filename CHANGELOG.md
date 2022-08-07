@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Ensure VSCode UI resets when restarting after an exception occurs
 
+### Removed
+
+- `timeout` property on `pdc` task
+
 ## [1.3.2] - 2022-08-01
 
 ### Changed

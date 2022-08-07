@@ -12,10 +12,9 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 export class PDCExecutionFactory implements TaskExecutionFactory {
   constructor(private config: ConfigurationResolver) {}
 
-  createExecution(definition: vscode.TaskDefinition): Promise<TaskExecution> {
-    const { timeout } = definition;
+  createExecution(_definition: vscode.TaskDefinition): Promise<TaskExecution> {
     const execution = new vscode.CustomExecution(async () => {
-      const runner = new PDCTaskRunner(this.config, { timeout });
+      const runner = new PDCTaskRunner(this.config, {});
       return new TaskRunnerTerminal(runner);
     });
     return Promise.resolve(execution);

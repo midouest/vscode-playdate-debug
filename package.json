@@ -97,12 +97,7 @@
     "taskDefinitions": [
       {
         "type": "pdc",
-        "properties": {
-          "timeout": {
-            "type": "number",
-            "description": "Milliseconds to wait after `pdc` completes before exiting the task."
-          }
-        }
+        "properties": {}
       },
       {
         "type": "playdate-simulator",

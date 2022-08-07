@@ -31,10 +31,10 @@ export class PDCTaskRunner implements TaskRunner {
 
   async run(): Promise<void> {
     const { strip, noCompress, verbose, quiet, skipUnknown } = this.options;
-    const { sdkPath, sourcePath, productPath } = await this.config.resolve();
+    const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
 
     const cmd = path.join(sdkPath, "bin", "pdc");
-    const args = [quote(sourcePath), quote(productPath)];
+    const args = [quote(sourcePath), quote(gamePath)];
 
     if (strip) {
       args.splice(0, 0, "--strip");

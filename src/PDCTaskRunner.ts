@@ -33,7 +33,7 @@ export class PDCTaskRunner implements TaskRunner {
     const { strip, noCompress, verbose, quiet, skipUnknown } = this.options;
     const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
 
-    const cmd = path.join(sdkPath, "bin", "pdc");
+    const cmd = quote(path.join(sdkPath, "bin", "pdc"));
     const args = [quote(sourcePath), quote(gamePath)];
 
     if (strip) {

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `pdc` task compiles to fully-resolved `.pdx` path instead of output folder
+- Account for `pdc` binary path with spaces - [@NobleRobot](https://github.com/NobleRobot)
 
 ### Removed
 

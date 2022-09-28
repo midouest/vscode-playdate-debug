@@ -125,10 +125,10 @@ The default behavior can be overridden by setting the SDK path, game source path
 ```json
 // .vscode/settings.json
 {
-  "sdkPath": "/path/to/PlaydateSDK",
-  "sourcePath": "/path/to/MyGame/source",
-  "outputPath": "/path/to/MyGame",
-  "productName": "My Game"
+  "playdate-debug.sdkPath": "/path/to/PlaydateSDK",
+  "playdate-debug.sourcePath": "/path/to/MyGame/source",
+  "playdate-debug.outputPath": "/path/to/MyGame",
+  "playdate-debug.productName": "My Game"
 }
 ```
 

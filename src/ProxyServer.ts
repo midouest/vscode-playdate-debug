@@ -3,7 +3,7 @@ import * as net from "net";
 import { DebugAdapterLogger } from "./DebugAdapterLogger";
 import { Fixer } from "./Fixer";
 import { SIMULATOR_DEBUG_PORT } from "./constants";
-import { waitForDebugPort } from "./waitForDebugPort";
+import { waitForDebugPort, WaitForDebugPortOptions } from "./waitForDebugPort";
 
 /**
  * ProxyServer is used to improve the experience of debugging Playdate games
@@ -30,10 +30,11 @@ export class ProxyServer {
    */
   static async start(
     fixer: Fixer,
-    logger: DebugAdapterLogger
+    logger: DebugAdapterLogger,
+    options: Partial<WaitForDebugPortOptions> = {}
   ): Promise<net.Server> {
     const proxy = new ProxyServer(fixer, logger);
-    await proxy.connect();
+    await proxy.connect(options);
 
     return net.createServer((socket) => {
       if (proxy.clientSocket) {
@@ -45,14 +46,16 @@ export class ProxyServer {
     });
   }
 
-  private async connect(): Promise<void> {
+  private async connect(
+    options: Partial<WaitForDebugPortOptions> = {}
+  ): Promise<void> {
     // The Playdate Simulator's debug adapter protocol server takes ~250ms to
     // respond on the debug port after launching the app. waitForDebugPort will
     // attempt to continuously connect to the Playdate Simulator up to a certain
     // number of times with a short timeout. We return the connected socket
     // because closing it immediately after a successful connection can cause
     // the Playdate Simulator to become unresponsive to new connections.
-    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
+    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT, options);
     if (!socket) {
       throw new Error(`Could not connect to Playdate Simulator`);
     }

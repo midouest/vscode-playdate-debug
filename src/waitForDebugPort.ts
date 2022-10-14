@@ -28,10 +28,10 @@ export interface WaitForDebugPortOptions {
   maxRetries: number;
 }
 
-const DEFAULT_OPTIONS: WaitForDebugPortOptions = {
+const DEFAULT_DEBUG_PORT_OPTIONS: WaitForDebugPortOptions = {
   connectTimeout: 1000,
   retryTimeout: 100,
-  maxRetries: 5,
+  maxRetries: 10,
 };
 
 /**
@@ -44,10 +44,10 @@ const DEFAULT_OPTIONS: WaitForDebugPortOptions = {
  */
 export async function waitForDebugPort(
   port: number,
-  options: Partial<WaitForDebugPortOptions> = DEFAULT_OPTIONS
+  options: Partial<WaitForDebugPortOptions> = DEFAULT_DEBUG_PORT_OPTIONS
 ): Promise<net.Socket | undefined> {
   const { connectTimeout, retryTimeout, maxRetries } = {
-    ...DEFAULT_OPTIONS,
+    ...DEFAULT_DEBUG_PORT_OPTIONS,
     ...options,
   };
 

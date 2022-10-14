@@ -182,6 +182,16 @@
                 "type": "boolean",
                 "description": "True if the extension should disable workarounds for issues communicating between VSCode and the Playdate Simulator",
                 "default": false
+              },
+              "retryTimeout": {
+                "type": "number",
+                "description": "Time in milliseconds to wait between attempts to connect to the Playdate Simulator",
+                "default": 100
+              },
+              "maxRetries": {
+                "type": "number",
+                "description": "Maximum number of times the extension will attempt to connect to the Playdate Simulator before aborting",
+                "default": 10
               }
             }
           }

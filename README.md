@@ -149,6 +149,8 @@ The Playdate Simulator task launches the Playdate Simulator once and leaves it r
 }
 ```
 
+The `playdate` debugger supports additional, advanced configuration properties on the configuration in `launch.json`: `disableWorkarounds`, `logDebugAdapter`, `retryTimeout`, and `maxRetries`. These are mainly for developers diagnosing issues with the extension or the Playdate Simulator. Typing the property name in your `launch.json` configuration will reveal the documentation for these properties.
+
 ## Known Issues
 
 - Debugging is not supported on Windows or Linux.

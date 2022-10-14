@@ -5,6 +5,7 @@ import * as vscode from "vscode";
 import { DebugAdapterLoggerFactory } from "./DebugAdapterLoggerFactory";
 import { FixerFactory } from "./FixerFactory";
 import { ProxyServer } from "./ProxyServer";
+import { WaitForDebugPortOptions } from "./waitForDebugPort";
 
 /**
  * ProxyDebugAdapterDescriptorFactory launches the Playdate debugger proxy
@@ -23,12 +24,21 @@ export class ProxyDebugAdapterDescriptorFactory
   ): Promise<vscode.DebugAdapterDescriptor> {
     this.server?.close();
 
-    const { disableWorkarounds, logDebugAdapter } = session.configuration;
+    const { disableWorkarounds, logDebugAdapter, retryTimeout, maxRetries } =
+      session.configuration;
+
+    const options: Partial<WaitForDebugPortOptions> = {};
+    if (retryTimeout !== undefined) {
+      options.retryTimeout = retryTimeout;
+    }
+    if (maxRetries !== undefined) {
+      options.maxRetries = maxRetries;
+    }
 
     const fixer = await this.fixerFactory.buildFixer(disableWorkarounds);
     const logger = this.loggerFactory.createLogger(logDebugAdapter);
 
-    this.server = await ProxyServer.start(fixer, logger);
+    this.server = await ProxyServer.start(fixer, logger, options);
     this.server.listen(0);
 
     const address = this.server.address() as net.AddressInfo;

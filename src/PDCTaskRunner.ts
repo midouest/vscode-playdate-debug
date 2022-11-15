@@ -52,8 +52,9 @@ export class PDCTaskRunner implements TaskRunner {
       args.splice(0, 0, "--unknown");
     }
 
+    onMessage("Compiling...");
     const command = `${cmd} ${args.join(" ")}`;
-    onMessage(command);
+    onMessage(`> ${command}`);
     await exec(command);
   }
 }

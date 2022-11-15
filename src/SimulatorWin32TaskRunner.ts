@@ -26,16 +26,18 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
     const { sdkPath, openGamePath, kill } = this.options;
 
     if (kill === true) {
+      onMessage("Stopping Playdate Simulator...");
       const killCommand = "taskkill /IM PlaydateSimulator.exe";
-      onMessage(killCommand);
+      onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);
       } catch (err) {
         // noop
       }
     } else {
+      onMessage("Checking for running Playdate Simulator...");
       const listCommand = "tasklist";
-      onMessage(listCommand);
+      onMessage(`> ${listCommand}`);
       const { stdout } = await exec(listCommand);
       if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
         onMessage("Playdate Simulator is already running!");
@@ -43,11 +45,12 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
       }
     }
 
+    onMessage("Starting Playdate Simulator...");
     const simulatorPath = quote(
       path.resolve(sdkPath, "bin", "PlaydateSimulator.exe")
     );
     const args = openGamePath ? [quote(openGamePath)] : [];
-    onMessage(`${simulatorPath} ${args.join(" ")}`);
+    onMessage(`> ${simulatorPath} ${args.join(" ")}`);
 
     const child = child_process.spawn(simulatorPath, args, {
       shell: true,
@@ -63,4 +66,4 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
  * tasklist command. We know the Playdate Simulator is already running when the
  * regex matches the output of the command.
  */
-const PLAYDATE_SIMULATOR_WIN32_RE = /^PlaydateSimulator\.exe/g;
+const PLAYDATE_SIMULATOR_WIN32_RE = /PlaydateSimulator\.exe/g;

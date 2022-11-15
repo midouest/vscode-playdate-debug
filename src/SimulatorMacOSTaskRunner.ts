@@ -25,8 +25,9 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
     const { sdkPath, openGamePath, kill } = this.options;
 
     if (kill === true) {
+      onMessage("Stopping Playdate Simulator...");
       const killCommand = 'killall "Playdate Simulator"';
-      onMessage(killCommand);
+      onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);
       } catch (err) {
@@ -34,6 +35,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
       }
     }
 
+    onMessage("Starting Playdate Simulator...");
     const simulatorPath = path.resolve(
       sdkPath,
       "bin",
@@ -44,7 +46,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
       args.push(quote(openGamePath));
     }
     const command = `/usr/bin/open ${args.join(" ")}`;
-    onMessage(command);
+    onMessage(`> ${command}`);
 
     await exec(command);
   }

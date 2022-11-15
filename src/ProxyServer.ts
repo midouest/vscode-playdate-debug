@@ -66,8 +66,8 @@ export class ProxyServer {
   }
 
   private proxyClientData(dataIn: Buffer): void {
+    this.logger.log(dataIn.toString(), "client");
     const message = decodeMessage(dataIn);
-    this.logger.log(message, "client");
 
     const response = this.fixer.onProxyClient(message);
     if (response) {
@@ -80,8 +80,8 @@ export class ProxyServer {
   }
 
   private proxySimulatorData(dataIn: Buffer): void {
+    this.logger.log(dataIn.toString(), "server");
     const message = decodeMessage(dataIn);
-    this.logger.log(message, "server");
 
     this.fixer.onProxyServer(message);
 

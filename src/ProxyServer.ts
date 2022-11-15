@@ -67,26 +67,30 @@ export class ProxyServer {
 
   private proxyClientData(dataIn: Buffer): void {
     this.logger.log(dataIn.toString(), "client");
-    const message = decodeMessage(dataIn);
+    const messages = decodeMessages(dataIn);
 
-    const response = this.fixer.onProxyClient(message);
-    if (response) {
-      const dataOut = encodeMessage(response);
-      this.clientSocket?.write(dataOut);
+    for (const message of messages) {
+      const response = this.fixer.onProxyClient(message);
+      if (response) {
+        const dataOut = encodeMessage(response);
+        this.clientSocket?.write(dataOut);
+      }
+
+      const dataOut = encodeMessage(message);
+      this.simulatorSocket?.write(dataOut);
     }
-
-    const dataOut = encodeMessage(message);
-    this.simulatorSocket?.write(dataOut);
   }
 
   private proxySimulatorData(dataIn: Buffer): void {
     this.logger.log(dataIn.toString(), "server");
-    const message = decodeMessage(dataIn);
+    const messages = decodeMessages(dataIn);
 
-    this.fixer.onProxyServer(message);
+    for (const message of messages) {
+      this.fixer.onProxyServer(message);
 
-    const dataOut = encodeMessage(message);
-    this.clientSocket?.write(dataOut);
+      const dataOut = encodeMessage(message);
+      this.clientSocket?.write(dataOut);
+    }
   }
 }
 
@@ -94,11 +98,45 @@ export class ProxyServer {
 // for a description of the base protocol used to transmit Debug Adapter
 // Protocol messages.
 
-function decodeMessage(data: Buffer): any {
-  const payload = data.toString();
-  const components = payload.split(SEPARATOR);
-  const content = components[1];
-  return JSON.parse(content);
+function decodeMessages(data: Buffer): any[] {
+  let payload = data.toString();
+  const messages = [];
+  while (payload) {
+    if (!payload.startsWith(CONTENT_LENGTH_PREFIX)) {
+      throw new Error(
+        "Failed to decode message: expected Content-Length prefix"
+      );
+    }
+
+    const separatorIndex = payload.indexOf(SEPARATOR);
+    const contentLengthData = payload.slice(
+      CONTENT_LENGTH_PREFIX.length,
+      separatorIndex
+    );
+
+    let contentLength: number;
+    try {
+      contentLength = parseInt(contentLengthData, 10);
+    } catch (err) {
+      throw new Error(
+        "Failed to decode message: Content-Length data must be an integer"
+      );
+    }
+
+    const separatorEnd = separatorIndex + SEPARATOR.length;
+    const contentEnd = separatorEnd + contentLength;
+    const message = payload.slice(separatorEnd, contentEnd);
+    payload = payload.slice(contentEnd);
+
+    try {
+      messages.push(JSON.parse(message));
+    } catch (err) {
+      throw new Error(
+        "Failed to decode message: content must be in JSON format"
+      );
+    }
+  }
+  return messages;
 }
 
 function encodeMessage(message: any): Buffer {
@@ -108,4 +146,5 @@ function encodeMessage(message: any): Buffer {
   return Buffer.from(payload);
 }
 
+const CONTENT_LENGTH_PREFIX = "Content-Length: ";
 const SEPARATOR = "\r\n\r\n";

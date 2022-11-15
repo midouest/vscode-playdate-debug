@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Increased maximum number of retries and retry timeout when attempting to connect to the Playdate Simulator. The extension now waits up to 4 seconds to connect by default.
+- Log task commands before they are executed
 
 ## [1.5.0] - 2022-10-13
 

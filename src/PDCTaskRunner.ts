@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
-import { TaskRunner } from "./TaskRunner";
+import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
 import { exec } from "./exec";
 import { quote } from "./quote";
 
@@ -29,7 +29,7 @@ export class PDCTaskRunner implements TaskRunner {
     private options: PDCTaskRunnerOptions
   ) {}
 
-  async run(): Promise<void> {
+  async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const { strip, noCompress, verbose, quiet, skipUnknown } = this.options;
     const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
 
@@ -53,6 +53,7 @@ export class PDCTaskRunner implements TaskRunner {
     }
 
     const command = `${cmd} ${args.join(" ")}`;
+    onMessage(command);
     await exec(command);
   }
 }

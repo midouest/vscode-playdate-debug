@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import { TaskRunner } from "./TaskRunner";
+import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
 import { exec } from "./exec";
 import { quote } from "./quote";
 
@@ -21,12 +21,14 @@ export interface SimulatorMacOSTaskRunnerOptions {
 export class SimulatorMacOSTaskRunner implements TaskRunner {
   constructor(private options: SimulatorMacOSTaskRunnerOptions) {}
 
-  async run(): Promise<void> {
+  async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const { sdkPath, openGamePath, kill } = this.options;
 
     if (kill === true) {
+      const killCommand = 'killall "Playdate Simulator"';
+      onMessage(killCommand);
       try {
-        await exec('killall "Playdate Simulator"');
+        await exec(killCommand);
       } catch (err) {
         // noop
       }
@@ -42,6 +44,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
       args.push(quote(openGamePath));
     }
     const command = `/usr/bin/open ${args.join(" ")}`;
+    onMessage(command);
 
     await exec(command);
   }

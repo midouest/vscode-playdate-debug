@@ -29,12 +29,12 @@ export async function createSimulatorExecutionLinux(
 ): Promise<TaskExecution> {
   const { sdkPath, openGamePath, kill } = options;
 
-  const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator");
+  const simulatorPath = quote(
+    path.resolve(sdkPath, "bin", "PlaydateSimulator")
+  );
   const args = openGamePath ? [openGamePath] : [];
 
-  const commands = [
-    `gnome-terminal -- ${quote(simulatorPath)} ${args.join(" ")}`,
-  ];
+  const commands = [`gnome-terminal -- ${simulatorPath} ${args.join(" ")}`];
 
   let command: string;
   if (kill) {

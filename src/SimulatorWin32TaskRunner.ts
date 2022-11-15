@@ -1,7 +1,7 @@
 import * as child_process from "child_process";
 import * as path from "path";
 
-import { TaskRunner } from "./TaskRunner";
+import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
 import { exec } from "./exec";
 import { quote } from "./quote";
 
@@ -22,26 +22,34 @@ export interface SimulatorWin32TaskRunnerOptions {
 export class SimulatorWin32TaskRunner implements TaskRunner {
   constructor(private options: SimulatorWin32TaskRunnerOptions) {}
 
-  async run(): Promise<void> {
+  async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const { sdkPath, openGamePath, kill } = this.options;
 
     if (kill === true) {
+      const killCommand = "taskkill /IM PlaydateSimulator.exe";
+      onMessage(killCommand);
       try {
-        await exec("taskkill /IM PlaydateSimulator.exe");
+        await exec(killCommand);
       } catch (err) {
         // noop
       }
     } else {
-      const { stdout } = await exec("tasklist");
+      const listCommand = "tasklist";
+      onMessage(listCommand);
+      const { stdout } = await exec(listCommand);
       if (stdout.match(PLAYDATE_SIMULATOR_WIN32_RE)) {
+        onMessage("Playdate Simulator is already running!");
         return;
       }
     }
 
-    const simulatorPath = path.resolve(sdkPath, "bin", "PlaydateSimulator.exe");
+    const simulatorPath = quote(
+      path.resolve(sdkPath, "bin", "PlaydateSimulator.exe")
+    );
     const args = openGamePath ? [quote(openGamePath)] : [];
+    onMessage(`${simulatorPath} ${args.join(" ")}`);
 
-    const child = child_process.spawn(quote(simulatorPath), args, {
+    const child = child_process.spawn(simulatorPath, args, {
       shell: true,
       detached: true,
       stdio: "ignore",

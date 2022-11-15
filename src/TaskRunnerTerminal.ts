@@ -27,7 +27,7 @@ export class TaskRunnerTerminal implements vscode.Pseudoterminal {
     let status = 0;
 
     try {
-      await this.runner.run();
+      await this.runner.run((message) => this.emit(message));
     } catch (err) {
       status = 1;
       if (err instanceof Error) {

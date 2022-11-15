@@ -14,8 +14,7 @@ export class DebugAdapterLogger {
 
     const now = this.formatter.format(new Date());
     const header = `${sender.toUpperCase()} ${now}`;
-    const body = JSON.stringify(message, undefined, 2);
-    const logMessage = `${header}\n${body}\n`;
+    const logMessage = `${header}\n${message}\n`;
     this.output.appendLine(logMessage);
   }
 }

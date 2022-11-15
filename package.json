@@ -186,12 +186,12 @@
               "retryTimeout": {
                 "type": "number",
                 "description": "Time in milliseconds to wait between attempts to connect to the Playdate Simulator",
-                "default": 100
+                "default": 200
               },
               "maxRetries": {
                 "type": "number",
                 "description": "Maximum number of times the extension will attempt to connect to the Playdate Simulator before aborting",
-                "default": 10
+                "default": 20
               }
             }
           }

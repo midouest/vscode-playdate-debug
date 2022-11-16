@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+### Added
+
+- Relative paths in settings.json are now resolved from the workspace root
+
 ### Changed
 
 - Only check for ~/.Playdate on macOS

@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
+import { toAbsolute } from "./toAbsolute";
 
 export interface Configuration {
   sdkPath: string;
@@ -29,14 +30,17 @@ export class ConfigurationResolver {
     if (!sdkPath) {
       sdkPath = await getSDKPath();
     }
+    sdkPath = this.toAbsolute(sdkPath);
 
     if (!sourcePath) {
       sourcePath = path.resolve(this.workspaceRoot, "source");
     }
+    sourcePath = this.toAbsolute(sourcePath);
 
     if (!outputPath) {
       outputPath = this.workspaceRoot;
     }
+    outputPath = this.toAbsolute(outputPath);
 
     if (!productName) {
       const pdxInfo = await getPDXInfo(sourcePath);
@@ -54,5 +58,14 @@ export class ConfigurationResolver {
       productPath,
       gamePath,
     };
+  }
+
+  private toAbsolute(
+    relativePath: string | undefined | null
+  ): string | undefined | null {
+    if (relativePath == null) {
+      return relativePath;
+    }
+    return toAbsolute(this.workspaceRoot, relativePath);
   }
 }

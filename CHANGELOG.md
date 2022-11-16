@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Only check for ~/.Playdate on macOS
+- Automatically disable workarounds in SDK version 1.13.0 and later
 
 ## [1.5.1] - 2022-11-14
 

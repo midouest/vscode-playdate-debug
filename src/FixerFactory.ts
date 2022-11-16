@@ -1,3 +1,5 @@
+import { ConfigurationResolver } from "./ConfigurationResolver";
+import { Fix } from "./Fix";
 import { Fixer } from "./Fixer";
 import {
   FixLaunchResponse,
@@ -8,17 +10,26 @@ import {
 } from "./fixes";
 
 export class FixerFactory {
-  buildFixer(disableWorkarounds: boolean): Promise<Fixer> {
-    const allFixes = [
+  constructor(private config: ConfigurationResolver) {}
+
+  async buildFixer(disableWorkarounds: boolean): Promise<Fixer> {
+    const enabledFixes = await this.resolveFixes(disableWorkarounds);
+    const fixer = new Fixer(enabledFixes);
+    return Promise.resolve(fixer);
+  }
+
+  private async resolveFixes(disableWorkarounds: boolean): Promise<Fix[]> {
+    const { sdkVersion } = await this.config.resolve();
+    if (sdkVersion >= "1.12.3" || disableWorkarounds) {
+      return [];
+    }
+
+    return [
       new FixLaunchResponse(),
       new FixRestartResponse(),
       new FixSupportsRestartRequest(),
       new FixSupportsTerminateRequest(),
       new FixVariablesReference(),
     ];
-    const enabledFixes = disableWorkarounds ? [] : allFixes;
-
-    const fixer = new Fixer(enabledFixes);
-    return Promise.resolve(fixer);
   }
 }

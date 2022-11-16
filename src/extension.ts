@@ -62,7 +62,7 @@ function registerDebugger(
     )
   );
 
-  const fixerFactory = new FixerFactory();
+  const fixerFactory = new FixerFactory(config);
 
   const descriptorFactory = new ProxyDebugAdapterDescriptorFactory(
     fixerFactory

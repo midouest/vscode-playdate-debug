@@ -4,10 +4,12 @@ import * as vscode from "vscode";
 
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
+import { getSDKVersion } from "./getSDKVersion";
 import { toAbsolute } from "./toAbsolute";
 
 export interface Configuration {
   sdkPath: string;
+  sdkVersion: string;
   sourcePath: string;
   outputPath: string;
   productName: string;
@@ -29,8 +31,11 @@ export class ConfigurationResolver {
 
     if (!sdkPath) {
       sdkPath = await getSDKPath();
+    } else {
+      sdkPath = this.toAbsolute(sdkPath);
     }
-    sdkPath = this.toAbsolute(sdkPath);
+
+    const sdkVersion = await getSDKVersion(sdkPath);
 
     if (!sourcePath) {
       sourcePath = path.resolve(this.workspaceRoot, "source");
@@ -52,6 +57,7 @@ export class ConfigurationResolver {
 
     return {
       sdkPath,
+      sdkVersion,
       sourcePath,
       outputPath,
       productName,

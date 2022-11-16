@@ -1,3 +1,4 @@
+import { injectable, unmanaged } from "inversify";
 import * as vscode from "vscode";
 
 import { TaskExecutionFactory } from "./TaskExecutionFactory";
@@ -17,10 +18,11 @@ export interface TaskProviderOptions {
  * TaskProvider is a generic vscode.TaskProvider that can be configured for
  * different tasks using the options argument of the constructor.
  */
+@injectable()
 export class TaskProvider implements vscode.TaskProvider {
   constructor(
-    private factory: TaskExecutionFactory,
-    private options: TaskProviderOptions
+    @unmanaged() private factory: TaskExecutionFactory,
+    @unmanaged() private options: TaskProviderOptions
   ) {}
 
   provideTasks(): vscode.ProviderResult<vscode.Task[]> {

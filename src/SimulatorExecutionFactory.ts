@@ -1,3 +1,4 @@
+import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
@@ -11,8 +12,11 @@ import { createSimulatorExecutionLinux } from "./createSimulatorExecutionLinux";
  * The SimulatorExecutionFactory is responsible for configuring the VS Code
  * pseudoterminal that executes the `playdate-simulator` task.
  */
+@injectable()
 export class SimulatorExecutionFactory implements TaskExecutionFactory {
-  constructor(private config: ConfigurationResolver) {}
+  constructor(
+    @inject(ConfigurationResolver) private config: ConfigurationResolver
+  ) {}
 
   async createExecution(
     definition: vscode.TaskDefinition

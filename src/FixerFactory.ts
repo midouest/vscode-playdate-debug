@@ -1,3 +1,5 @@
+import { inject, injectable } from "inversify";
+
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { Fix } from "./Fix";
 import { Fixer } from "./Fixer";
@@ -9,8 +11,11 @@ import {
   FixVariablesReference,
 } from "./fixes";
 
+@injectable()
 export class FixerFactory {
-  constructor(private config: ConfigurationResolver) {}
+  constructor(
+    @inject(ConfigurationResolver) private config: ConfigurationResolver
+  ) {}
 
   async buildFixer(disableWorkarounds: boolean): Promise<Fixer> {
     const enabledFixes = await this.resolveFixes(disableWorkarounds);

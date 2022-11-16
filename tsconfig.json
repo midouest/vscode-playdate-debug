@@ -6,7 +6,10 @@
     "lib": ["WebWorker", "ES2020"],
     "sourceMap": true,
     "rootDir": "src",
-    "strict": true
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["reflect-metadata"]
   },
   "exclude": ["node_modules"]
 }

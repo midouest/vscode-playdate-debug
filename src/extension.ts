@@ -1,20 +1,18 @@
+import { Container } from "inversify";
+import "reflect-metadata";
 import * as vscode from "vscode";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
-import { FixerFactory } from "./FixerFactory";
-import { PDCExecutionFactory } from "./PDCExecutionFactory";
+import { PDCTaskProvider } from "./PDCTaskProvider";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
-import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
-import { TaskProvider } from "./TaskProvider";
+import { SimulatorTaskProvider } from "./SimulatorTaskProvider";
 import {
-  PDC_EXTERNAL_PROBLEM_MATCHER,
-  PDC_LUA_PROBLEM_MATCHER,
   PDC_TASK_TYPE,
   PLAYDATE_DEBUG_TYPE,
   SIMULATOR_TASK_TYPE,
-  TASK_SOURCE,
 } from "./constants";
+import { containerModule } from "./containerModule";
+import { symbols } from "./symbols";
 
 /**
  * activate is called when VS Code activates this extension. The
@@ -27,11 +25,13 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  const config = new ConfigurationResolver(workspaceRoot);
+  const container = new Container();
+  container.bind(symbols.workspaceRoot).toConstantValue(workspaceRoot);
+  container.load(containerModule);
 
-  registerDebugger(context, config);
-  registerPDCTask(context, config);
-  registerSimulatorTask(context, config);
+  context.subscriptions.push(...registerDebugger(container));
+  context.subscriptions.push(registerPDCTask(container));
+  context.subscriptions.push(registerSimulatorTask(container));
 }
 
 /**
@@ -50,62 +50,35 @@ function getWorkspaceRoot(): string | undefined {
   return folders[0].uri.fsPath;
 }
 
-function registerDebugger(
-  context: vscode.ExtensionContext,
-  config: ConfigurationResolver
-): void {
-  const configProvider = new PlaydateDebugConfigurationProvider(config);
-  context.subscriptions.push(
+function registerDebugger(container: Container): vscode.Disposable[] {
+  const configProvider = container.resolve(PlaydateDebugConfigurationProvider);
+  const configProviderDisposable =
     vscode.debug.registerDebugConfigurationProvider(
       PLAYDATE_DEBUG_TYPE,
       configProvider
-    )
-  );
+    );
 
-  const fixerFactory = new FixerFactory(config);
-
-  const descriptorFactory = new ProxyDebugAdapterDescriptorFactory(
-    fixerFactory
+  const descriptorFactory = container.resolve(
+    ProxyDebugAdapterDescriptorFactory
   );
-  context.subscriptions.push(
+  const descriptorFactoryDisposable =
     vscode.debug.registerDebugAdapterDescriptorFactory(
       PLAYDATE_DEBUG_TYPE,
       descriptorFactory
-    )
-  );
+    );
+
+  return [configProviderDisposable, descriptorFactoryDisposable];
 }
 
-function registerPDCTask(
-  context: vscode.ExtensionContext,
-  config: ConfigurationResolver
-): void {
-  const pdcFactory = new PDCExecutionFactory(config);
-  const pdcTaskProvider = new TaskProvider(pdcFactory, {
-    type: PDC_TASK_TYPE,
-    problemMatchers: [PDC_LUA_PROBLEM_MATCHER, PDC_EXTERNAL_PROBLEM_MATCHER],
-    name: "Build",
-    source: TASK_SOURCE,
-  });
-  context.subscriptions.push(
-    vscode.tasks.registerTaskProvider(PDC_TASK_TYPE, pdcTaskProvider)
-  );
+function registerPDCTask(container: Container): vscode.Disposable {
+  const pdcTaskProvider = container.resolve(PDCTaskProvider);
+  return vscode.tasks.registerTaskProvider(PDC_TASK_TYPE, pdcTaskProvider);
 }
 
-function registerSimulatorTask(
-  context: vscode.ExtensionContext,
-  config: ConfigurationResolver
-): void {
-  const simulatorFactory = new SimulatorExecutionFactory(config);
-  const simulatorTaskProvider = new TaskProvider(simulatorFactory, {
-    type: SIMULATOR_TASK_TYPE,
-    problemMatchers: [PDC_EXTERNAL_PROBLEM_MATCHER],
-    name: "Simulator",
-    source: TASK_SOURCE,
-  });
-  context.subscriptions.push(
-    vscode.tasks.registerTaskProvider(
-      SIMULATOR_TASK_TYPE,
-      simulatorTaskProvider
-    )
+function registerSimulatorTask(container: Container): vscode.Disposable {
+  const simulatorTaskProvider = container.resolve(SimulatorTaskProvider);
+  return vscode.tasks.registerTaskProvider(
+    SIMULATOR_TASK_TYPE,
+    simulatorTaskProvider
   );
 }

@@ -1,3 +1,4 @@
+import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
@@ -9,8 +10,11 @@ import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
  * The PDCExecutionFactory is responsible for configuring the VS Code
  * pseudoterminal that executes the `pdc` task.
  */
+@injectable()
 export class PDCExecutionFactory implements TaskExecutionFactory {
-  constructor(private config: ConfigurationResolver) {}
+  constructor(
+    @inject(ConfigurationResolver) private config: ConfigurationResolver
+  ) {}
 
   createExecution(definition: vscode.TaskDefinition): Promise<TaskExecution> {
     const { strip, noCompress, verbose, quiet, skipUnknown } = definition;

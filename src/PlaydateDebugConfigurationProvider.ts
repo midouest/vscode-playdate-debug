@@ -1,3 +1,4 @@
+import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
@@ -7,10 +8,13 @@ import { ConfigurationResolver } from "./ConfigurationResolver";
  * debug a Playdate game into the launch configuration for the playdate
  * debugger.
  */
+@injectable()
 export class PlaydateDebugConfigurationProvider
   implements vscode.DebugConfigurationProvider
 {
-  constructor(private config: ConfigurationResolver) {}
+  constructor(
+    @inject(ConfigurationResolver) private config: ConfigurationResolver
+  ) {}
 
   async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,

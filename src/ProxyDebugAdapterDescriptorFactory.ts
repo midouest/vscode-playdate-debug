@@ -1,5 +1,6 @@
 import * as net from "net";
 
+import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
 import { DebugAdapterLoggerFactory } from "./DebugAdapterLoggerFactory";
@@ -11,13 +12,14 @@ import { WaitForDebugPortOptions } from "./waitForDebugPort";
  * ProxyDebugAdapterDescriptorFactory launches the Playdate debugger proxy
  * server and tells VS Code how to connect to it.
  */
+@injectable()
 export class ProxyDebugAdapterDescriptorFactory
   implements vscode.DebugAdapterDescriptorFactory, vscode.Disposable
 {
   private server?: net.Server;
   private loggerFactory = new DebugAdapterLoggerFactory();
 
-  constructor(private fixerFactory: FixerFactory) {}
+  constructor(@inject(FixerFactory) private fixerFactory: FixerFactory) {}
 
   async createDebugAdapterDescriptor(
     session: vscode.DebugSession

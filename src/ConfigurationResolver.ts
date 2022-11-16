@@ -1,10 +1,12 @@
 import * as path from "path";
 
+import { injectable, inject } from "inversify";
 import * as vscode from "vscode";
 
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
 import { getSDKVersion } from "./getSDKVersion";
+import { symbols } from "./symbols";
 import { toAbsolute } from "./toAbsolute";
 
 export interface Configuration {
@@ -22,8 +24,9 @@ export interface Configuration {
  * game configuration. It resolves configuration from the VS Code workspace
  * configuration and the user's environment.
  */
+@injectable()
 export class ConfigurationResolver {
-  constructor(private workspaceRoot: string) {}
+  constructor(@inject(symbols.workspaceRoot) private workspaceRoot: string) {}
 
   async resolve(): Promise<Configuration> {
     let { sdkPath, sourcePath, outputPath, productName } =

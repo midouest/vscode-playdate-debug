@@ -141,7 +141,7 @@ function decodeMessages(data: Buffer): any[] {
 
 function encodeMessage(message: any): Buffer {
   const content = JSON.stringify(message);
-  const components = [`Content-Length: ${content.length}`, content];
+  const components = [`${CONTENT_LENGTH_PREFIX}${content.length}`, content];
   const payload = components.join(SEPARATOR);
   return Buffer.from(payload);
 }

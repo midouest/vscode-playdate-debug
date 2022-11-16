@@ -102,17 +102,16 @@ function decodeMessages(data: Buffer): any[] {
   let payload = data.toString();
   const messages = [];
   while (payload) {
-    if (!payload.startsWith(CONTENT_LENGTH_PREFIX)) {
+    const prefixIndex = payload.indexOf(CONTENT_LENGTH_PREFIX);
+    if (prefixIndex < 0) {
       throw new Error(
         "Failed to decode message: expected Content-Length prefix"
       );
     }
 
+    const prefixEnd = prefixIndex + CONTENT_LENGTH_PREFIX.length;
     const separatorIndex = payload.indexOf(SEPARATOR);
-    const contentLengthData = payload.slice(
-      CONTENT_LENGTH_PREFIX.length,
-      separatorIndex
-    );
+    const contentLengthData = payload.slice(prefixEnd, separatorIndex);
 
     let contentLength: number;
     try {

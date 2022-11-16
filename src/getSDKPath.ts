@@ -12,9 +12,15 @@ import * as process from "process";
  */
 export async function getSDKPath(): Promise<string> {
   let sdkPath: string | undefined;
-  try {
-    sdkPath = await getSDKPathConfig();
-  } catch (err) {
+  if (process.platform === "darwin") {
+    try {
+      sdkPath = await getSDKPathConfig();
+    } catch (err) {
+      // noop
+    }
+  }
+
+  if (!sdkPath) {
     sdkPath = process.env.PLAYDATE_SDK_PATH;
   }
 

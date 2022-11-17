@@ -4,9 +4,9 @@ import * as vscode from "vscode";
 import { ActivateResult, ExtensionModule } from "ext/ExtensionModule";
 import { PLAYDATE_DEBUG_TYPE } from "ext/constants";
 
-import { FixerFactory } from "./FixerFactory";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
+import { FixerFactory } from "./fix";
 
 export class DebugModule extends ExtensionModule {
   protected get containerModule(): ContainerModule {

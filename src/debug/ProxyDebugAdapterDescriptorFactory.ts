@@ -6,8 +6,8 @@ import * as vscode from "vscode";
 import { WaitForDebugPortOptions } from "ext/util";
 
 import { DebugAdapterLoggerFactory } from "./DebugAdapterLoggerFactory";
-import { FixerFactory } from "./FixerFactory";
 import { ProxyServer } from "./ProxyServer";
+import { FixerFactory } from "./fix";
 
 /**
  * ProxyDebugAdapterDescriptorFactory launches the Playdate debugger proxy

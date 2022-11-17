@@ -1,4 +1,4 @@
-import { OnProxyServer } from "ext/core";
+import { OnProxyServer } from "./OnProxyServer";
 
 /**
  * The Playdate Simulator omits the "variablesReference" property if a

@@ -1,14 +1,14 @@
 import { inject, injectable } from "inversify";
 
-import { ConfigurationResolver, Fix, Fixer } from "ext/core";
+import { ConfigurationResolver } from "ext/core";
 
-import {
-  FixLaunchResponse,
-  FixRestartResponse,
-  FixSupportsRestartRequest,
-  FixSupportsTerminateRequest,
-  FixVariablesReference,
-} from "./fixes";
+import { Fix } from "./Fix";
+import { FixLaunchResponse } from "./FixLaunchResponse";
+import { FixRestartResponse } from "./FixRestartResponse";
+import { FixSupportsRestartRequest } from "./FixSupportsRestartRequest";
+import { FixSupportsTerminateRequest } from "./FixSupportsTerminateRequest";
+import { FixVariablesReference } from "./FixVariablesReference";
+import { Fixer } from "./Fixer";
 
 @injectable()
 export class FixerFactory {

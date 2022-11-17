@@ -1,4 +1,4 @@
-import { OnProxyServer } from "ext/core";
+import { OnProxyServer } from "./OnProxyServer";
 
 export class FixSupportsRestartRequest implements OnProxyServer {
   onProxyServer(message: any): void {

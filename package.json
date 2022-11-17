@@ -35,6 +35,7 @@
     "publish": "vsce publish",
     "publish-pre-release": "vsce publish --pre-release",
     "vscode:prepublish": "rimraf dist && yarn esbuild-base --minify",
+    "lint": "eslint",
     "pretest": "yarn compile && yarn lint",
     "test": "yarn typecheck && node ./out/test/runTest.js"
   },

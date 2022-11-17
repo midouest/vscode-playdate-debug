@@ -49,7 +49,7 @@ export class PDCTaskRunner implements TaskRunner {
       args.splice(0, 0, "--quiet");
     }
     if (skipUnknown) {
-      args.splice(0, 0, "--unknown");
+      args.splice(0, 0, "--skip-unknown");
     }
 
     onMessage("Compiling...");

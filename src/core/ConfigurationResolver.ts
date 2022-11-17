@@ -3,11 +3,12 @@ import * as path from "path";
 import { injectable, inject } from "inversify";
 import * as vscode from "vscode";
 
+import { toAbsolute } from "../util";
+
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
 import { getSDKVersion } from "./getSDKVersion";
 import { symbols } from "./symbols";
-import { toAbsolute } from "./toAbsolute";
 
 export interface Configuration {
   sdkPath: string;

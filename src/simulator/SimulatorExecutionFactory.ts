@@ -1,11 +1,15 @@
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
+import {
+  TaskRunnerTerminal,
+  ConfigurationResolver,
+  TaskExecution,
+  TaskExecutionFactory,
+} from "../core";
+
 import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
 import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";
-import { TaskExecution, TaskExecutionFactory } from "./TaskExecutionFactory";
-import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 import { createSimulatorExecutionLinux } from "./createSimulatorExecutionLinux";
 
 /**

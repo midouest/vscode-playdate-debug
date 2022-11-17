@@ -1,12 +1,13 @@
 import { inject, injectable } from "inversify";
 
-import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
-import { TaskProvider } from "./TaskProvider";
 import {
   PDC_EXTERNAL_PROBLEM_MATCHER,
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
-} from "./constants";
+} from "../constants";
+import { TaskProvider } from "../core";
+
+import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 
 @injectable()
 export class SimulatorTaskProvider extends TaskProvider {

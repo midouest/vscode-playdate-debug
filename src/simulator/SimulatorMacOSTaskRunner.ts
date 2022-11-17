@@ -1,8 +1,7 @@
 import * as path from "path";
 
-import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
-import { exec } from "./exec";
-import { quote } from "./quote";
+import { OnTaskRunnerMessage, TaskRunner } from "../core";
+import { exec, quote } from "../util";
 
 /**
  * SimulatorMacOSTaskRunnerOptions contains extra properties asigned to the

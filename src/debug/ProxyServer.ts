@@ -1,9 +1,10 @@
 import * as net from "net";
 
+import { SIMULATOR_DEBUG_PORT } from "../constants";
+import { Fixer } from "../core";
+import { waitForDebugPort, WaitForDebugPortOptions } from "../util";
+
 import { DebugAdapterLogger } from "./DebugAdapterLogger";
-import { Fixer } from "./Fixer";
-import { SIMULATOR_DEBUG_PORT } from "./constants";
-import { waitForDebugPort, WaitForDebugPortOptions } from "./waitForDebugPort";
 
 /**
  * ProxyServer is used to improve the experience of debugging Playdate games

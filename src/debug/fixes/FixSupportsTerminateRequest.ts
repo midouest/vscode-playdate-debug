@@ -1,4 +1,4 @@
-import { OnProxyServer } from "../OnProxyServer";
+import { OnProxyServer } from "../../core/OnProxyServer";
 
 /**
  * The Playdate Simulator responds with "supportsTerminateRequest": true.

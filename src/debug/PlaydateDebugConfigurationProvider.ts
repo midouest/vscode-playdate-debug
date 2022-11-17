@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
+import { ConfigurationResolver } from "../core";
 
 /**
  * PlaydateDebugConfigurationProvider injects the configuration necessary to

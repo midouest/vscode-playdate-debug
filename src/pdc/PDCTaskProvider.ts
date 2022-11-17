@@ -1,13 +1,14 @@
 import { inject, injectable } from "inversify";
 
-import { PDCExecutionFactory } from "./PDCExecutionFactory";
-import { TaskProvider } from "./TaskProvider";
 import {
   PDC_EXTERNAL_PROBLEM_MATCHER,
   PDC_LUA_PROBLEM_MATCHER,
   PDC_TASK_TYPE,
   TASK_SOURCE,
-} from "./constants";
+} from "../constants";
+import { TaskProvider } from "../core";
+
+import { PDCExecutionFactory } from "./PDCExecutionFactory";
 
 @injectable()
 export class PDCTaskProvider extends TaskProvider {

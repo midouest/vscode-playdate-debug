@@ -1,9 +1,8 @@
 import * as child_process from "child_process";
 import * as path from "path";
 
-import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
-import { exec } from "./exec";
-import { quote } from "./quote";
+import { OnTaskRunnerMessage, TaskRunner } from "../core";
+import { exec, quote } from "../util";
 
 /**
  * SimulatorWin32TaskRunnerOptions contains extra properties asigned to the

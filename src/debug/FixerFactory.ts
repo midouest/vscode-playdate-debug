@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
-import { Fix } from "./Fix";
-import { Fixer } from "./Fixer";
+import { ConfigurationResolver, Fix, Fixer } from "../core";
+
 import {
   FixLaunchResponse,
   FixRestartResponse,

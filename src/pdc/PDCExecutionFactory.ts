@@ -1,10 +1,14 @@
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
+import {
+  ConfigurationResolver,
+  TaskExecution,
+  TaskExecutionFactory,
+  TaskRunnerTerminal,
+} from "../core";
+
 import { PDCTaskRunner } from "./PDCTaskRunner";
-import { TaskExecution, TaskExecutionFactory } from "./TaskExecutionFactory";
-import { TaskRunnerTerminal } from "./TaskRunnerTerminal";
 
 /**
  * The PDCExecutionFactory is responsible for configuring the VS Code

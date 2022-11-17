@@ -1,9 +1,11 @@
 import * as path from "path";
 
-import { ConfigurationResolver } from "./ConfigurationResolver";
-import { OnTaskRunnerMessage, TaskRunner } from "./TaskRunner";
-import { exec } from "./exec";
-import { quote } from "./quote";
+import {
+  ConfigurationResolver,
+  OnTaskRunnerMessage,
+  TaskRunner,
+} from "../core";
+import { exec, quote } from "../util";
 
 /**
  * PDCTaskRunnerOptions contains extra properties asigned to the `pdc` task in

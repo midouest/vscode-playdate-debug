@@ -24,7 +24,7 @@ export class FixerFactory {
 
   private async resolveFixes(disableWorkarounds: boolean): Promise<Fix[]> {
     const { sdkVersion } = await this.config.resolve();
-    if (sdkVersion >= "1.12.3" || disableWorkarounds) {
+    if (sdkVersion >= "1.13.0" || disableWorkarounds) {
       return [];
     }
 

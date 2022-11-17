@@ -20,8 +20,6 @@ export interface PDCTaskRunnerOptions {
 /**
  * PDCTaskRunner is responsible for executing the PlaydateSDK's `pdc` binary
  * in order to compile a Playdate game's source into a `.pdx` bundle.
- *
- * TODO: consider supporting make and cmake for C projects
  */
 export class PDCTaskRunner implements TaskRunner {
   constructor(

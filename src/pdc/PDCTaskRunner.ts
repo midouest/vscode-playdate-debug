@@ -4,8 +4,8 @@ import {
   ConfigurationResolver,
   OnTaskRunnerMessage,
   TaskRunner,
-} from "../core";
-import { exec, quote } from "../util";
+} from "ext/core";
+import { exec, quote } from "ext/util";
 
 /**
  * PDCTaskRunnerOptions contains extra properties asigned to the `pdc` task in

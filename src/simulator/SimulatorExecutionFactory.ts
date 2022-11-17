@@ -6,7 +6,7 @@ import {
   ConfigurationResolver,
   TaskExecution,
   TaskExecutionFactory,
-} from "../core";
+} from "ext/core";
 
 import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
 import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";

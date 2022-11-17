@@ -9,7 +9,11 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata"]
+    "types": ["reflect-metadata"],
+    "baseUrl": ".",
+    "paths": {
+      "ext/*": ["src/*"]
+    }
   },
   "exclude": ["node_modules"]
 }

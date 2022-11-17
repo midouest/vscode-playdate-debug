@@ -3,7 +3,7 @@ import * as net from "net";
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { WaitForDebugPortOptions } from "../util";
+import { WaitForDebugPortOptions } from "ext/util";
 
 import { DebugAdapterLoggerFactory } from "./DebugAdapterLoggerFactory";
 import { FixerFactory } from "./FixerFactory";

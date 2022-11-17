@@ -1,7 +1,6 @@
 import { DebugProtocolMessage } from "vscode";
 
-import { OnProxyClient } from "../../core/OnProxyClient";
-import { OnProxyServer } from "../../core/OnProxyServer";
+import { OnProxyClient, OnProxyServer } from "ext/core";
 
 export class FixLaunchResponse implements OnProxyClient, OnProxyServer {
   private simulatorSeq!: number;

@@ -4,8 +4,8 @@ import {
   PDC_EXTERNAL_PROBLEM_MATCHER,
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
-} from "../constants";
-import { TaskProvider } from "../core";
+} from "ext/constants";
+import { TaskProvider } from "ext/core";
 
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 
@@ -13,7 +13,7 @@ import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 export class SimulatorTaskProvider extends TaskProvider {
   constructor(
     @inject(SimulatorExecutionFactory)
-    private simulatorFactory: SimulatorExecutionFactory
+    simulatorFactory: SimulatorExecutionFactory
   ) {
     super(simulatorFactory, {
       type: SIMULATOR_TASK_TYPE,

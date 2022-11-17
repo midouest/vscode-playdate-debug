@@ -2,8 +2,8 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { TaskExecution } from "../core";
-import { quote } from "../util";
+import { TaskExecution } from "ext/core";
+import { quote } from "ext/util";
 
 /**
  * SimulatorExecutionLinuxOptions contains extra properties asigned to the

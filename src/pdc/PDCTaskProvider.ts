@@ -5,16 +5,14 @@ import {
   PDC_LUA_PROBLEM_MATCHER,
   PDC_TASK_TYPE,
   TASK_SOURCE,
-} from "../constants";
-import { TaskProvider } from "../core";
+} from "ext/constants";
+import { TaskProvider } from "ext/core";
 
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 
 @injectable()
 export class PDCTaskProvider extends TaskProvider {
-  constructor(
-    @inject(PDCExecutionFactory) private pdcFactory: PDCExecutionFactory
-  ) {
+  constructor(@inject(PDCExecutionFactory) pdcFactory: PDCExecutionFactory) {
     super(pdcFactory, {
       type: PDC_TASK_TYPE,
       problemMatchers: [PDC_LUA_PROBLEM_MATCHER, PDC_EXTERNAL_PROBLEM_MATCHER],

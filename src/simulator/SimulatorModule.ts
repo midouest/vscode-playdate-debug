@@ -1,8 +1,8 @@
 import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
-import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { SIMULATOR_TASK_TYPE } from "../constants";
+import { ActivateResult, ExtensionModule } from "ext/ExtensionModule";
+import { SIMULATOR_TASK_TYPE } from "ext/constants";
 
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 import { SimulatorTaskProvider } from "./SimulatorTaskProvider";

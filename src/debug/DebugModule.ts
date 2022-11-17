@@ -1,8 +1,8 @@
 import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
-import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { PLAYDATE_DEBUG_TYPE } from "../constants";
+import { ActivateResult, ExtensionModule } from "ext/ExtensionModule";
+import { PLAYDATE_DEBUG_TYPE } from "ext/constants";
 
 import { FixerFactory } from "./FixerFactory";
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";

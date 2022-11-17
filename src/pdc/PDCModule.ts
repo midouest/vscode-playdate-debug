@@ -1,8 +1,8 @@
 import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
-import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { PDC_TASK_TYPE } from "../constants";
+import { ActivateResult, ExtensionModule } from "ext/ExtensionModule";
+import { PDC_TASK_TYPE } from "ext/constants";
 
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 import { PDCTaskProvider } from "./PDCTaskProvider";

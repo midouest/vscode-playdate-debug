@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension now waits up to 5 seconds to connect by default
 - PDC task sends correct CLI flag for skipUnknown setting
 - Simulator task runs in integrated terminal on Linux
+- PDC task always sends -sdkpath
 
 ## [1.5.1] - 2022-11-14
 

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatically disable workarounds in SDK version 1.13.0 and later
 - Extension now waits up to 5 seconds to connect by default
 - PDC task sends correct CLI flag for skipUnknown setting
+- Simulator task runs in integrated terminal on Linux
 
 ## [1.5.1] - 2022-11-14
 

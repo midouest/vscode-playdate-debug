@@ -34,7 +34,7 @@ export async function createSimulatorExecutionLinux(
   );
   const args = openGamePath ? [openGamePath] : [];
 
-  const commands = [`gnome-terminal -- ${simulatorPath} ${args.join(" ")}`];
+  const commands = [`${simulatorPath} ${args.join(" ")} &`];
 
   let command: string;
   if (kill) {

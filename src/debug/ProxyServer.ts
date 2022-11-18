@@ -1,7 +1,7 @@
 import * as net from "net";
 
-import { SIMULATOR_DEBUG_PORT } from "ext/constants";
-import { waitForDebugPort, WaitForDebugPortOptions } from "ext/util";
+import { SIMULATOR_DEBUG_PORT } from "../constants";
+import { waitForDebugPort, WaitForDebugPortOptions } from "../util";
 
 import { DebugAdapterLogger } from "./DebugAdapterLogger";
 import { Fixer } from "./fix";

@@ -1,6 +1,6 @@
 import { ContainerModule } from "inversify";
 
-import { ExtensionModule } from "ext/ExtensionModule";
+import { ExtensionModule } from "../ExtensionModule";
 
 import { ConfigurationResolver } from "./ConfigurationResolver";
 import { getWorkspaceRoot } from "./getWorkspaceRoot";

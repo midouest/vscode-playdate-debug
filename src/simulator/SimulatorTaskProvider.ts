@@ -4,8 +4,8 @@ import {
   PDC_EXTERNAL_PROBLEM_MATCHER,
   SIMULATOR_TASK_TYPE,
   TASK_SOURCE,
-} from "ext/constants";
-import { TaskProvider } from "ext/core";
+} from "../constants";
+import { TaskProvider } from "../core";
 
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 

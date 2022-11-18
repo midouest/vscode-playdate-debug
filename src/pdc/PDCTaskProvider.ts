@@ -5,8 +5,8 @@ import {
   PDC_LUA_PROBLEM_MATCHER,
   PDC_TASK_TYPE,
   TASK_SOURCE,
-} from "ext/constants";
-import { TaskProvider } from "ext/core";
+} from "../constants";
+import { TaskProvider } from "../core";
 
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 

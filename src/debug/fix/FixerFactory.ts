@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 
-import { ConfigurationResolver } from "ext/core";
+import { ConfigurationResolver } from "../../core";
 
 import { Fix } from "./Fix";
 import { FixLaunchResponse } from "./FixLaunchResponse";

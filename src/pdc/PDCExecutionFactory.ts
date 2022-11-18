@@ -6,7 +6,7 @@ import {
   TaskExecution,
   TaskExecutionFactory,
   TaskRunnerTerminal,
-} from "ext/core";
+} from "../core";
 
 import { PDCTaskRunner } from "./PDCTaskRunner";
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Relative paths in settings.json are now resolved from the workspace root
+- Breakpoints are in a verified state
 
 ### Changed
 

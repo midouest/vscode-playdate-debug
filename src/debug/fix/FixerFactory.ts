@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import { ConfigurationResolver } from "../../core";
 
 import { Fix } from "./Fix";
+import { FixBreakpointVerified } from "./FixBreakpointVerified";
 import { FixLaunchResponse } from "./FixLaunchResponse";
 import { FixRestartResponse } from "./FixRestartResponse";
 import { FixSupportsRestartRequest } from "./FixSupportsRestartRequest";
@@ -34,6 +35,7 @@ export class FixerFactory {
       new FixSupportsRestartRequest(),
       new FixSupportsTerminateRequest(),
       new FixVariablesReference(),
+      new FixBreakpointVerified(),
     ];
   }
 }

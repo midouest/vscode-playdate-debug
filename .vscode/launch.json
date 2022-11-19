@@ -20,7 +20,10 @@
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
         "--disable-extensions"
       ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"]
+      "env": {
+        "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK"
+      },
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
     }
   ]
 }

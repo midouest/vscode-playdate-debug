@@ -3,7 +3,10 @@ import * as process from "process";
 
 import { runTests } from "@vscode/test-electron";
 
-import { getFixturesCodeWorkspacePath } from "./testUtils";
+import {
+  getCodeWorkspaceFixturePath,
+  getPlaydateSDKFixturePath,
+} from "./testUtils";
 
 async function main() {
   try {
@@ -11,7 +14,8 @@ async function main() {
     // Passed to `--extensionDevelopmentPath`
     const extensionDevelopmentPath = path.resolve(__dirname, "../../");
 
-    const fixturesCodeWorkspacePath = getFixturesCodeWorkspacePath();
+    const fixturesCodeWorkspacePath = getCodeWorkspaceFixturePath();
+    const playdateSDKPath = getPlaydateSDKFixturePath();
 
     // The path to test runner
     // Passed to --extensionTestsPath
@@ -22,6 +26,10 @@ async function main() {
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [fixturesCodeWorkspacePath, "--disable-extensions"],
+      extensionTestsEnv: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        PLAYDATE_SDK_PATH: playdateSDKPath,
+      },
     });
   } catch (err) {
     console.error("Failed to run tests");

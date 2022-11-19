@@ -1,6 +1,6 @@
 # Playdate Debug
 
-![tests](https://github.com/midouest/vscode-playdate-debug/actions/workflows/main.yml/badge.svg)
+[![CI](https://github.com/midouest/vscode-playdate-debug/actions/workflows/tests.yml/badge.svg)](https://github.com/midouest/vscode-playdate-debug/actions/workflows/tests.yaml)
 
 Unofficial Playdate debug extension for Visual Studio Code
 

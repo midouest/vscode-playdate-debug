@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Completely disable proxy server for SDK version 1.13.0 or later
 - Check PLAYDATE_SDK_PATH environment variable before checking ~.Playdate/config
+- Streamlined quick setup in README
 
 ## [1.6.0] - 2022-11-18
 

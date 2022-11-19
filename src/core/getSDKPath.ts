@@ -11,17 +11,17 @@ import * as process from "process";
  * - The PLAYDATE_SDK_PATH environment variable (macOS, Windows and Linux)
  */
 export async function getSDKPath(): Promise<string> {
-  let sdkPath: string | undefined;
+  let sdkPath = process.env.PLAYDATE_SDK_PATH;
+  if (sdkPath) {
+    return sdkPath;
+  }
+
   if (process.platform === "darwin") {
     try {
       sdkPath = await getSDKPathConfig();
     } catch (err) {
       // noop
     }
-  }
-
-  if (!sdkPath) {
-    sdkPath = process.env.PLAYDATE_SDK_PATH;
   }
 
   if (!sdkPath) {

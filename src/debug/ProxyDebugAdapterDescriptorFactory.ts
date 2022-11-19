@@ -29,10 +29,15 @@ export class ProxyDebugAdapterDescriptorFactory
 
   async createDebugAdapterDescriptor(
     session: vscode.DebugSession
-  ): Promise<vscode.DebugAdapterDescriptor> {
+  ): Promise<vscode.DebugAdapterDescriptor | undefined> {
     this.server?.close();
 
-    const { sdkVersion } = await this.config.resolve();
+    const config = await this.config.resolve(session.workspaceFolder);
+    if (!config) {
+      return undefined;
+    }
+
+    const { sdkVersion } = config;
     if (sdkVersion >= "1.13.0") {
       return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
     }

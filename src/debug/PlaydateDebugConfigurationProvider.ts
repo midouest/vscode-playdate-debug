@@ -13,20 +13,20 @@ export class PlaydateDebugConfigurationProvider
   implements vscode.DebugConfigurationProvider
 {
   constructor(
-    @inject(ConfigurationResolver) private config: ConfigurationResolver
+    @inject(ConfigurationResolver)
+    private config: ConfigurationResolver
   ) {}
 
   async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration
   ): Promise<vscode.DebugConfiguration | undefined | null> {
-    const workspaceRoot = folder?.uri.fsPath;
-    if (!workspaceRoot) {
-      // Folder-less setups are not supported
-      return null;
+    const workspaceConfig = await this.config.resolve(folder);
+    if (!workspaceConfig) {
+      return undefined;
     }
 
-    const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
+    const { sdkPath, sourcePath, gamePath } = workspaceConfig;
 
     return {
       ...config,

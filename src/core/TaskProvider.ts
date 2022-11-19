@@ -41,7 +41,7 @@ export class TaskProvider implements vscode.TaskProvider {
 
     const definition = task?.definition ?? { type };
     const scope = task?.scope ?? vscode.TaskScope.Workspace;
-    const execution = await this.factory.createExecution(definition);
+    const execution = await this.factory.createExecution(definition, scope);
 
     return new vscode.Task(
       definition,

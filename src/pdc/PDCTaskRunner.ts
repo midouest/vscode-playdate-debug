@@ -1,10 +1,6 @@
 import * as path from "path";
 
-import {
-  ConfigurationResolver,
-  OnTaskRunnerMessage,
-  TaskRunner,
-} from "../core";
+import { OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec, quote } from "../util";
 
 /**
@@ -12,6 +8,9 @@ import { exec, quote } from "../util";
  * `tasks.json`.
  */
 export interface PDCTaskRunnerOptions {
+  sdkPath: string;
+  sourcePath: string;
+  gamePath: string;
   strip?: boolean;
   noCompress?: boolean;
   verbose?: boolean;
@@ -24,14 +23,19 @@ export interface PDCTaskRunnerOptions {
  * in order to compile a Playdate game's source into a `.pdx` bundle.
  */
 export class PDCTaskRunner implements TaskRunner {
-  constructor(
-    private config: ConfigurationResolver,
-    private options: PDCTaskRunnerOptions
-  ) {}
+  constructor(private options: PDCTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
-    const { strip, noCompress, verbose, quiet, skipUnknown } = this.options;
-    const { sdkPath, sourcePath, gamePath } = await this.config.resolve();
+    const {
+      sdkPath,
+      sourcePath,
+      gamePath,
+      strip,
+      noCompress,
+      verbose,
+      quiet,
+      skipUnknown,
+    } = this.options;
 
     const cmd = quote(path.join(sdkPath, "bin", "pdc"));
     const args = [

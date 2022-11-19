@@ -3,9 +3,9 @@ import * as vscode from "vscode";
 
 import {
   TaskRunnerTerminal,
-  ConfigurationResolver,
   TaskExecution,
   TaskExecutionFactory,
+  ConfigurationResolver,
 } from "../core";
 
 import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
@@ -19,14 +19,21 @@ import { createSimulatorExecutionLinux } from "./createSimulatorExecutionLinux";
 @injectable()
 export class SimulatorExecutionFactory implements TaskExecutionFactory {
   constructor(
-    @inject(ConfigurationResolver) private config: ConfigurationResolver
+    @inject(ConfigurationResolver)
+    private config: ConfigurationResolver
   ) {}
 
   async createExecution(
-    definition: vscode.TaskDefinition
-  ): Promise<TaskExecution> {
+    definition: vscode.TaskDefinition,
+    scope: vscode.WorkspaceFolder | vscode.TaskScope
+  ): Promise<TaskExecution | undefined> {
+    const config = await this.config.resolve(scope);
+    if (!config) {
+      return undefined;
+    }
+
     const { openGame, kill } = definition;
-    const { sdkPath, gamePath } = await this.config.resolve();
+    const { sdkPath, gamePath } = config;
     const openGamePath = openGame !== false ? gamePath : undefined;
 
     switch (process.platform) {

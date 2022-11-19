@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+### Added
+
+- Support for multi-root workspaces
+
 ### Changed
 
 - Completely disable proxy server for SDK version 1.13.0 or later

@@ -17,13 +17,27 @@ import { PDCTaskRunner } from "./PDCTaskRunner";
 @injectable()
 export class PDCExecutionFactory implements TaskExecutionFactory {
   constructor(
-    @inject(ConfigurationResolver) private config: ConfigurationResolver
+    @inject(ConfigurationResolver)
+    private config: ConfigurationResolver
   ) {}
 
-  createExecution(definition: vscode.TaskDefinition): Promise<TaskExecution> {
+  async createExecution(
+    definition: vscode.TaskDefinition,
+    scope: vscode.WorkspaceFolder | vscode.TaskScope
+  ): Promise<TaskExecution | undefined> {
+    const config = await this.config.resolve(scope);
+    if (!config) {
+      return undefined;
+    }
+
+    const { sdkPath, sourcePath, gamePath } = config;
     const { strip, noCompress, verbose, quiet, skipUnknown } = definition;
+
     const execution = new vscode.CustomExecution(async () => {
-      const runner = new PDCTaskRunner(this.config, {
+      const runner = new PDCTaskRunner({
+        sdkPath,
+        sourcePath,
+        gamePath,
         strip,
         noCompress,
         verbose,
@@ -32,6 +46,6 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
       });
       return new TaskRunnerTerminal(runner);
     });
-    return Promise.resolve(execution);
+    return execution;
   }
 }

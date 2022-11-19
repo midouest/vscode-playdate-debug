@@ -1,5 +1,7 @@
 # Playdate Debug
 
+![tests](https://github.com/midouest/vscode-playdate-debug/actions/workflows/main.yml/badge.svg)
+
 Unofficial Playdate debug extension for Visual Studio Code
 
 ## Features

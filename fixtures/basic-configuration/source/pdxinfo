@@ -1,0 +1,8 @@
+name=Basic Configuration
+author=example
+description=Untitled Playdate game
+bundleID=com.example.basic-configuration
+version=1.0
+buildNumber=1
+imagePath=system
+launchSoundPath=

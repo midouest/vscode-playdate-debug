@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "basic-configuration"
+    },
+    {
+      "path": "settings-overrides"
+    },
+    {
+      "path": "settings-overrides-relative"
+    }
+  ]
+}

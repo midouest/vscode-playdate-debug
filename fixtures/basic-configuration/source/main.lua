@@ -8,7 +8,7 @@ local gfx<const> = pd.graphics
 
 function setupGame()
     local font<const> = gfx.getFont()
-    local greeting<const> = "Hello, example!"
+    local greeting<const> = "Hello, Basic Configuration!"
     local w<const> = font:getTextWidth(greeting)
     local h<const> = font:getHeight()
     local x<const> = (400 - w) / 2

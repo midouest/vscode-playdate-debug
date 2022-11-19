@@ -9,7 +9,7 @@ async function main() {
     // Passed to `--extensionDevelopmentPath`
     const extensionDevelopmentPath = path.resolve(__dirname, "../../");
 
-    const fixturePath = path.resolve(__dirname, "../../fixtures/example");
+    const fixturesWorkspacePath = path.resolve(__dirname, "../../fixtures");
 
     // The path to test runner
     // Passed to --extensionTestsPath
@@ -19,7 +19,7 @@ async function main() {
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
-      launchArgs: [fixturePath, "--disable-extensions"],
+      launchArgs: [fixturesWorkspacePath, "--disable-extensions"],
     });
   } catch (err) {
     console.error("Failed to run tests");

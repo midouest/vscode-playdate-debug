@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import { injectable, inject } from "inversify";
+import { injectable } from "inversify";
 import * as vscode from "vscode";
 
 import { toAbsolute } from "../util";
@@ -8,7 +8,7 @@ import { toAbsolute } from "../util";
 import { getPDXInfo } from "./getPDXInfo";
 import { getSDKPath } from "./getSDKPath";
 import { getSDKVersion } from "./getSDKVersion";
-import { symbols } from "./symbols";
+import { getWorkspaceRoot } from "./getWorkspaceRoot";
 
 export interface Configuration {
   sdkPath: string;
@@ -27,29 +27,35 @@ export interface Configuration {
  */
 @injectable()
 export class ConfigurationResolver {
-  constructor(@inject(symbols.workspaceRoot) private workspaceRoot: string) {}
+  async resolve(
+    scope: vscode.WorkspaceFolder | vscode.TaskScope | undefined
+  ): Promise<Configuration | undefined> {
+    const workspaceFolder = getWorkspaceRoot(scope);
+    if (!workspaceFolder) {
+      return undefined;
+    }
+    const workspaceRoot = workspaceFolder.uri.fsPath;
 
-  async resolve(): Promise<Configuration> {
     let { sdkPath, sourcePath, outputPath, productName } =
-      vscode.workspace.getConfiguration("playdate-debug");
+      vscode.workspace.getConfiguration("playdate-debug", workspaceFolder);
 
     if (!sdkPath) {
       sdkPath = await getSDKPath();
     } else {
-      sdkPath = this.toAbsolute(sdkPath);
+      sdkPath = toAbsolute(workspaceRoot, sdkPath);
     }
 
     const sdkVersion = await getSDKVersion(sdkPath);
 
     if (!sourcePath) {
-      sourcePath = path.resolve(this.workspaceRoot, "source");
+      sourcePath = path.resolve(workspaceRoot, "source");
     }
-    sourcePath = this.toAbsolute(sourcePath);
+    sourcePath = toAbsolute(workspaceRoot, sourcePath);
 
     if (!outputPath) {
-      outputPath = this.workspaceRoot;
+      outputPath = workspaceRoot;
     }
-    outputPath = this.toAbsolute(outputPath);
+    outputPath = toAbsolute(workspaceRoot, outputPath);
 
     if (!productName) {
       const pdxInfo = await getPDXInfo(sourcePath);
@@ -68,14 +74,5 @@ export class ConfigurationResolver {
       productPath,
       gamePath,
     };
-  }
-
-  private toAbsolute(
-    relativePath: string | undefined | null
-  ): string | undefined | null {
-    if (relativePath == null) {
-      return relativePath;
-    }
-    return toAbsolute(this.workspaceRoot, relativePath);
   }
 }

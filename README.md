@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/midouest/vscode-playdate-debug/actions/workflows/tests.yaml/badge.svg)](https://github.com/midouest/vscode-playdate-debug/actions/workflows/tests.yaml)
 
-Unofficial Playdate debug extension for Visual Studio Code
+Unofficial Playdate debug extension for Visual Studio Code on macOS, Windows and Ubuntu
 
 ## Features
 

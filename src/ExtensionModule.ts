@@ -15,13 +15,13 @@ export abstract class ExtensionModule {
   static activate(
     context: vscode.ExtensionContext,
     classes: ExtensionModuleType[]
-  ): boolean {
+  ): Container | null {
     const container = new Container();
     const modules = classes.map((cls) => new cls(container));
 
     for (const mod of modules) {
       if (!mod.load()) {
-        return false;
+        return null;
       }
     }
 
@@ -35,7 +35,7 @@ export abstract class ExtensionModule {
       }
     }
 
-    return true;
+    return container;
   }
 
   constructor(protected container: Container) {}

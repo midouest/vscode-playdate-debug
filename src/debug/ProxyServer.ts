@@ -8,8 +8,8 @@ import { Fixer } from "./fix";
 
 /**
  * ProxyServer is used to improve the experience of debugging Playdate games
- * in VS Code. It works around some issues caused by bugs in the Playdate
- * Simulator debug adapter protocol server and limitations in VS Code.
+ * in VS Code. It works around compatibility issues between the Playdate
+ * Simulator debug adapter protocol server and the VSCode client.
  *
  * See https://microsoft.github.io/debug-adapter-protocol/ for details about
  * the Debug Adapter Protocol.

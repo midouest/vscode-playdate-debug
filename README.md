@@ -21,12 +21,9 @@ A [cookiecutter project template](https://github.com/midouest/cookiecutter-playd
 
 Alternatively, you can copy the following `.vscode/tasks.json` and `.vscode/launch.json` configuration:
 
-**`.vscode/tasks.json`**
-
 ```json
+// .vscode/tasks.json
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
     {
@@ -53,13 +50,9 @@ Alternatively, you can copy the following `.vscode/tasks.json` and `.vscode/laun
 }
 ```
 
-**`.vscode/launch.json`**
-
 ```json
+// .vscode/launch.json
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
@@ -86,9 +79,8 @@ The tasks and debugger will attempt to automatically resolve the correct configu
 
 The default behavior can be overridden by setting the SDK path, game source path, compiled game path or game name in your workspace's `settings.json` file. The extension will fall back to the default behavior for any configuration fields that are not set.
 
-**`.vscode/settings.json`**
-
 ```json
+// .vscode/settings.json
 {
   "playdate-debug.sdkPath": "/path/to/PlaydateSDK",
   "playdate-debug.sourcePath": "/path/to/MyGame/source",
@@ -101,9 +93,8 @@ See the [override configuration example](/fixtures/workspace/override-configurat
 
 The Playdate Simulator task launches the Playdate Simulator once and leaves it running in the background by default. The `kill` property can be used to instead have the task stop running instances of the Playdate Simulator before launching a new one.
 
-**`.vscode/tasks.json`**
-
 ```json
+// .vscode/tasks.json
 {
   "version": "2.0.0",
   "tasks": [

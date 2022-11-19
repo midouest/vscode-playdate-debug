@@ -3,6 +3,8 @@ import * as net from "net";
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
+import { SIMULATOR_DEBUG_PORT } from "../constants";
+import { ConfigurationResolver } from "../core";
 import { WaitForDebugPortOptions } from "../util";
 
 import { DebugAdapterLoggerFactory } from "./DebugAdapterLoggerFactory";
@@ -20,12 +22,20 @@ export class ProxyDebugAdapterDescriptorFactory
   private server?: net.Server;
   private loggerFactory = new DebugAdapterLoggerFactory();
 
-  constructor(@inject(FixerFactory) private fixerFactory: FixerFactory) {}
+  constructor(
+    @inject(ConfigurationResolver) private config: ConfigurationResolver,
+    @inject(FixerFactory) private fixerFactory: FixerFactory
+  ) {}
 
   async createDebugAdapterDescriptor(
     session: vscode.DebugSession
   ): Promise<vscode.DebugAdapterDescriptor> {
     this.server?.close();
+
+    const { sdkVersion } = await this.config.resolve();
+    if (sdkVersion >= "1.13.0") {
+      return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
+    }
 
     const { disableWorkarounds, logDebugAdapter, retryTimeout, maxRetries } =
       session.configuration;

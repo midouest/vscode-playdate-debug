@@ -1,0 +1,6 @@
+name=example
+author=example
+description=Example Playdate game workspace for Visual Studio Code
+bundleID=com.example.example
+version=1.0
+buildNumber=1

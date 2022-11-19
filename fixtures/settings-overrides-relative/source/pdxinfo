@@ -1,8 +1,0 @@
-name=Settings Overrides Relative
-author=example
-description=Untitled Playdate game
-bundleID=com.example.settings-overrides-relative
-version=1.0
-buildNumber=1
-imagePath=system
-launchSoundPath=

@@ -15,7 +15,7 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "${workspaceFolder}/fixtures",
+        "${workspaceFolder}/fixtures/workspace/fixtures.code-workspace",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
         "--disable-extensions"

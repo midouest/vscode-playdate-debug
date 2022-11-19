@@ -74,19 +74,23 @@
       "properties": {
         "playdate-debug.sdkPath": {
           "type": "string",
-          "description": "Path to the Playdate SDK. By default, the extension will use the PLAYDATE_SDK_PATH environment variable to find the Playdate SDK."
+          "description": "Path to the Playdate SDK. By default, the extension will use the PLAYDATE_SDK_PATH environment variable to find the Playdate SDK.",
+          "scope": "resource"
         },
         "playdate-debug.sourcePath": {
           "type": "string",
-          "description": "Path to the game's source directory. By default, the extension will use the `source` folder in the workspace root directory as the source path."
+          "description": "Path to the game's source directory. By default, the extension will use the `source` folder in the workspace root directory as the source path.",
+          "scope": "resource"
         },
         "playdate-debug.outputPath": {
           "type": "string",
-          "description": "Output directory for the compiled game bundle. By default, the extension will use the workspace root folder as the output path."
+          "description": "Output directory for the compiled game bundle. By default, the extension will use the workspace root folder as the output path.",
+          "scope": "resource"
         },
         "playdate-debug.productName": {
           "type": "string",
-          "description": "Compiled game bundle name without the .pdx extension. By default, the extension will use the value of the `name` field in the game's `pdxinfo` file."
+          "description": "Compiled game bundle name without the .pdx extension. By default, the extension will use the value of the `name` field in the game's `pdxinfo` file.",
+          "scope": "resource"
         }
       }
     },

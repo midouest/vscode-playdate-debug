@@ -3,13 +3,15 @@ import * as process from "process";
 
 import { runTests } from "@vscode/test-electron";
 
+import { getFixturesCodeWorkspacePath } from "./testUtils";
+
 async function main() {
   try {
     // The folder containing the Extension Manifest package.json
     // Passed to `--extensionDevelopmentPath`
     const extensionDevelopmentPath = path.resolve(__dirname, "../../");
 
-    const fixturesWorkspacePath = path.resolve(__dirname, "../../fixtures");
+    const fixturesCodeWorkspacePath = getFixturesCodeWorkspacePath();
 
     // The path to test runner
     // Passed to --extensionTestsPath
@@ -19,7 +21,7 @@ async function main() {
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
-      launchArgs: [fixturesWorkspacePath, "--disable-extensions"],
+      launchArgs: [fixturesCodeWorkspacePath, "--disable-extensions"],
     });
   } catch (err) {
     console.error("Failed to run tests");

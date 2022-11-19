@@ -1,0 +1,10 @@
+{
+  "folders": [
+    {
+      "path": "basic-configuration"
+    },
+    {
+      "path": "override-configuration"
+    }
+  ]
+}

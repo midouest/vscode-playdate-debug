@@ -11,6 +11,8 @@
     "node": true
   },
   "globals": {
+    "setup": true,
+    "teardown": true,
     "suite": true,
     "test": true
   },

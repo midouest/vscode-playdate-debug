@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -23,3 +26,8 @@ jobs:
         if: runner.os == 'Linux'
       - run: yarn test
         if: runner.os != 'Linux'
+      - name: Publish
+        if: success() && startsWith(github.ref, 'refs/tags/') && matrix.os == 'ubuntu-latest'
+        run: yarn publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

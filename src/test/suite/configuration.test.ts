@@ -48,25 +48,31 @@ suite("Configuration Test Suite", () => {
 
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(
-      sourcePath.endsWith("/fixtures/workspace/basic-configuration/source")
+      sourcePath.endsWith(
+        path.join("/fixtures/workspace/basic-configuration/source")
+      )
     );
 
     assert.ok(path.isAbsolute(outputPath));
-    assert.ok(outputPath.endsWith("/fixtures/workspace/basic-configuration"));
+    assert.ok(
+      outputPath.endsWith(path.join("/fixtures/workspace/basic-configuration"))
+    );
 
     assert.strictEqual(productName, "Basic Configuration");
 
     assert.ok(path.isAbsolute(productPath));
     assert.ok(
       productPath.endsWith(
-        "/fixtures/workspace/basic-configuration/Basic Configuration"
+        path.join("/fixtures/workspace/basic-configuration/Basic Configuration")
       )
     );
 
     assert.ok(path.isAbsolute(gamePath));
     assert.ok(
       gamePath.endsWith(
-        "/fixtures/workspace/basic-configuration/Basic Configuration.pdx"
+        path.join(
+          "/fixtures/workspace/basic-configuration/Basic Configuration.pdx"
+        )
       )
     );
   });
@@ -84,18 +90,22 @@ suite("Configuration Test Suite", () => {
 
     assert.ok(sdkPath);
     assert.ok(path.isAbsolute(sdkPath));
-    assert.ok(sdkPath.endsWith("/fixtures/PlaydateSDK"));
+    assert.ok(sdkPath.endsWith(path.join("/fixtures/PlaydateSDK")));
 
     assert.strictEqual(sdkVersion, "1.12.3");
 
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(
-      sourcePath.endsWith("/fixtures/workspace/basic-configuration/source")
+      sourcePath.endsWith(
+        path.join("/fixtures/workspace/basic-configuration/source")
+      )
     );
 
     assert.ok(path.isAbsolute(outputPath));
     assert.ok(
-      outputPath.endsWith("/fixtures/workspace/override-configuration")
+      outputPath.endsWith(
+        path.join("/fixtures/workspace/override-configuration")
+      )
     );
 
     assert.strictEqual(productName, "Override Configuration");
@@ -103,14 +113,18 @@ suite("Configuration Test Suite", () => {
     assert.ok(path.isAbsolute(productPath));
     assert.ok(
       productPath.endsWith(
-        "/fixtures/workspace/override-configuration/Override Configuration"
+        path.join(
+          "/fixtures/workspace/override-configuration/Override Configuration"
+        )
       )
     );
 
     assert.ok(path.isAbsolute(gamePath));
     assert.ok(
       gamePath.endsWith(
-        "/fixtures/workspace/override-configuration/Override Configuration.pdx"
+        path.join(
+          "/fixtures/workspace/override-configuration/Override Configuration.pdx"
+        )
       )
     );
   });

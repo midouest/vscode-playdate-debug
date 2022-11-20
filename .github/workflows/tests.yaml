@@ -29,6 +29,7 @@ jobs:
       - name: Install PlaydateSDK (macOS)
         run: |
           wget https://download.panic.com/playdate_sdk/PlaydateSDK-1.12.3.zip
+          unzip PlaydateSDK-1.12.3.zip
           xar -xf PlaydateSDK-1.12.3.pkg
           cat PlaydateSDK.pkg/Payload | gunzip -dc | cpio -i
           rm -rf fixtures/PlaydateSDK-1.12.3

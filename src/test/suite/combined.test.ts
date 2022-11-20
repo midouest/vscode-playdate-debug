@@ -27,11 +27,6 @@ suite("Combined Test Suite", () => {
     defaultBuildTask = task;
   });
 
-  teardown(async () => {
-    await killSimulator();
-    await cleanPDXBundles();
-  });
-
   testSDK("basic-configuration", "darwin", async () => {
     const execution = await vscode.tasks.executeTask(defaultBuildTask);
     assert.ok(execution);
@@ -45,5 +40,8 @@ suite("Combined Test Suite", () => {
     const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
     assert.ok(socket);
     socket.destroy();
+
+    await killSimulator();
+    await cleanPDXBundles();
   });
 });

@@ -22,10 +22,6 @@ suite("Playdate Simulator Test Suite", () => {
     );
   });
 
-  teardown(async () => {
-    await killSimulator();
-  });
-
   testSDK("playdate-simulator-configuration", "darwin", async () => {
     const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
     assert.ok(execution);
@@ -33,5 +29,7 @@ suite("Playdate Simulator Test Suite", () => {
     const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
     assert.ok(socket);
     socket.destroy();
+
+    await killSimulator();
   });
 });

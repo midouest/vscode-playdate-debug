@@ -15,11 +15,6 @@ import {
 } from "./suiteTestUtils";
 
 suite("Debug Test Suite", () => {
-  teardown(async () => {
-    await killSimulator();
-    await cleanPDXBundles();
-  });
-
   testSDK("basic-configuration", "darwin", async () => {
     await vscode.commands.executeCommand("workbench.action.debug.start");
 
@@ -34,5 +29,8 @@ suite("Debug Test Suite", () => {
     socket.destroy();
 
     await vscode.commands.executeCommand("workbench.action.debug.stop");
+
+    await killSimulator();
+    await cleanPDXBundles();
   });
 });

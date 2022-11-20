@@ -65,7 +65,7 @@ Alternatively, you can copy the following `.vscode/tasks.json` and `.vscode/laun
 }
 ```
 
-See the [basic configuration example](/fixtures/workspace/basic-configuration/README.md) for more information.
+See the [basic configuration example](/fixtures/workspace/basic-configuration) for more information.
 
 ## Configuration
 
@@ -89,7 +89,7 @@ The default behavior can be overridden by setting the SDK path, game source path
 }
 ```
 
-See the [override configuration example](/fixtures/workspace/override-configuration/README.md) for more information.
+See the [override configuration example](/fixtures/workspace/override-configuration) for more information.
 
 The Playdate Simulator task launches the Playdate Simulator once and leaves it running in the background by default. The `kill` property can be used to instead have the task stop running instances of the Playdate Simulator before launching a new one.
 

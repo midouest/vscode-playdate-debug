@@ -123,6 +123,9 @@ export async function killSimulator(): Promise<void> {
   await exec(killCommand);
 }
 
-export function filterTasks(tasks: vscode.Task[], name: string): vscode.Task[] {
-  return tasks.filter((task) => task.name === name);
+export function findTask(
+  tasks: vscode.Task[],
+  name: string
+): vscode.Task | undefined {
+  return tasks.find((task) => task.name === name);
 }

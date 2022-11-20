@@ -13,3 +13,6 @@ fixtures/PlaydateSDK-1.12.3/*
 .nyc_output/
 coverage/
 *.tar.gz
+*.zip
+*.pkg
+__MACOSX/

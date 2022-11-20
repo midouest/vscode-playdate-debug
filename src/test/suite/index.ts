@@ -1,42 +1,10 @@
 import * as path from "path";
 
-import * as nycConfigTypescript from "@istanbuljs/nyc-config-typescript";
 import * as glob from "glob";
 import * as Mocha from "mocha";
-import * as NYC from "nyc";
 import "reflect-metadata";
 
-export async function run(): Promise<void> {
-  await wrapNYC(() => runMocha());
-}
-
-async function wrapNYC(cb: () => Promise<void>): Promise<void> {
-  const nyc = new NYC({
-    ...nycConfigTypescript,
-    cwd: path.resolve(__dirname, "../../.."),
-    reporter: ["html", "text-summary"],
-    all: true,
-    silent: false,
-    instrument: true,
-    hookRequire: true,
-    hookRunInContext: true,
-    hookRunInThisContext: true,
-    include: ["out/**/*.js"],
-    exclude: ["out/test/**"],
-  });
-  nyc.wrap();
-
-  await nyc.createTempDirectory();
-  await nyc.addAllFiles();
-
-  await cb();
-
-  await nyc.writeProcessIndex();
-  nyc.maybePurgeSourceMapCache();
-  await nyc.report();
-}
-
-function runMocha(): Promise<void> {
+export function run(): Promise<void> {
   // Create the mocha test
   const mocha = new Mocha({
     ui: "tdd",

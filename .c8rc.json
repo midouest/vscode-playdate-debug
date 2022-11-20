@@ -1,0 +1,7 @@
+{
+  "reporter": ["text-summary", "html"],
+  "clean": true,
+  "src": ["src"],
+  "exclude": ["node_modules", "src/test"],
+  "excludeAfterRemap": true
+}

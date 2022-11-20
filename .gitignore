@@ -7,3 +7,5 @@ mock-debug.txt
 *.vsix
 .DS_Store
 *.pdx
+fixtures/PlaydateSDK/*
+!fixtures/PlaydateSDK/VERSION.txt

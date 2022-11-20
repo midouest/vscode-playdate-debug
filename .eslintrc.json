@@ -11,6 +11,9 @@
     "node": true
   },
   "globals": {
+    "Mocha": true,
+    "suiteSetup": true,
+    "suiteTeardown": true,
     "setup": true,
     "teardown": true,
     "suite": true,

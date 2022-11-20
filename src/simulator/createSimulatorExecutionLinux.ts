@@ -5,6 +5,8 @@ import * as vscode from "vscode";
 import { TaskExecution } from "../core";
 import { quote } from "../util";
 
+import { getKillSimulatorCommand } from "./getKillSimulatorCommand";
+
 /**
  * SimulatorExecutionLinuxOptions contains extra properties asigned to the
  * `playdate-simulator` task in `tasks.json`.
@@ -38,7 +40,8 @@ export async function createSimulatorExecutionLinux(
 
   let command: string;
   if (kill) {
-    commands.splice(0, 0, "(pidof PlaydateSimulator | xargs -r kill -9)");
+    const killCommand = getKillSimulatorCommand("linux");
+    commands.splice(0, 0, killCommand);
     command = commands.join(" && ");
   } else {
     commands.splice(0, 0, "pidof PlaydateSimulator");

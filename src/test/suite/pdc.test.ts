@@ -3,13 +3,10 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-// import { ExtensionModule } from "../../ExtensionModule";
 import { PDC_TASK_TYPE } from "../../constants";
-// import { CoreModule } from "../../core";
-// import { PDCModule } from "../../pdc";
-// import { PDCTaskProvider } from "../../pdc/PDCTaskProvider";
 
 import {
+  assertTaskFixture,
   cleanPDXBundles,
   getFixturePath,
   testSDK,
@@ -18,14 +15,6 @@ import {
 
 suite("PDC Test Suite", () => {
   let tasks: vscode.Task[];
-  // let provider: PDCTaskProvider;
-  // let tokenSource: vscode.CancellationTokenSource;
-  // let token: vscode.CancellationToken;
-
-  function assertTaskFixture(task: vscode.Task, fixture: string): void {
-    assert.ok(typeof task.scope === "object");
-    assert.strictEqual(task.scope.name, fixture);
-  }
 
   suiteSetup(async () => {
     tasks = await vscode.tasks.fetchTasks({ type: PDC_TASK_TYPE });
@@ -39,18 +28,6 @@ suite("PDC Test Suite", () => {
     await cleanPDXBundles();
   });
 
-  setup(() => {
-    // const loaded = ExtensionModule.load(CoreModule, PDCModule);
-    // assert.ok(loaded);
-    // provider = loaded.container.resolve(PDCTaskProvider);
-    // tokenSource = new vscode.CancellationTokenSource();
-    // token = tokenSource.token;
-  });
-
-  teardown(() => {
-    // tokenSource.dispose();
-  });
-
   const testCases = [
     ["basic-configuration", "Basic Configuration.pdx"],
     ["override-configuration", "Override Configuration.pdx"],
@@ -59,9 +36,6 @@ suite("PDC Test Suite", () => {
 
   testCases.forEach(([fixture, bundleName], index) => {
     testSDK(fixture, async () => {
-      // const task = await provider.resolveTask(tasks[index], token);
-      // assert.ok(task);
-
       const execution = await vscode.tasks.executeTask(tasks[index]);
       assert.ok(execution);
 

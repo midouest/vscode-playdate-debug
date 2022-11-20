@@ -5,12 +5,17 @@
     "ecmaVersion": 6,
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended", "plugin:import/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "plugins": ["@typescript-eslint", "import"],
   "env": {
     "node": true
   },
   "globals": {
+    "NodeJS": true,
     "Mocha": true,
     "suiteSetup": true,
     "suiteTeardown": true,
@@ -37,7 +42,10 @@
     "no-throw-literal": "warn",
     "semi": "off",
 
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
 
     "import/order": [
       "error",

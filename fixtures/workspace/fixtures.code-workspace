@@ -8,6 +8,9 @@
     },
     {
       "path": "pdc-configuration"
+    },
+    {
+      "path": "playdate-simulator-configuration"
     }
   ]
 }

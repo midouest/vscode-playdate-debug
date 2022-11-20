@@ -3,6 +3,8 @@ import * as path from "path";
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec, quote } from "../util";
 
+import { getKillSimulatorCommand } from "./getKillSimulatorCommand";
+
 /**
  * SimulatorMacOSTaskRunnerOptions contains extra properties asigned to the
  * `playdate-simulator` task in `tasks.json`.
@@ -25,7 +27,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
 
     if (kill === true) {
       onMessage("Stopping Playdate Simulator...");
-      const killCommand = 'killall "Playdate Simulator"';
+      const killCommand = getKillSimulatorCommand("darwin");
       onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);

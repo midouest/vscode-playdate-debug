@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import * as fs from "fs";
 import * as fsPromises from "fs/promises";
 import * as path from "path";
@@ -6,6 +7,8 @@ import * as util from "util";
 import * as glob from "glob";
 import * as vscode from "vscode";
 
+import { getKillSimulatorCommand } from "../../simulator";
+import { exec } from "../../util";
 import {
   getPlaydateSDKFixturePath,
   getWorkspaceFixturesPath,
@@ -68,11 +71,34 @@ export async function cleanPDXBundles(): Promise<void> {
   await Promise.all(removeAll);
 }
 
-export function testSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test {
+export function testSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test;
+export function testSDK(
+  title: string,
+  platform: NodeJS.Platform,
+  fn: Mocha.AsyncFunc
+): Mocha.Test;
+export function testSDK(
+  title: string,
+  fnOrPlatform: Mocha.AsyncFunc | NodeJS.Platform,
+  fnOrUndefined?: Mocha.AsyncFunc
+): Mocha.Test {
+  let fn: Mocha.AsyncFunc;
+  let platform: NodeJS.Platform | undefined;
+  if (typeof fnOrPlatform === "string" && fnOrUndefined !== undefined) {
+    platform = fnOrPlatform;
+    fn = fnOrUndefined;
+  } else if (typeof fnOrPlatform !== "string") {
+    fn = fnOrPlatform;
+  }
+
   const sdkPath = getPlaydateSDKFixturePath();
   const binPath = path.resolve(sdkPath, "bin");
 
   return test(title, async function () {
+    if (platform && process.platform !== platform) {
+      this.skip();
+    }
+
     try {
       await fsPromises.access(binPath, fs.constants.F_OK);
     } catch (err) {
@@ -81,4 +107,18 @@ export function testSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test {
 
     return fn.bind(this)();
   });
+}
+
+export function assertTaskFixture(
+  task: vscode.Task,
+  fixture: string
+): vscode.Task {
+  assert.ok(typeof task.scope === "object");
+  assert.strictEqual(task.scope.name, fixture);
+  return task;
+}
+
+export async function killSimulator(): Promise<void> {
+  const killCommand = getKillSimulatorCommand();
+  await exec(killCommand);
 }

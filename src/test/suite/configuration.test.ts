@@ -42,7 +42,7 @@ suite("Configuration Test Suite", () => {
     assert.ok(path.isAbsolute(sdkPath));
     assert.strictEqual(sdkPath, process.env.PLAYDATE_SDK_PATH);
 
-    assert.ok(sdkVersion.match(/\d+.\d+.\d+/));
+    assert.strictEqual(sdkVersion, "1.12.3");
 
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(
@@ -88,7 +88,7 @@ suite("Configuration Test Suite", () => {
 
     assert.ok(sdkPath);
     assert.ok(path.isAbsolute(sdkPath));
-    assert.ok(sdkPath.endsWith(path.join("/fixtures/PlaydateSDK")));
+    assert.ok(sdkPath.endsWith(path.join("/fixtures/PlaydateSDK-1.12.3")));
 
     assert.strictEqual(sdkVersion, "1.12.3");
 

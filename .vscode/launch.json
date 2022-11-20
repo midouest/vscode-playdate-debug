@@ -21,7 +21,7 @@
         "--disable-extensions"
       ],
       "env": {
-        "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK"
+        "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK-1.12.3"
       },
       "outFiles": ["${workspaceFolder}/out/**/*.js"]
     }

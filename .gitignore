@@ -12,9 +12,4 @@ fixtures/PlaydateSDK-1.12.3/*
 !fixtures/PlaydateSDK-1.12.3/VERSION.txt
 .nyc_output/
 coverage/
-*.tar.gz
-*.zip
-*.pkg
-__MACOSX/
-Distribution
-Resources
+tmp/

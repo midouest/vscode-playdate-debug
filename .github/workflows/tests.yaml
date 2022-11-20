@@ -27,18 +27,10 @@ jobs:
       - name: Build extension
         run: yarn build
       - name: Install PlaydateSDK (macOS)
-        run: |
-          wget https://download.panic.com/playdate_sdk/PlaydateSDK-1.12.3.zip
-          unzip PlaydateSDK-1.12.3.zip
-          xar -xf PlaydateSDK-1.12.3.pkg
-          cat PlaydateSDK.pkg/Payload | gunzip -dc | cpio -i
-          rm -rf fixtures/PlaydateSDK-1.12.3
-          mv PlaydateSDK fixtures/PlaydateSDK-1.12.3
+        run: ./scripts/installSDKMacOS.sh
         if: false
       - name: Install PlaydateSDK (Linux)
-        run: |
-          wget https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-1.12.3.tar.gz
-          tar xfz PlaydateSDK-1.12.3.tar.gz -C fixtures/
+        run: ./scripts/installSDKLinux.sh
         if: runner.os == 'Linux'
       - name: Run tests (Linux)
         run: xvfb-run -a yarn test:coverage

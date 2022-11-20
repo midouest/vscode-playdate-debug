@@ -10,3 +10,5 @@ mock-debug.txt
 *.pdx
 fixtures/PlaydateSDK/*
 !fixtures/PlaydateSDK/VERSION.txt
+.nyc_output/
+coverage/

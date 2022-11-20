@@ -36,10 +36,11 @@
     "publish-pre-release": "vsce publish --pre-release",
     "vscode:prepublish": "rimraf dist && yarn esbuild-base --minify",
     "lint": "eslint",
-    "pretest": "rimraf out && yarn compile && yarn lint",
-    "test": "yarn typecheck && node ./out/test/runTest.js"
+    "pretest": "rimraf out && yarn compile && yarn lint && yarn typecheck",
+    "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "^16.18.3",
@@ -55,6 +56,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
     "mocha": "^9.2.0",
+    "nyc": "^15.1.0",
     "prettier": "^2.6.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.5",

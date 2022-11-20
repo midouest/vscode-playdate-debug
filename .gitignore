@@ -3,6 +3,7 @@ dist
 node_modules
 .vscode-test/
 npm-debug.log
+yarn-error.log
 mock-debug.txt
 *.vsix
 .DS_Store

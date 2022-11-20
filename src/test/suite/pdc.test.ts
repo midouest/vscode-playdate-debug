@@ -3,11 +3,11 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { ExtensionModule } from "../../ExtensionModule";
+// import { ExtensionModule } from "../../ExtensionModule";
 import { PDC_TASK_TYPE } from "../../constants";
-import { CoreModule } from "../../core";
-import { PDCModule } from "../../pdc";
-import { PDCTaskProvider } from "../../pdc/PDCTaskProvider";
+// import { CoreModule } from "../../core";
+// import { PDCModule } from "../../pdc";
+// import { PDCTaskProvider } from "../../pdc/PDCTaskProvider";
 
 import {
   cleanPDXBundles,
@@ -18,17 +18,21 @@ import {
 
 suite("PDC Test Suite", () => {
   let tasks: vscode.Task[];
-  let provider: PDCTaskProvider;
-  let tokenSource: vscode.CancellationTokenSource;
-  let token: vscode.CancellationToken;
+  // let provider: PDCTaskProvider;
+  // let tokenSource: vscode.CancellationTokenSource;
+  // let token: vscode.CancellationToken;
+
+  function assertTaskFixture(task: vscode.Task, fixture: string): void {
+    assert.ok(typeof task.scope === "object");
+    assert.strictEqual(task.scope.name, fixture);
+  }
 
   suiteSetup(async () => {
     tasks = await vscode.tasks.fetchTasks({ type: PDC_TASK_TYPE });
-    assert.strictEqual(tasks.length, 2);
-    assert.ok(typeof tasks[0].scope === "object");
-    assert.strictEqual(tasks[0].scope.name, "basic-configuration");
-    assert.ok(typeof tasks[1].scope === "object");
-    assert.strictEqual(tasks[1].scope.name, "override-configuration");
+    assert.strictEqual(tasks.length, 3);
+    assertTaskFixture(tasks[0], "basic-configuration");
+    assertTaskFixture(tasks[1], "override-configuration");
+    assertTaskFixture(tasks[2], "pdc-configuration");
   });
 
   suiteTeardown(async () => {
@@ -36,43 +40,33 @@ suite("PDC Test Suite", () => {
   });
 
   setup(() => {
-    const loaded = ExtensionModule.load(CoreModule, PDCModule);
-    assert.ok(loaded);
-    provider = loaded.container.resolve(PDCTaskProvider);
-
-    tokenSource = new vscode.CancellationTokenSource();
-    token = tokenSource.token;
+    // const loaded = ExtensionModule.load(CoreModule, PDCModule);
+    // assert.ok(loaded);
+    // provider = loaded.container.resolve(PDCTaskProvider);
+    // tokenSource = new vscode.CancellationTokenSource();
+    // token = tokenSource.token;
   });
 
   teardown(() => {
-    tokenSource.dispose();
+    // tokenSource.dispose();
   });
 
-  testSDK("basic-configuration", async () => {
-    const task = await provider.resolveTask(tasks[0], token);
-    assert.ok(task);
+  const testCases = [
+    ["basic-configuration", "Basic Configuration.pdx"],
+    ["override-configuration", "Override Configuration.pdx"],
+    ["pdc-configuration", "PDC Configuration.pdx"],
+  ] as const;
 
-    const execution = await vscode.tasks.executeTask(task);
-    assert.ok(execution);
+  testCases.forEach(([fixture, bundleName], index) => {
+    testSDK(fixture, async () => {
+      // const task = await provider.resolveTask(tasks[index], token);
+      // assert.ok(task);
 
-    const pdxBundle = path.resolve(
-      getFixturePath("basic-configuration"),
-      "Basic Configuration.pdx"
-    );
-    await waitForFileToExist(pdxBundle);
-  });
+      const execution = await vscode.tasks.executeTask(tasks[index]);
+      assert.ok(execution);
 
-  testSDK("override-configuration", async () => {
-    const task = await provider.resolveTask(tasks[1], token);
-    assert.ok(task);
-
-    const execution = await vscode.tasks.executeTask(task);
-    assert.ok(execution);
-
-    const pdxBundle = path.resolve(
-      getFixturePath("override-configuration"),
-      "Override Configuration.pdx"
-    );
-    await waitForFileToExist(pdxBundle);
+      const pdxPath = path.resolve(getFixturePath(fixture), bundleName);
+      await waitForFileToExist(pdxPath);
+    });
   });
 });

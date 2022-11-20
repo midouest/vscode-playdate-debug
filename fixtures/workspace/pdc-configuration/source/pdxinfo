@@ -1,0 +1,8 @@
+name=PDC Configuration
+author=example
+description=Untitled Playdate game
+bundleID=com.example.pdc-configuration
+version=1.0
+buildNumber=1
+imagePath=system
+launchSoundPath=

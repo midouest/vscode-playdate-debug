@@ -33,6 +33,7 @@ jobs:
           cat PlaydateSDK.pkg/Payload | gunzip -dc | cpio -i
           rm -rf fixtures/PlaydateSDK-1.12.3
           mv PlaydateSDK fixtures/PlaydateSDK-1.12.3
+        if: runner.os == 'macOS'
       - name: Install PlaydateSDK (Linux)
         run: |
           wget https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-1.12.3.tar.gz

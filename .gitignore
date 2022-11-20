@@ -16,3 +16,5 @@ coverage/
 *.zip
 *.pkg
 __MACOSX/
+Distribution
+Resources

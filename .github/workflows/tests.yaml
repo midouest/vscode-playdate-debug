@@ -22,11 +22,20 @@ jobs:
         with:
           node-version: 16.x
           cache: yarn
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: xvfb-run -a yarn test
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build extension
+        run: yarn build
+      - name: Install PlaydateSDK
+        run: |
+          wget https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-1.12.3.tar.gz
+          tar xfz PlaydateSDK-1.12.3.tar.gz -C fixtures/
         if: runner.os == 'Linux'
-      - run: yarn test
+      - name: Run tests (Linux)
+        run: xvfb-run -a yarn test:coverage
+        if: runner.os == 'Linux'
+      - name: Run tests
+        run: yarn test:coverage
         if: runner.os != 'Linux'
       - name: Publish
         if: success() && startsWith(github.ref, 'refs/tags/') && matrix.os == 'ubuntu-latest'

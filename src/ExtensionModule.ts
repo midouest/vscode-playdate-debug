@@ -1,6 +1,11 @@
 import { Container, ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
+export interface LoadedModules {
+  container: Container;
+  modules: ExtensionModule[];
+}
+
 export type ActivateResult =
   | vscode.Disposable
   | vscode.Disposable[]
@@ -12,10 +17,7 @@ export interface ExtensionModuleType {
 }
 
 export abstract class ExtensionModule {
-  static activate(
-    context: vscode.ExtensionContext,
-    classes: ExtensionModuleType[]
-  ): Container | null {
+  static load(...classes: ExtensionModuleType[]): LoadedModules | null {
     const container = new Container();
     const modules = classes.map((cls) => new cls(container));
 
@@ -24,6 +26,20 @@ export abstract class ExtensionModule {
         return null;
       }
     }
+
+    return { container, modules };
+  }
+
+  static activate(
+    context: vscode.ExtensionContext,
+    classes: ExtensionModuleType[]
+  ): Container | null {
+    const loaded = ExtensionModule.load(...classes);
+    if (!loaded) {
+      return null;
+    }
+
+    const { container, modules } = loaded;
 
     for (const mod of modules) {
       const disposables = mod.activate();

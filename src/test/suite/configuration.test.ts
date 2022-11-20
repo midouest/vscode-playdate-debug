@@ -1,8 +1,7 @@
 import * as assert from "assert";
 import * as path from "path";
 
-import { Container } from "inversify";
-
+import { ExtensionModule } from "../../ExtensionModule";
 import { Configuration, ConfigurationResolver, CoreModule } from "../../core";
 
 import { getFixtureWorkspaceFolder } from "./suiteTestUtils";
@@ -11,11 +10,10 @@ suite("Configuration Test Suite", () => {
   let configResolver: ConfigurationResolver;
 
   setup(() => {
-    const container = new Container();
-    const coreModule = new CoreModule(container);
-    assert.ok(coreModule.load());
+    const loaded = ExtensionModule.load(CoreModule);
+    assert.ok(loaded);
 
-    configResolver = container.resolve(ConfigurationResolver);
+    configResolver = loaded.container.resolve(ConfigurationResolver);
     assert.ok(configResolver);
   });
 

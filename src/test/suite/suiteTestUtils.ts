@@ -109,6 +109,24 @@ export function testSDK(
   });
 }
 
+function skipTestSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test;
+function skipTestSDK(
+  title: string,
+  platform: NodeJS.Platform,
+  fn: Mocha.AsyncFunc
+): Mocha.Test;
+function skipTestSDK(
+  title: string,
+  _fnOrPlatform: Mocha.AsyncFunc | NodeJS.Platform,
+  _fnOrUndefined?: Mocha.AsyncFunc
+): Mocha.Test {
+  return test(title, function () {
+    this.skip();
+  });
+}
+
+testSDK.skip = skipTestSDK;
+
 export function assertTaskFixture(
   task: vscode.Task,
   fixture: string

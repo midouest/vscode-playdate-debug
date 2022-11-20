@@ -15,7 +15,7 @@ import {
 } from "./suiteTestUtils";
 
 suite("Debug Test Suite", () => {
-  testSDK("basic-configuration", "darwin", async () => {
+  testSDK.skip("basic-configuration", "darwin", async () => {
     await vscode.commands.executeCommand("workbench.action.debug.start");
 
     const pdxPath = path.resolve(

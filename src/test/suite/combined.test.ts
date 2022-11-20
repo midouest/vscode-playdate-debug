@@ -27,7 +27,7 @@ suite("Combined Test Suite", () => {
     defaultBuildTask = task;
   });
 
-  testSDK("basic-configuration", "darwin", async () => {
+  testSDK.skip("basic-configuration", "darwin", async () => {
     const execution = await vscode.tasks.executeTask(defaultBuildTask);
     assert.ok(execution);
 

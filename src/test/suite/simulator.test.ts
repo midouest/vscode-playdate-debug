@@ -22,7 +22,7 @@ suite("Playdate Simulator Test Suite", () => {
     );
   });
 
-  testSDK("playdate-simulator-configuration", "darwin", async () => {
+  testSDK.skip("playdate-simulator-configuration", "darwin", async () => {
     const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
     assert.ok(execution);
 

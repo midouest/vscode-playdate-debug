@@ -28,7 +28,7 @@ jobs:
         run: yarn build
       - name: Install PlaydateSDK (macOS)
         run: ./scripts/installSDKMacOS.sh
-        if: false
+        if: runner.os == 'macOS'
       - name: Install PlaydateSDK (Linux)
         run: ./scripts/installSDKLinux.sh
         if: runner.os == 'Linux'

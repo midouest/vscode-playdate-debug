@@ -1,7 +1,7 @@
 import * as child_process from "child_process";
 import * as path from "path";
 
-import { Chainable, OnTaskRunnerMessage, TaskRunner } from "../core";
+import { OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec, quote } from "../util";
 
 import { getKillSimulatorCommand } from "./getKillSimulatorCommand";
@@ -20,10 +20,8 @@ export interface SimulatorWin32TaskRunnerOptions {
  * SimulatorWin32TaskRunner is responsible for launching the Playdate Simulator
  * executable on Windows if it is not already running.
  */
-export class SimulatorWin32TaskRunner extends Chainable implements TaskRunner {
-  constructor(private options: SimulatorWin32TaskRunnerOptions) {
-    super();
-  }
+export class SimulatorWin32TaskRunner implements TaskRunner {
+  constructor(private options: SimulatorWin32TaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const { sdkPath, openGamePath, kill } = this.options;

@@ -1,4 +1,4 @@
-import { Chainable, OnTaskRunnerMessage, TaskRunner } from "../core";
+import { OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec } from "../util";
 
 import { getPDCCommand, GetPDCCommandOptions } from "./getPDCCommand";
@@ -23,10 +23,8 @@ export interface PDCTaskRunnerOptions {
  * PDCTaskRunner is responsible for executing the PlaydateSDK's `pdc` binary
  * in order to compile a Playdate game's source into a `.pdx` bundle.
  */
-export class PDCTaskRunner extends Chainable implements TaskRunner {
-  constructor(private options: PDCTaskRunnerOptions) {
-    super();
-  }
+export class PDCTaskRunner implements TaskRunner {
+  constructor(private options: PDCTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const pdcOptions = this.getPDCOptions();

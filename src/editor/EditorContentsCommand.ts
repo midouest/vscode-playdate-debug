@@ -1,5 +1,3 @@
-import * as path from "path";
-
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
@@ -20,18 +18,18 @@ export class EditorContentsCommand {
     if (!targetResource) {
       return;
     }
+    const sourcePath = targetResource.fsPath;
 
-    const config = await this.config.resolveWithoutPDXInfo(targetResource);
+    const config = await this.config.resolve(targetResource);
     if (!config) {
       return;
     }
 
     const { sdkPath, outputPath } = config;
-    const inputPath = targetResource.fsPath;
 
     const pdc = createPDCCommand({
       sdkPath,
-      input: inputPath,
+      input: sourcePath,
       output: outputPath,
     });
     await exec(pdc);
@@ -41,10 +39,6 @@ export class EditorContentsCommand {
     });
     await exec(simulator);
 
-    const inputDir = path.dirname(inputPath);
-    const inputName = path.basename(inputPath, ".lua");
-    const gamePath = path.resolve(outputPath, inputName + ".pdx");
-
     const parentOptions = this.getParentOptions(debug);
     await vscode.debug.startDebugging(
       undefined,
@@ -52,8 +46,8 @@ export class EditorContentsCommand {
         type: DebugType.playdate,
         name: this.getName(debug),
         request: "launch",
-        sourcePath: inputDir,
-        gamePath,
+        sourcePath,
+        outputPath,
       },
       parentOptions
     );

@@ -26,16 +26,6 @@ export type ConfigurationScope =
   | vscode.TaskScope
   | undefined;
 
-export type EditorContentsConfiguration = Pick<
-  Configuration,
-  "sdkPath" | "outputPath"
->;
-
-type ConfigurationWithoutPDXInfo = Pick<
-  Configuration,
-  "sdkPath" | "sdkVersion" | "sourcePath" | "outputPath" | "productName"
->;
-
 /**
  * ConfigurationResolver is responsible for resolving the final PlaydateSDK and
  * game configuration. It resolves configuration from the VS Code workspace
@@ -44,42 +34,6 @@ type ConfigurationWithoutPDXInfo = Pick<
 @injectable()
 export class ConfigurationResolver {
   async resolve(scope: ConfigurationScope): Promise<Configuration | undefined> {
-    const config = await this.resolveWithoutPDXInfo(scope);
-    if (!config) {
-      return undefined;
-    }
-
-    const {
-      sdkPath,
-      sdkVersion,
-      sourcePath,
-      outputPath,
-      productName: productNameConfig,
-    } = config;
-
-    let productName = productNameConfig;
-    if (!productName) {
-      const pdxInfo = await getPDXInfo(sourcePath);
-      productName = pdxInfo.name;
-    }
-
-    const productPath = path.resolve(outputPath, productName);
-    const gamePath = productPath + ".pdx";
-
-    return {
-      sdkPath,
-      sdkVersion,
-      sourcePath,
-      outputPath,
-      productName,
-      productPath,
-      gamePath,
-    };
-  }
-
-  async resolveWithoutPDXInfo(
-    scope: ConfigurationScope
-  ): Promise<ConfigurationWithoutPDXInfo | undefined> {
     const workspaceFolder = getWorkspaceRoot(scope);
     if (!workspaceFolder) {
       return undefined;
@@ -90,7 +44,7 @@ export class ConfigurationResolver {
       sdkPath: sdkPathConfig,
       sourcePath: sourcePathConfig,
       outputPath: outputPathConfig,
-      productName,
+      productName: productNameConfig,
     } = vscode.workspace.getConfiguration("playdate-debug", workspaceFolder);
 
     let sdkPath = sdkPathConfig;
@@ -114,12 +68,27 @@ export class ConfigurationResolver {
     }
     outputPath = toAbsolute(workspaceRoot, outputPath);
 
+    let productName = productNameConfig;
+    if (!productName) {
+      try {
+        const pdxInfo = await getPDXInfo(sourcePath);
+        productName = pdxInfo.name;
+      } catch (err) {
+        // noop
+      }
+    }
+
+    const productPath = path.resolve(outputPath, productName);
+    const gamePath = productPath + ".pdx";
+
     return {
       sdkPath,
       sdkVersion,
       sourcePath,
       outputPath,
       productName,
+      productPath,
+      gamePath,
     };
   }
 }

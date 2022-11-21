@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
@@ -21,22 +23,24 @@ export class PlaydateDebugConfigurationProvider
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration
   ): Promise<vscode.DebugConfiguration | undefined | null> {
-    if (config.gamePath && config.sourcePath) {
-      const workspaceConfig = await this.config.resolveWithoutPDXInfo(folder);
-      if (!workspaceConfig) {
-        return undefined;
-      }
-
-      const { sdkPath } = workspaceConfig;
-      return { ...config, sdkPath };
-    }
-
     const workspaceConfig = await this.config.resolve(folder);
     if (!workspaceConfig) {
       return undefined;
     }
 
-    const { sdkPath, sourcePath, gamePath } = workspaceConfig;
+    const {
+      sdkPath,
+      sourcePath: sourcePathConfig,
+      gamePath: gamePathConfig,
+    } = workspaceConfig;
+
+    let sourcePath = sourcePathConfig;
+    let gamePath = gamePathConfig;
+    if (config.sourcePath?.endsWith(".lua") && config.outputPath) {
+      sourcePath = path.dirname(config.sourcePath);
+      const inputName = path.basename(config.sourcePath, ".lua");
+      gamePath = path.resolve(config.outputPath, inputName + ".pdx");
+    }
 
     return {
       ...config,

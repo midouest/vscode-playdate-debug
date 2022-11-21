@@ -32,9 +32,10 @@ export class ProxyDebugAdapterDescriptorFactory
   ): Promise<vscode.DebugAdapterDescriptor | undefined> {
     this.server?.close();
 
-    const config = await this.config.resolveWithoutPDXInfo(
-      session.workspaceFolder
-    );
+    const { disableWorkarounds, logDebugAdapter, retryTimeout, maxRetries } =
+      session.configuration;
+
+    const config = await this.config.resolve(session.workspaceFolder);
     if (!config) {
       return undefined;
     }
@@ -43,9 +44,6 @@ export class ProxyDebugAdapterDescriptorFactory
     if (sdkVersion >= "1.13.0") {
       return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
     }
-
-    const { disableWorkarounds, logDebugAdapter, retryTimeout, maxRetries } =
-      session.configuration;
 
     const options: Partial<WaitForDebugPortOptions> = {};
     if (retryTimeout !== undefined) {

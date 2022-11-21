@@ -1,8 +1,7 @@
-import * as path from "path";
-
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
-import { exec, quote } from "../util";
+import { exec } from "../util";
 
+import { createMacOSSimulatorCommand } from "./createMacOSSimulatorCommand";
 import { getKillSimulatorCommand } from "./getKillSimulatorCommand";
 
 /**
@@ -37,16 +36,10 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
     }
 
     onMessage("Starting Playdate Simulator...");
-    const simulatorPath = path.resolve(
+    const command = createMacOSSimulatorCommand({
       sdkPath,
-      "bin",
-      "Playdate Simulator.app"
-    );
-    const args = ["-a", quote(simulatorPath)];
-    if (openGamePath) {
-      args.push(quote(openGamePath));
-    }
-    const command = `/usr/bin/open ${args.join(" ")}`;
+      openGamePath,
+    });
     onMessage(`> ${command}`);
 
     await exec(command);

@@ -6,6 +6,7 @@ import * as vscode from "vscode";
 import { DebugType } from "../constants";
 import { ConfigurationResolver } from "../core";
 import { createPDCCommand } from "../pdc";
+import { createMacOSSimulatorCommand } from "../simulator";
 import { exec } from "../util";
 
 @injectable()
@@ -34,6 +35,11 @@ export class EditorContentsCommand {
       output: outputPath,
     });
     await exec(pdc);
+
+    const simulator = createMacOSSimulatorCommand({
+      sdkPath,
+    });
+    await exec(simulator);
 
     const inputDir = path.dirname(inputPath);
     const inputName = path.basename(inputPath, ".lua");

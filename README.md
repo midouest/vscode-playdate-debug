@@ -10,6 +10,7 @@ Unofficial Playdate debug extension for Visual Studio Code on macOS, Windows and
 - Compile games to `.pdx` using `pdc`
 - Problem matchers for `pdc`
 - Open the Playdate Simulator
+- Run and debug current Lua file in the Playdate Simulator from the editor toolbar
 
 ## Requirements
 
@@ -69,13 +70,14 @@ See the [basic configuration example](/fixtures/workspace/basic-configuration) f
 
 ## Configuration
 
-The tasks and debugger will attempt to automatically resolve the correct configuration using the environment. The following configuration must exist for this to work:
+### Automatic
 
-- Either of the following:
-  - The `PLAYDATE_SDK_PATH` environment variable is set to the Playdate SDK path
-- The Playdate SDK `bin` directory is in your `PATH`
-  - `~/.Playdate/config` exists and the `SDKRoot` property is set to the Playdate SDK path (macOS only)
-- A [pdxinfo](https://sdk.play.date/1.9.3/Inside%20Playdate.html#pdxinfo) file exists in your game's `source` directory and the `name` property is set
+The tasks and debugger will attempt to automatically resolve the correct configuration using the environment. One of the following conditions must be met for this to work:
+
+- The `PLAYDATE_SDK_PATH` environment variable is set to the Playdate SDK path
+- `~/.Playdate/config` exists and the `SDKRoot` property is set to the Playdate SDK path (macOS only)
+
+### Workspace Settings Override
 
 The default behavior can be overridden by setting the SDK path, game source path, compiled game path or game name in your workspace's `settings.json` file. The extension will fall back to the default behavior for any configuration fields that are not set.
 
@@ -89,23 +91,16 @@ The default behavior can be overridden by setting the SDK path, game source path
 }
 ```
 
-See the [override configuration example](/fixtures/workspace/override-configuration) for more information.
+See the [override configuration example](/fixtures/workspace/override-configuration) for more information about these properties.
 
-The Playdate Simulator task launches the Playdate Simulator once and leaves it running in the background by default. The `kill` property can be used to instead have the task stop running instances of the Playdate Simulator before launching a new one.
+### PDC Task
 
-```json
-// .vscode/tasks.json
-{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "playdate-simulator",
-      "problemMatcher": ["$pdc-external"],
-      "label": "Playdate: Simulator",
-      "kill": true
-    }
-  ]
-}
-```
+See the [pdc configuration example](/fixtures/workspace/pdc-configuration/) for additional `pdc` task properties.
 
-The `playdate` debugger supports additional, advanced configuration properties on the configuration in `launch.json`: `disableWorkarounds`, `logDebugAdapter`, `retryTimeout`, and `maxRetries`. These are mainly for developers diagnosing issues with the extension or the Playdate Simulator. Typing the property name in your `launch.json` configuration will reveal the documentation for these properties.
+### Playdate Simulator Task
+
+See the [playdate simulator configuration example](/fixtures/workspace/playdate-simulator-configuration/) for additional `playdate-simulator` task properties.
+
+### Debugger
+
+See the [debugger configuration example](/fixtures/workspace/debugger-configuration/) for additional `playdate` debugger properties.

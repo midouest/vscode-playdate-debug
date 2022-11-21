@@ -11,6 +11,9 @@
     },
     {
       "path": "playdate-simulator-configuration"
+    },
+    {
+      "path": "debugger-configuration"
     }
   ]
 }

@@ -24,3 +24,11 @@ export enum ProblemMatcher {
   /** The name of the PDC external problem matcher when referenced in VS Code */
   pdcExternal = "$pdc-external",
 }
+
+export enum Command {
+  /** The name of the "Run file in Playdate Simulator" command when referenced in VS Code */
+  runEditorContents = "playdate-debug.runEditorContents",
+
+  /** The name of the "Debug file in Playdate Simulator" command when referenced in VS Code */
+  debugEditorContents = "playdate-debug.debugEditorContents",
+}

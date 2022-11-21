@@ -4,3 +4,4 @@ export * from "./TaskExecutionFactory";
 export * from "./TaskProvider";
 export * from "./TaskRunner";
 export * from "./TaskRunnerTerminal";
+export * from "./getGamePathFromSource";

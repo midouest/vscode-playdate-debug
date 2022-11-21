@@ -3,7 +3,10 @@ import * as net from "net";
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { SIMULATOR_DEBUG_PORT } from "../constants";
+import {
+  CROSS_PLATFORM_DEBUG_SDK_VERSION,
+  SIMULATOR_DEBUG_PORT,
+} from "../constants";
 import { ConfigurationResolver } from "../core";
 import { WaitForDebugPortOptions } from "../util";
 
@@ -41,7 +44,7 @@ export class ProxyDebugAdapterDescriptorFactory
     }
 
     const { sdkVersion } = config;
-    if (sdkVersion >= "1.13.0") {
+    if (sdkVersion >= CROSS_PLATFORM_DEBUG_SDK_VERSION) {
       return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
     }
 

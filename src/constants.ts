@@ -32,3 +32,6 @@ export enum Command {
   /** The name of the "Debug file in Playdate Simulator" command when referenced in VS Code */
   debugEditorContents = "playdate-debug.debugEditorContents",
 }
+
+/** The Playdate SDK version that supports debugging on all platforms */
+export const CROSS_PLATFORM_DEBUG_SDK_VERSION = "1.13.0";

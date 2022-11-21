@@ -1,8 +1,12 @@
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { DebugType, TaskType } from "../constants";
-import { ConfigurationResolver } from "../core";
+import {
+  CROSS_PLATFORM_DEBUG_SDK_VERSION,
+  DebugType,
+  TaskType,
+} from "../constants";
+import { ConfigurationResolver, getGamePathFromSource } from "../core";
 import { PDCTaskProvider } from "../pdc";
 import { SimulatorTaskProvider } from "../simulator";
 import { runTask } from "../util";
@@ -28,21 +32,33 @@ export class EditorContentsCommand {
       return;
     }
 
-    const { sdkPath, outputPath } = config;
+    const { sdkPath, sdkVersion, outputPath } = config;
+    const gamePath = getGamePathFromSource(sourcePath, outputPath);
 
     const pdcTask = await this.pdcTaskProvider.createTask({
       type: TaskType.pdc,
       sdkPath,
       sourcePath,
-      gamePath: outputPath,
+      gamePath,
     });
     await runTask(pdcTask);
 
+    const debugUnsupported =
+      process.platform !== "darwin" &&
+      sdkVersion < CROSS_PLATFORM_DEBUG_SDK_VERSION;
+
     const simulatorTask = await this.simulatorTaskProvider.createTask({
       type: TaskType.simulator,
-      openGame: false,
+      kill: debugUnsupported,
+      openGame: debugUnsupported,
+      sdkPath,
+      gamePath,
     });
     await runTask(simulatorTask);
+
+    if (debugUnsupported) {
+      return;
+    }
 
     const parentOptions = this.getParentOptions(debug);
     await vscode.debug.startDebugging(
@@ -52,7 +68,7 @@ export class EditorContentsCommand {
         name: this.getName(debug),
         request: "launch",
         sourcePath,
-        outputPath,
+        gamePath,
       },
       parentOptions
     );

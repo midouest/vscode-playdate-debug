@@ -36,10 +36,9 @@ export class PlaydateDebugConfigurationProvider
 
     let sourcePath = sourcePathConfig;
     let gamePath = gamePathConfig;
-    if (config.sourcePath?.endsWith(".lua") && config.outputPath) {
+    if (config.sourcePath?.endsWith(".lua") && config.gamePath) {
       sourcePath = path.dirname(config.sourcePath);
-      const inputName = path.basename(config.sourcePath, ".lua");
-      gamePath = path.resolve(config.outputPath, inputName + ".pdx");
+      gamePath = config.gamePath;
     }
 
     return {

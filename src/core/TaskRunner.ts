@@ -12,3 +12,18 @@ export interface TaskRunner {
    */
   run(onMessage: OnTaskRunnerMessage): Promise<void>;
 }
+
+export abstract class Chainable {
+  chain(this: TaskRunner, next: TaskRunner): TaskRunner {
+    return new TaskRunnerChain(this, next);
+  }
+}
+
+export class TaskRunnerChain implements TaskRunner {
+  constructor(private first: TaskRunner, private second: TaskRunner) {}
+
+  async run(onMessage: OnTaskRunnerMessage): Promise<void> {
+    await this.first.run(onMessage);
+    await this.second.run(onMessage);
+  }
+}

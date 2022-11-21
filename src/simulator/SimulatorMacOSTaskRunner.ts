@@ -1,4 +1,4 @@
-import { OnTaskRunnerMessage, TaskRunner } from "../core";
+import { Chainable, OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec } from "../util";
 
 import { createMacOSSimulatorCommand } from "./createMacOSSimulatorCommand";
@@ -18,8 +18,10 @@ export interface SimulatorMacOSTaskRunnerOptions {
  * SimulatorMacOSTaskRunner is responsible for launching the Playdate Simulator
  * executable on MacOS if it is not already running.
  */
-export class SimulatorMacOSTaskRunner implements TaskRunner {
-  constructor(private options: SimulatorMacOSTaskRunnerOptions) {}
+export class SimulatorMacOSTaskRunner extends Chainable implements TaskRunner {
+  constructor(private options: SimulatorMacOSTaskRunnerOptions) {
+    super();
+  }
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const { sdkPath, openGamePath, kill } = this.options;

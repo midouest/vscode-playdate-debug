@@ -223,17 +223,17 @@
           {
             "type": "playdate",
             "request": "launch",
-            "name": "Debug (Simulator)"
+            "name": "Playdate: Debug"
           }
         ],
         "configurationSnippets": [
           {
-            "label": "Playdate Debug: Launch",
-            "description": "Launch the game in the Playdate Simulator",
+            "label": "Playdate: Debug",
+            "description": "Debug the game in the Playdate Simulator",
             "body": {
               "type": "playdate",
               "request": "launch",
-              "name": "Debug (Simulator)"
+              "name": "Playdate: Debug"
             }
           }
         ]

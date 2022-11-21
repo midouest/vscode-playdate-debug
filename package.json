@@ -40,6 +40,10 @@
     "test": "node ./out/test/runTest.js",
     "test:coverage": "c8 yarn test"
   },
+  "dependencies": {
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13"
+  },
   "devDependencies": {
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.0",
@@ -255,9 +259,5 @@
         }
       ]
     }
-  },
-  "dependencies": {
-    "inversify": "^6.0.1",
-    "reflect-metadata": "^0.1.13"
   }
 }

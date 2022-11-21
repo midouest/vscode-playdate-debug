@@ -1,7 +1,7 @@
-import * as path from "path";
-
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
-import { exec, quote } from "../util";
+import { exec } from "../util";
+
+import { getPDCCommand, GetPDCCommandOptions } from "./getPDCCommand";
 
 /**
  * PDCTaskRunnerOptions contains extra properties asigned to the `pdc` task in
@@ -16,6 +16,7 @@ export interface PDCTaskRunnerOptions {
   verbose?: boolean;
   quiet?: boolean;
   skipUnknown?: boolean;
+  main?: string;
 }
 
 /**
@@ -26,6 +27,15 @@ export class PDCTaskRunner implements TaskRunner {
   constructor(private options: PDCTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
+    const pdcOptions = this.getPDCOptions();
+    const pdcCommand = getPDCCommand(pdcOptions);
+
+    onMessage("Compiling...");
+    onMessage(`> ${pdcCommand}`);
+    await exec(pdcCommand);
+  }
+
+  private getPDCOptions(): GetPDCCommandOptions {
     const {
       sdkPath,
       sourcePath,
@@ -37,33 +47,15 @@ export class PDCTaskRunner implements TaskRunner {
       skipUnknown,
     } = this.options;
 
-    const cmd = quote(path.join(sdkPath, "bin", "pdc"));
-    const args = [
-      "-sdkpath",
-      quote(sdkPath),
-      quote(sourcePath),
-      quote(gamePath),
-    ];
-
-    if (strip) {
-      args.splice(0, 0, "--strip");
-    }
-    if (noCompress) {
-      args.splice(0, 0, "--no-compress");
-    }
-    if (verbose) {
-      args.splice(0, 0, "--verbose");
-    }
-    if (quiet) {
-      args.splice(0, 0, "--quiet");
-    }
-    if (skipUnknown) {
-      args.splice(0, 0, "--skip-unknown");
-    }
-
-    onMessage("Compiling...");
-    const command = `${cmd} ${args.join(" ")}`;
-    onMessage(`> ${command}`);
-    await exec(command);
+    return {
+      sdkPath,
+      input: sourcePath,
+      output: gamePath,
+      strip,
+      noCompress,
+      verbose,
+      quiet,
+      skipUnknown,
+    };
   }
 }

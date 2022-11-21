@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
@@ -26,7 +28,18 @@ export class PlaydateDebugConfigurationProvider
       return undefined;
     }
 
-    const { sdkPath, sourcePath, gamePath } = workspaceConfig;
+    const {
+      sdkPath,
+      sourcePath: sourcePathConfig,
+      gamePath: gamePathConfig,
+    } = workspaceConfig;
+
+    let sourcePath = sourcePathConfig;
+    let gamePath = gamePathConfig;
+    if (config.sourcePath?.endsWith(".lua") && config.gamePath) {
+      sourcePath = path.dirname(config.sourcePath);
+      gamePath = config.gamePath;
+    }
 
     return {
       ...config,

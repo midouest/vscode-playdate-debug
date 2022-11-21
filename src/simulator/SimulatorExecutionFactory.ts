@@ -32,8 +32,15 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       return undefined;
     }
 
-    const { openGame, kill } = definition;
-    const { sdkPath, gamePath } = config;
+    const {
+      openGame,
+      kill,
+      sdkPath: sdkPathDef,
+      gamePath: gamePathDef,
+    } = definition;
+    const { sdkPath: sdkPathConfig, gamePath: gamePathConfig } = config;
+    const sdkPath = sdkPathDef ?? sdkPathConfig;
+    const gamePath = gamePathDef ?? gamePathConfig;
     const openGamePath = openGame !== false ? gamePath : undefined;
 
     switch (process.platform) {

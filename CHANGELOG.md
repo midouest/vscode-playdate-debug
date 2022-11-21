@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+### Added
+
+- Run and debug current Lua file as main.lua
+
 ### Changed
 
 - Example project links in readme link to project folders

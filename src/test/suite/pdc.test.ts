@@ -3,7 +3,7 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { PDC_TASK_TYPE } from "../../constants";
+import { TaskType } from "../../constants";
 
 import {
   assertTaskFixture,
@@ -17,7 +17,7 @@ suite("PDC Test Suite", () => {
   let tasks: vscode.Task[];
 
   suiteSetup(async () => {
-    tasks = await vscode.tasks.fetchTasks({ type: PDC_TASK_TYPE });
+    tasks = await vscode.tasks.fetchTasks({ type: TaskType.pdc });
     assert.strictEqual(tasks.length, 3);
     assertTaskFixture(tasks[0], "basic-configuration");
     assertTaskFixture(tasks[1], "override-configuration");

@@ -65,12 +65,28 @@
   "main": "./dist/extension.js",
   "activationEvents": [
     "onCommand:workbench.action.tasks.runTask",
+    "onCommand:playdate-debug.runEditorContents",
+    "onCommand:playdate-debug.debugEditorContents",
     "onDebugResolve:playdate"
   ],
   "workspaceTrust": {
     "request": "never"
   },
   "contributes": {
+    "commands": [
+      {
+        "category": "Playdate",
+        "command": "playdate-debug.runEditorContents",
+        "icon": "$(play)",
+        "title": "Run file in Playdate Simulator"
+      },
+      {
+        "category": "Playdate",
+        "command": "playdate-debug.debugEditorContents",
+        "icon": "$(debug-alt)",
+        "title": "Debug file in Playdate Simulator"
+      }
+    ],
     "configuration": {
       "title": "Playdate Debug",
       "properties": {
@@ -222,7 +238,23 @@
           }
         ]
       }
-    ]
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "playdate-debug.runEditorContents",
+          "group": "navigation@0",
+          "title": "Run file in Playdate Simulator",
+          "when": "resourceLangId == lua && !isInDiffEditor && !virtualWorkspace && shellExecutionSupported"
+        },
+        {
+          "command": "playdate-debug.debugEditorContents",
+          "group": "navigation@1",
+          "title": "Debug file in Playdate Simulator",
+          "when": "resourceLangId == lua && !isInDiffEditor && !virtualWorkspace && shellExecutionSupported"
+        }
+      ]
+    }
   },
   "dependencies": {
     "inversify": "^6.0.1",

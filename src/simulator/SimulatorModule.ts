@@ -2,7 +2,7 @@ import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
 import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { SIMULATOR_TASK_TYPE } from "../constants";
+import { TaskType } from "../constants";
 
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 import { SimulatorTaskProvider } from "./SimulatorTaskProvider";
@@ -18,7 +18,7 @@ export class SimulatorModule extends ExtensionModule {
   activate(): ActivateResult {
     const simulatorTaskProvider = this.container.resolve(SimulatorTaskProvider);
     return vscode.tasks.registerTaskProvider(
-      SIMULATOR_TASK_TYPE,
+      TaskType.simulator,
       simulatorTaskProvider
     );
   }

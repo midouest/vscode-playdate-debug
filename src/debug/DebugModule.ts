@@ -2,7 +2,7 @@ import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
 import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { PLAYDATE_DEBUG_TYPE } from "../constants";
+import { DebugType } from "../constants";
 
 import { PlaydateDebugConfigurationProvider } from "./PlaydateDebugConfigurationProvider";
 import { ProxyDebugAdapterDescriptorFactory } from "./ProxyDebugAdapterDescriptorFactory";
@@ -23,7 +23,7 @@ export class DebugModule extends ExtensionModule {
     );
     const configProviderDisposable =
       vscode.debug.registerDebugConfigurationProvider(
-        PLAYDATE_DEBUG_TYPE,
+        DebugType.playdate,
         configProvider
       );
 
@@ -32,7 +32,7 @@ export class DebugModule extends ExtensionModule {
     );
     const descriptorFactoryDisposable =
       vscode.debug.registerDebugAdapterDescriptorFactory(
-        PLAYDATE_DEBUG_TYPE,
+        DebugType.playdate,
         descriptorFactory
       );
 

@@ -15,8 +15,8 @@ Extension configuration values may be absolute or relative paths. Environment va
 
 ## Tasks
 
-The task configuration is identical to the [basic configuration](../basic-configuration/README.md#tasks).
+The task configuration is identical to the [basic configuration](/fixtures/workspace/basic-configuration/README.md#tasks).
 
 ## Debug
 
-The debug configuration is identical to the [basic configuration](../basic-configuration/README.md#debug).
+The debug configuration is identical to the [basic configuration](/fixtures/workspace/basic-configuration/README.md#debug).

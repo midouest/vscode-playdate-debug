@@ -4,7 +4,7 @@ This project demonstrates the extra configuration options that the `playdate` de
 
 ## Launch
 
-The [`launch.json`](/.vscode/launch.json) file specifies the following additional properties from the `playdate` debug launcher:
+The [`launch.json`](/fixtures/workspace/debugger-configuration/.vscode/launch.json) file specifies the following additional properties from the `playdate` debug launcher:
 
 - `"maxRetries": 10` sets the maximum number of times that the debug launcher will attempt to connect to the Playdate Simulator before aborting. This property defaults to `25`.
 - `"retryTimeout": 100` controls how long the debug launcher waits between attempts to connect to the Playdate Simulator. This property defaults to `200`.

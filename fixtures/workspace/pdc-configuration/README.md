@@ -4,7 +4,7 @@ This project demonstrates the extra configuration options that the `pdc` task su
 
 ## Tasks
 
-The [`tasks.json`](/.vscode/tasks.json) file specifies the following additional properties for the `pdc` task:
+The [`tasks.json`](/fixtures/workspace/pdc-configuration/.vscode/tasks.json) file specifies the following additional properties for the `pdc` task:
 
 - `"strip": true` causes debug symbols to be stripped from the compiled Lua files. This property defaults to `false`.
 - `"noCompress": true` causes `pdc` to skip compressing the output files. This property defaults to `false`.

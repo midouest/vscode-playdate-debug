@@ -214,7 +214,7 @@
               "maxRetries": {
                 "type": "number",
                 "description": "Maximum number of times the extension will attempt to connect to the Playdate Simulator before aborting",
-                "default": 20
+                "default": 25
               }
             }
           }

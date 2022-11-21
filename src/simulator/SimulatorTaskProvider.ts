@@ -1,10 +1,6 @@
 import { inject, injectable } from "inversify";
 
-import {
-  PDC_EXTERNAL_PROBLEM_MATCHER,
-  SIMULATOR_TASK_TYPE,
-  TASK_SOURCE,
-} from "../constants";
+import { ProblemMatcher, TaskType, TASK_SOURCE } from "../constants";
 import { TaskProvider } from "../core";
 
 import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
@@ -16,8 +12,8 @@ export class SimulatorTaskProvider extends TaskProvider {
     simulatorFactory: SimulatorExecutionFactory
   ) {
     super(simulatorFactory, {
-      type: SIMULATOR_TASK_TYPE,
-      problemMatchers: [PDC_EXTERNAL_PROBLEM_MATCHER],
+      type: TaskType.simulator,
+      problemMatchers: [ProblemMatcher.pdcExternal],
       name: "Simulator",
       source: TASK_SOURCE,
     });

@@ -1,20 +1,26 @@
-/** Playdate launch.json configuration type */
-export const PLAYDATE_DEBUG_TYPE = "playdate";
+export enum DebugType {
+  /** Playdate launch.json configuration type */
+  playdate = "playdate",
+}
 
 /** The Playdate Simulator responds to the Debug Adapter Protocol on this port */
 export const SIMULATOR_DEBUG_PORT = 55934;
 
-/** tasks.json task type for the PDC task */
-export const PDC_TASK_TYPE = "pdc";
+export enum TaskType {
+  /** tasks.json task type for the PDC task */
+  pdc = "pdc",
 
-/** tasks.json task type for the Simulator task */
-export const SIMULATOR_TASK_TYPE = "playdate-simulator";
+  /** tasks.json task type for the Simulator task */
+  simulator = "playdate-simulator",
+}
 
 /** tasks.json default task label source for all tasks */
 export const TASK_SOURCE = "Playdate";
 
-/** The name of the PDC lua problem matcher when referenced in VS Code */
-export const PDC_LUA_PROBLEM_MATCHER = "$pdc-lua";
+export enum ProblemMatcher {
+  /** The name of the PDC lua problem matcher when referenced in VS Code */
+  pdcLua = "$pdc-lua",
 
-/** The name of the PDC external problem matcher when referenced in VS Code */
-export const PDC_EXTERNAL_PROBLEM_MATCHER = "$pdc-external";
+  /** The name of the PDC external problem matcher when referenced in VS Code */
+  pdcExternal = "$pdc-external",
+}

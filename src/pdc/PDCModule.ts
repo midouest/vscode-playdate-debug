@@ -2,7 +2,7 @@ import { ContainerModule } from "inversify";
 import * as vscode from "vscode";
 
 import { ActivateResult, ExtensionModule } from "../ExtensionModule";
-import { PDC_TASK_TYPE } from "../constants";
+import { TaskType } from "../constants";
 
 import { PDCExecutionFactory } from "./PDCExecutionFactory";
 import { PDCTaskProvider } from "./PDCTaskProvider";
@@ -17,6 +17,6 @@ export class PDCModule extends ExtensionModule {
 
   activate(): ActivateResult {
     const pdcTaskProvider = this.container.resolve(PDCTaskProvider);
-    return vscode.tasks.registerTaskProvider(PDC_TASK_TYPE, pdcTaskProvider);
+    return vscode.tasks.registerTaskProvider(TaskType.pdc, pdcTaskProvider);
   }
 }

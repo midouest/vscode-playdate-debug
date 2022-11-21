@@ -16,7 +16,20 @@ Unofficial Playdate debug extension for Visual Studio Code on macOS, Windows and
 
 - The [Playdate SDK](https://play.date/dev/) must be installed separately
 
-## Quick Setup
+## Quick setup
+
+### Run and debug current Lua file
+
+The extension can build, run and debug the current Lua file in the editor with zero configuration as long the [automatic configuration conditions](#automatic) are met.
+
+When you open a Lua file in the editor after installing the extension, you will now see a
+launch icon and dropdown menu in the editor toolbar. Clicking the launch icon or selecting an item from the dropdown menu will build and run the current Lua file in the Playdate Simulator. The "Debug file in Playdate Simulator" option will enable breakpoints to be hit.
+
+![Tooltip](/images/tooltip.png)
+
+![Dropdown Menu](/images/dropdown-menu.png)
+
+### Tasks and debug launcher
 
 A [cookiecutter project template](https://github.com/midouest/cookiecutter-playdate) is available for quickly generating new projects from the command line.
 
@@ -77,7 +90,7 @@ The tasks and debugger will attempt to automatically resolve the correct configu
 - The `PLAYDATE_SDK_PATH` environment variable is set to the Playdate SDK path
 - `~/.Playdate/config` exists and the `SDKRoot` property is set to the Playdate SDK path (macOS only)
 
-### Workspace Settings Override
+### Workspace settings override
 
 The default behavior can be overridden by setting the SDK path, game source path, compiled game path or game name in your workspace's `settings.json` file. The extension will fall back to the default behavior for any configuration fields that are not set.
 
@@ -93,11 +106,11 @@ The default behavior can be overridden by setting the SDK path, game source path
 
 See the [override configuration example](/fixtures/workspace/override-configuration) for more information about these properties.
 
-### PDC Task
+### PDC task
 
 See the [pdc configuration example](/fixtures/workspace/pdc-configuration/) for additional `pdc` task properties.
 
-### Playdate Simulator Task
+### Playdate Simulator task
 
 See the [playdate simulator configuration example](/fixtures/workspace/playdate-simulator-configuration/) for additional `playdate-simulator` task properties.
 

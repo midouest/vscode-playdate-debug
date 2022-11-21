@@ -5,7 +5,8 @@ import * as vscode from "vscode";
 
 import { DebugType } from "../constants";
 import { ConfigurationResolver } from "../core";
-import { PDCCommand } from "../pdc";
+import { createPDCCommand } from "../pdc";
+import { exec } from "../util";
 
 @injectable()
 export class EditorContentsCommand {
@@ -27,12 +28,12 @@ export class EditorContentsCommand {
     const { sdkPath, outputPath } = config;
     const inputPath = targetResource.fsPath;
 
-    const pdc = new PDCCommand({
+    const pdc = createPDCCommand({
       sdkPath,
       input: inputPath,
       output: outputPath,
     });
-    await pdc.execute();
+    await exec(pdc);
 
     const inputDir = path.dirname(inputPath);
     const inputName = path.basename(inputPath, ".lua");

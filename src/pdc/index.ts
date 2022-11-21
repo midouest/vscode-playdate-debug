@@ -1,2 +1,2 @@
 export * from "./PDCModule";
-export * from "./PDCCommand";
+export * from "./createPDCCommand";

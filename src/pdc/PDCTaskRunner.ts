@@ -1,6 +1,7 @@
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
+import { exec } from "../util";
 
-import { PDCCommand, PDCCommandOptions } from "./PDCCommand";
+import { createPDCCommand, CreatePDCCommandOptions } from "./createPDCCommand";
 
 /**
  * PDCTaskRunnerOptions contains extra properties asigned to the `pdc` task in
@@ -27,14 +28,14 @@ export class PDCTaskRunner implements TaskRunner {
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const pdcOptions = this.getPDCOptions();
-    const pdcCommand = new PDCCommand(pdcOptions);
+    const pdcCommand = createPDCCommand(pdcOptions);
 
     onMessage("Compiling...");
-    onMessage(`> ${pdcCommand.command}`);
-    await pdcCommand.execute();
+    onMessage(`> ${pdcCommand}`);
+    await exec(pdcCommand);
   }
 
-  private getPDCOptions(): PDCCommandOptions {
+  private getPDCOptions(): CreatePDCCommandOptions {
     const {
       sdkPath,
       sourcePath,

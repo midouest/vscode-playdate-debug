@@ -32,7 +32,9 @@ export class ProxyDebugAdapterDescriptorFactory
   ): Promise<vscode.DebugAdapterDescriptor | undefined> {
     this.server?.close();
 
-    const config = await this.config.resolve(session.workspaceFolder);
+    const config = await this.config.resolveWithoutPDXInfo(
+      session.workspaceFolder
+    );
     if (!config) {
       return undefined;
     }

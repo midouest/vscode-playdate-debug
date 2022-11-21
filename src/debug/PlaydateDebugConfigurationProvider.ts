@@ -21,6 +21,16 @@ export class PlaydateDebugConfigurationProvider
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration
   ): Promise<vscode.DebugConfiguration | undefined | null> {
+    if (config.gamePath && config.sourcePath) {
+      const workspaceConfig = await this.config.resolveWithoutPDXInfo(folder);
+      if (!workspaceConfig) {
+        return undefined;
+      }
+
+      const { sdkPath } = workspaceConfig;
+      return { ...config, sdkPath };
+    }
+
     const workspaceConfig = await this.config.resolve(folder);
     if (!workspaceConfig) {
       return undefined;

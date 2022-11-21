@@ -65,6 +65,8 @@
   "main": "./dist/extension.js",
   "activationEvents": [
     "onCommand:workbench.action.tasks.runTask",
+    "onCommand:playdate-debug.runEditorContents",
+    "onCommand:playdate-debug.debugEditorContents",
     "onDebugResolve:playdate"
   ],
   "workspaceTrust": {

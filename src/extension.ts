@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { ExtensionModule } from "./ExtensionModule";
 import { CoreModule } from "./core";
 import { DebugModule } from "./debug";
+import { EditorModule } from "./editor";
 import { PDCModule } from "./pdc";
 import { SimulatorModule } from "./simulator";
 
@@ -18,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
     DebugModule,
     PDCModule,
     SimulatorModule,
+    EditorModule,
   ]);
 }
 

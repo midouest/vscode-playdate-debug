@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Example project links in readme link to project folders
+- Completely disable proxy server when disableWorkarounds is enabled
 
 ## [1.7.0] - 2022-11-19
 

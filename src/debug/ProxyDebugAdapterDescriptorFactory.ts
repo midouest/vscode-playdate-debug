@@ -44,7 +44,7 @@ export class ProxyDebugAdapterDescriptorFactory
     }
 
     const { sdkVersion } = config;
-    if (sdkVersion >= CROSS_PLATFORM_DEBUG_SDK_VERSION) {
+    if (sdkVersion >= CROSS_PLATFORM_DEBUG_SDK_VERSION || disableWorkarounds) {
       return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
     }
 
@@ -56,7 +56,7 @@ export class ProxyDebugAdapterDescriptorFactory
       options.maxRetries = maxRetries;
     }
 
-    const fixer = await this.fixerFactory.buildFixer(disableWorkarounds);
+    const fixer = await this.fixerFactory.buildFixer();
     const logger = this.loggerFactory.createLogger(logDebugAdapter);
 
     this.server = await ProxyServer.start(fixer, logger, options);

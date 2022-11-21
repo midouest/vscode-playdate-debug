@@ -14,7 +14,7 @@ export class SimulatorTaskProvider extends TaskProvider {
     super(simulatorFactory, {
       type: TaskType.simulator,
       problemMatchers: [ProblemMatcher.pdcExternal],
-      name: "Simulator",
+      name: "Run",
       source: TASK_SOURCE,
     });
   }

@@ -2,15 +2,15 @@ import * as path from "path";
 
 import { quote } from "../util";
 
-export interface CreateMacOSSimulatorCommandOptions {
+export interface GetMacOSSimulatorCommandOptions {
   sdkPath: string;
   openGamePath?: string;
 }
 
-export function createMacOSSimulatorCommand({
+export function getMacOSSimulatorCommand({
   sdkPath,
   openGamePath: gamePath,
-}: CreateMacOSSimulatorCommandOptions): string {
+}: GetMacOSSimulatorCommandOptions): string {
   const simulatorPath = path.resolve(sdkPath, "bin", "Playdate Simulator.app");
   const args = ["-a", quote(simulatorPath)];
   if (gamePath) {

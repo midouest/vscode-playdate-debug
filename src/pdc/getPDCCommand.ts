@@ -2,7 +2,7 @@ import * as path from "path";
 
 import { quote } from "../util";
 
-export interface CreatePDCCommandOptions {
+export interface GetPDCCommandOptions {
   sdkPath: string;
   input: string;
   output: string;
@@ -13,7 +13,7 @@ export interface CreatePDCCommandOptions {
   skipUnknown?: boolean;
 }
 
-export function createPDCCommand(options: CreatePDCCommandOptions) {
+export function getPDCCommand(options: GetPDCCommandOptions) {
   const {
     sdkPath,
     input,

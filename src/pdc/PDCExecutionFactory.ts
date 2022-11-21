@@ -30,8 +30,26 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
       return undefined;
     }
 
-    const { sdkPath, sourcePath, gamePath } = config;
-    const { strip, noCompress, verbose, quiet, skipUnknown } = definition;
+    const {
+      sdkPath: sdkPathConfig,
+      sourcePath: sourcePathConfig,
+      gamePath: gamePathConfig,
+    } = config;
+
+    const {
+      strip,
+      noCompress,
+      verbose,
+      quiet,
+      skipUnknown,
+      sdkPath: sdkPathDef,
+      sourcePath: sourcePathDef,
+      gamePath: gamePathDef,
+    } = definition;
+
+    const sdkPath = sdkPathDef ?? sdkPathConfig;
+    const sourcePath = sourcePathDef ?? sourcePathConfig;
+    const gamePath = gamePathDef ?? gamePathConfig;
 
     const execution = new vscode.CustomExecution(async () => {
       const runner = new PDCTaskRunner({

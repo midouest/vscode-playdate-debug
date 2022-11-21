@@ -1,16 +1,19 @@
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import { DebugType } from "../constants";
+import { DebugType, TaskType } from "../constants";
 import { ConfigurationResolver } from "../core";
-import { createPDCCommand } from "../pdc";
-import { createMacOSSimulatorCommand } from "../simulator";
-import { exec } from "../util";
+import { PDCTaskProvider } from "../pdc";
+import { SimulatorTaskProvider } from "../simulator";
+import { runTask } from "../util";
 
 @injectable()
 export class EditorContentsCommand {
   constructor(
-    @inject(ConfigurationResolver) private config: ConfigurationResolver
+    @inject(ConfigurationResolver) private config: ConfigurationResolver,
+    @inject(PDCTaskProvider) private pdcTaskProvider: PDCTaskProvider,
+    @inject(SimulatorTaskProvider)
+    private simulatorTaskProvider: SimulatorTaskProvider
   ) {}
 
   async execute(resource?: vscode.Uri, debug = false): Promise<void> {
@@ -27,17 +30,19 @@ export class EditorContentsCommand {
 
     const { sdkPath, outputPath } = config;
 
-    const pdc = createPDCCommand({
+    const pdcTask = await this.pdcTaskProvider.createTask({
+      type: TaskType.pdc,
       sdkPath,
-      input: sourcePath,
-      output: outputPath,
+      sourcePath,
+      gamePath: outputPath,
     });
-    await exec(pdc);
+    await runTask(pdcTask);
 
-    const simulator = createMacOSSimulatorCommand({
-      sdkPath,
+    const simulatorTask = await this.simulatorTaskProvider.createTask({
+      type: TaskType.simulator,
+      openGame: false,
     });
-    await exec(simulator);
+    await runTask(simulatorTask);
 
     const parentOptions = this.getParentOptions(debug);
     await vscode.debug.startDebugging(

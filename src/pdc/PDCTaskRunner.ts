@@ -1,7 +1,7 @@
 import { Chainable, OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec } from "../util";
 
-import { createPDCCommand, CreatePDCCommandOptions } from "./createPDCCommand";
+import { getPDCCommand, GetPDCCommandOptions } from "./getPDCCommand";
 
 /**
  * PDCTaskRunnerOptions contains extra properties asigned to the `pdc` task in
@@ -30,14 +30,14 @@ export class PDCTaskRunner extends Chainable implements TaskRunner {
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
     const pdcOptions = this.getPDCOptions();
-    const pdcCommand = createPDCCommand(pdcOptions);
+    const pdcCommand = getPDCCommand(pdcOptions);
 
     onMessage("Compiling...");
     onMessage(`> ${pdcCommand}`);
     await exec(pdcCommand);
   }
 
-  private getPDCOptions(): CreatePDCCommandOptions {
+  private getPDCOptions(): GetPDCCommandOptions {
     const {
       sdkPath,
       sourcePath,

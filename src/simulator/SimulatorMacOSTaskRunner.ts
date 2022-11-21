@@ -1,8 +1,8 @@
 import { Chainable, OnTaskRunnerMessage, TaskRunner } from "../core";
 import { exec } from "../util";
 
-import { createMacOSSimulatorCommand } from "./createMacOSSimulatorCommand";
 import { getKillSimulatorCommand } from "./getKillSimulatorCommand";
+import { getMacOSSimulatorCommand } from "./getMacOSSimulatorCommand";
 
 /**
  * SimulatorMacOSTaskRunnerOptions contains extra properties asigned to the
@@ -38,7 +38,7 @@ export class SimulatorMacOSTaskRunner extends Chainable implements TaskRunner {
     }
 
     onMessage("Starting Playdate Simulator...");
-    const command = createMacOSSimulatorCommand({
+    const command = getMacOSSimulatorCommand({
       sdkPath,
       openGamePath,
     });

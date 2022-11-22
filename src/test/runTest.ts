@@ -9,6 +9,9 @@ import {
 } from "./testUtils";
 
 async function main() {
+  const args = process.argv.slice(2);
+  const ci = args.length > 0 && args[0] === "--ci";
+
   try {
     // The folder containing the Extension Manifest package.json
     // Passed to `--extensionDevelopmentPath`
@@ -29,6 +32,8 @@ async function main() {
       extensionTestsEnv: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         PLAYDATE_SDK_PATH: playdateSDKPath,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        CI: ci ? "true" : undefined,
       },
     });
   } catch (err) {

@@ -1,6 +1,8 @@
 import { injectable, unmanaged } from "inversify";
 import * as vscode from "vscode";
 
+import { showErrorMessage } from "../util";
+
 import { TaskExecutionFactory } from "./TaskExecutionFactory";
 
 /**
@@ -25,15 +27,26 @@ export class TaskProvider implements vscode.TaskProvider {
     @unmanaged() private options: TaskProviderOptions
   ) {}
 
-  provideTasks(): vscode.ProviderResult<vscode.Task[]> {
-    return this.createTask().then((task) => [task]);
+  async provideTasks(): Promise<vscode.Task[]> {
+    try {
+      const task = await this.createTask();
+      return [task];
+    } catch (err) {
+      showErrorMessage(err);
+      throw err;
+    }
   }
 
-  resolveTask(
+  async resolveTask(
     task: vscode.Task,
     _token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.Task> {
-    return this.createTask(task.definition, task.scope);
+  ): Promise<vscode.Task> {
+    try {
+      return await this.createTask(task.definition, task.scope);
+    } catch (err) {
+      showErrorMessage(err);
+      throw err;
+    }
   }
 
   async createTask(

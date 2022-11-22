@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 
 import { ActivateResult, ExtensionModule } from "../ExtensionModule";
 import { Command } from "../constants";
+import { showErrorMessage } from "../util";
 
 import { EditorContentsCommand } from "./EditorContentsCommand";
 
@@ -32,11 +33,15 @@ export class EditorModule extends ExtensionModule {
   }
 
   private createHandler(debug = false): EditorContentsCommandHandler {
-    return (file: vscode.Uri | undefined) => {
+    return async (file: vscode.Uri | undefined) => {
       const editorContentsCommand = this.container.resolve(
         EditorContentsCommand
       );
-      return editorContentsCommand.execute(file, debug);
+      try {
+        await editorContentsCommand.execute(file, debug);
+      } catch (err) {
+        showErrorMessage(err);
+      }
     };
   }
 }

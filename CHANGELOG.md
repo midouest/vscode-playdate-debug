@@ -5,15 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.8.1] - 2022-11-21
-
-### Changed
-
-- Run editor contents command does not proceed if build/run tasks fail
-- Problem matchers correctly match absolute file paths
-- Display error messages from commands and tasks
-
-## [1.8.0] - 2022-11-21
+## [1.8.2] - 2022-11-21
 
 ### Added
 
@@ -21,8 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Example project links in readme link to project folders
+- Display error messages from commands and tasks
 - Completely disable proxy server when disableWorkarounds is enabled
+
+### Fixed
+
+- Problem matchers correctly match absolute file paths
+- Example project links in readme link to project folders
 
 ## [1.7.0] - 2022-11-19
 
@@ -33,8 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Completely disable proxy server for SDK version 1.13.0 or later
-- Check PLAYDATE_SDK_PATH environment variable before checking ~.Playdate/config
 - Streamlined quick setup in README
+
+### Fixed
+
+- Check PLAYDATE_SDK_PATH environment variable before checking ~.Playdate/config
 
 ## [1.6.0] - 2022-11-18
 
@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Only check for ~/.Playdate on macOS
 - Automatically disable workarounds in SDK version 1.13.0 and later
 - Extension now waits up to 5 seconds to connect by default
+
+### Fixed
+
 - PDC task sends correct CLI flag for skipUnknown setting
 - PDC task always sends -sdkpath
 
@@ -55,24 +58,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Increased maximum number of retries and retry timeout when attempting to connect to the Playdate Simulator. The extension now waits up to 4 seconds to connect by default.
 - Log task commands before they are executed
+
+### Fixed
+
+- Increased maximum number of retries and retry timeout when attempting to connect to the Playdate Simulator. The extension now waits up to 4 seconds to connect by default.
 - Log proxied messages before attempting to decode them
 - Fixed an issue where the extension incorrectly decoded debug adapter messages sent from Visual Studio Code v1.73+
 
 ## [1.5.0] - 2022-10-13
 
-### Changed
-
-- Increased maximum number of retries when attempting to connect to the Playdate Simulator
-
 ### Added
 
 - Retry timeout and maximum number of retries are configurable in launch.json
 
+### Fixed
+
+- Increased maximum number of retries when attempting to connect to the Playdate Simulator
+
 ## [1.4.1] - 2022-09-28
 
-### Changed
+### Fixed
 
 - Fix incorrect settings in docs
 
@@ -83,14 +89,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ensure VSCode UI resets when restarting after an exception occurs
 - `pdc` task supports strip, no-compress, verbose, quiet and skip-unknown flags
 
-### Changed
-
-- `pdc` task compiles to fully-resolved `.pdx` path instead of output folder
-- Account for `pdc` binary path with spaces - [@NobleRobot](https://github.com/NobleRobot)
-
 ### Removed
 
 - `timeout` property on `pdc` task
+
+### Fixed
+
+- `pdc` task compiles to fully-resolved `.pdx` path instead of output folder
+- Account for `pdc` binary path with spaces - [@NobleRobot](https://github.com/NobleRobot)
 
 ## [1.3.2] - 2022-08-01
 
@@ -118,13 +124,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.3] - 2022-07-01
 
-### Changed
+### Fixed
 
 - Fix invalid variable attributes error when debugging
 
 ## [1.1.2] - 2022-04-23
 
-### Changed
+### Fixed
 
 - Fix segmentation fault in `playdate-simulator` task on Ubuntu
 
@@ -155,13 +161,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `playdate-simulator` task opens the game by default on macOS
+
+### Removed
+
+- Removed `timeout` property on `playdate-simulator` task
+
+### Fixed
+
 - Fix issue where debugger did not stop after Simulator was closed
 - Debugger proxy server waits for simulator port before starting
-- Removed `timeout` property on `playdate-simulator` task
 
 ## [0.2.3] - 2022-03-22
 
-### Changed
+### Fixed
 
 - Fix issue where debugger only connected the first time
 
@@ -169,13 +181,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Workaround bugs in the Playdate Simulator debug adapter protocol by proxying messages to/from VS Code
 - Moved task configuration properties to workspace settings under `playdate-debug` section
 - Remove waitFor configuration in tasks in favor of simple timeouts
 
+### Fixed
+
+- Workaround bugs in the Playdate Simulator debug adapter protocol by proxying messages to/from VS Code
+
 ## [0.2.1] - 2022-03-20
 
-### Changed
+### Fixed
 
 - Fix simulator task not accepting extra task properties
 - Fix simulator task starting before game bundle was created
@@ -188,7 +203,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pdc task type
 - playdate-simulator task type
 
-### Changed
+### Fixed
 
 - fix preLaunchTask not running when using playdate debugger
 

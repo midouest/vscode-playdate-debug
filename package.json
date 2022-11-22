@@ -178,7 +178,8 @@
           "file": 2,
           "line": 3,
           "message": 4
-        }
+        },
+        "fileLocation": "absolute"
       },
       {
         "name": "pdc-external",
@@ -187,7 +188,8 @@
           "regexp": "^(error):\\s+(.*)$",
           "severity": 1,
           "message": 2
-        }
+        },
+        "fileLocation": "absolute"
       }
     ],
     "debuggers": [

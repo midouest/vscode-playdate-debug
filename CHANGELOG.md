@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Run editor contents command does not proceed if build/run tasks fail
+- Problem matchers correctly match absolute file paths
 
 ## [1.8.0] - 2022-11-21
 

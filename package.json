@@ -124,6 +124,7 @@
     "taskDefinitions": [
       {
         "type": "pdc",
+        "when": "customExecutionSupported",
         "properties": {
           "strip": {
             "type": "boolean",
@@ -154,6 +155,7 @@
       },
       {
         "type": "playdate-simulator",
+        "when": "shellExecutionSupported && customExecutionSupported",
         "properties": {
           "openGame": {
             "type": "boolean",

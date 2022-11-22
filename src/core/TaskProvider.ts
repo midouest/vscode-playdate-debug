@@ -1,9 +1,8 @@
 import { injectable, unmanaged } from "inversify";
 import * as vscode from "vscode";
 
-import { showErrorMessage } from "../util";
-
 import { TaskExecutionFactory } from "./TaskExecutionFactory";
+import { TaskProviderErrorTerminal } from "./TaskProviderErrorTerminal";
 
 /**
  * TaskProviderOptions stores the vscode Task options that a TaskProvider uses
@@ -28,24 +27,24 @@ export class TaskProvider implements vscode.TaskProvider {
   ) {}
 
   async provideTasks(): Promise<vscode.Task[]> {
+    let task: vscode.Task;
     try {
-      const task = await this.createTask();
-      return [task];
+      task = await this.createTask();
     } catch (err) {
-      showErrorMessage(err);
-      throw err;
+      task = this.createErrorTask(err);
     }
+    return [task];
   }
 
   async resolveTask(
     task: vscode.Task,
     _token: vscode.CancellationToken
   ): Promise<vscode.Task> {
+    const { definition, scope } = task;
     try {
-      return await this.createTask(task.definition, task.scope);
+      return await this.createTask(definition, scope);
     } catch (err) {
-      showErrorMessage(err);
-      throw err;
+      return this.createErrorTask(err, definition, scope);
     }
   }
 
@@ -57,6 +56,28 @@ export class TaskProvider implements vscode.TaskProvider {
     const definition = maybeDefinition ?? { type };
     const scope = maybeScope ?? vscode.TaskScope.Workspace;
     const execution = await this.factory.createExecution(definition, scope);
+
+    return new vscode.Task(
+      definition,
+      scope,
+      name,
+      source,
+      execution,
+      problemMatchers
+    );
+  }
+
+  protected createErrorTask(
+    error: unknown,
+    maybeDefinition?: vscode.Task["definition"],
+    maybeScope?: vscode.Task["scope"]
+  ): vscode.Task {
+    const { type, problemMatchers, name, source } = this.options;
+    const definition = maybeDefinition ?? { type };
+    const scope = maybeScope ?? vscode.TaskScope.Workspace;
+    const execution = new vscode.CustomExecution(() =>
+      Promise.resolve(new TaskProviderErrorTerminal(error))
+    );
 
     return new vscode.Task(
       definition,

@@ -38,7 +38,8 @@
     "lint": "eslint",
     "pretest": "rimraf out && yarn compile && yarn lint && yarn typecheck",
     "test": "node ./out/test/runTest.js",
-    "test:coverage": "c8 yarn test"
+    "test:coverage": "c8 yarn test",
+    "test:ci": "CI=true yarn test:coverage"
   },
   "dependencies": {
     "inversify": "^6.0.1",

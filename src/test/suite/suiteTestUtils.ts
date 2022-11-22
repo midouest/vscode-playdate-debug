@@ -71,17 +71,15 @@ export async function cleanPDXBundles(): Promise<void> {
   await Promise.all(removeAll);
 }
 
-export function testSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test;
-export function testSDK(
-  title: string,
+export function withSDK(fn: Mocha.AsyncFunc): Mocha.AsyncFunc;
+export function withSDK(
   platform: NodeJS.Platform,
   fn: Mocha.AsyncFunc
-): Mocha.Test;
-export function testSDK(
-  title: string,
+): Mocha.AsyncFunc;
+export function withSDK(
   fnOrPlatform: Mocha.AsyncFunc | NodeJS.Platform,
   fnOrUndefined?: Mocha.AsyncFunc
-): Mocha.Test {
+): Mocha.AsyncFunc {
   let fn: Mocha.AsyncFunc;
   let platform: NodeJS.Platform | undefined;
   if (typeof fnOrPlatform === "string" && fnOrUndefined !== undefined) {
@@ -90,11 +88,10 @@ export function testSDK(
   } else if (typeof fnOrPlatform !== "string") {
     fn = fnOrPlatform;
   }
-
   const sdkPath = getPlaydateSDKFixturePath();
   const binPath = path.resolve(sdkPath, "bin");
 
-  return test(title, async function () {
+  return async function () {
     if (platform && process.platform !== platform) {
       this.skip();
     }
@@ -106,26 +103,17 @@ export function testSDK(
     }
 
     return fn.bind(this)();
-  });
+  };
 }
 
-function skipTestSDK(title: string, fn: Mocha.AsyncFunc): Mocha.Test;
-function skipTestSDK(
-  title: string,
-  platform: NodeJS.Platform,
-  fn: Mocha.AsyncFunc
-): Mocha.Test;
-function skipTestSDK(
-  title: string,
-  _fnOrPlatform: Mocha.AsyncFunc | NodeJS.Platform,
-  _fnOrUndefined?: Mocha.AsyncFunc
-): Mocha.Test {
-  return test(title, function () {
-    this.skip();
-  });
+export function skipCI(fn: Mocha.AsyncFunc): Mocha.AsyncFunc {
+  return function () {
+    if (process.env.CI) {
+      this.skip();
+    }
+    return fn.bind(this)();
+  };
 }
-
-testSDK.skip = skipTestSDK;
 
 export function assertTaskFixture(
   task: vscode.Task,

@@ -33,10 +33,10 @@ jobs:
         run: ./scripts/installSDKLinux.sh
         if: runner.os == 'Linux'
       - name: Run tests (Linux)
-        run: xvfb-run -a yarn test:coverage
+        run: xvfb-run -a yarn test:ci
         if: runner.os == 'Linux'
       - name: Run tests
-        run: yarn test:coverage
+        run: yarn test:ci
         if: runner.os != 'Linux'
       - name: Publish
         if: success() && startsWith(github.ref, 'refs/tags/') && matrix.os == 'ubuntu-latest'

@@ -12,8 +12,9 @@ import {
   findTask,
   getFixturePath,
   killSimulator,
-  testSDK,
+  withSDK,
   waitForFileToExist,
+  skipCI,
 } from "./suiteTestUtils";
 
 suite("Combined Test Suite", () => {
@@ -27,21 +28,27 @@ suite("Combined Test Suite", () => {
     defaultBuildTask = task;
   });
 
-  testSDK.skip("basic-configuration", "darwin", async () => {
-    const execution = await vscode.tasks.executeTask(defaultBuildTask);
-    assert.ok(execution);
+  test(
+    "basic-configuration",
+    withSDK(
+      "darwin",
+      skipCI(async () => {
+        const execution = await vscode.tasks.executeTask(defaultBuildTask);
+        assert.ok(execution);
 
-    const pdxPath = path.resolve(
-      getFixturePath("basic-configuration"),
-      "Basic Configuration.pdx"
-    );
-    await waitForFileToExist(pdxPath);
+        const pdxPath = path.resolve(
+          getFixturePath("basic-configuration"),
+          "Basic Configuration.pdx"
+        );
+        await waitForFileToExist(pdxPath);
 
-    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-    assert.ok(socket);
-    socket.destroy();
+        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
+        assert.ok(socket);
+        socket.destroy();
 
-    await killSimulator();
-    await cleanPDXBundles();
-  });
+        await killSimulator();
+        await cleanPDXBundles();
+      })
+    )
+  );
 });

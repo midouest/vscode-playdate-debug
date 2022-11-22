@@ -5,7 +5,12 @@ import * as vscode from "vscode";
 import { SIMULATOR_DEBUG_PORT, TaskType } from "../../constants";
 import { waitForDebugPort } from "../../util";
 
-import { assertTaskFixture, killSimulator, testSDK } from "./suiteTestUtils";
+import {
+  assertTaskFixture,
+  killSimulator,
+  skipCI,
+  withSDK,
+} from "./suiteTestUtils";
 
 suite("Playdate Simulator Test Suite", () => {
   let playdateSimulatorTask: vscode.Task;
@@ -22,14 +27,20 @@ suite("Playdate Simulator Test Suite", () => {
     );
   });
 
-  testSDK.skip("playdate-simulator-configuration", "darwin", async () => {
-    const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
-    assert.ok(execution);
+  test(
+    "playdate-simulator-configuration",
+    withSDK(
+      "darwin",
+      skipCI(async () => {
+        const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
+        assert.ok(execution);
 
-    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-    assert.ok(socket);
-    socket.destroy();
+        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
+        assert.ok(socket);
+        socket.destroy();
 
-    await killSimulator();
-  });
+        await killSimulator();
+      })
+    )
+  );
 });

@@ -9,7 +9,7 @@ import {
   assertTaskFixture,
   cleanPDXBundles,
   getFixturePath,
-  testSDK,
+  withSDK,
   waitForFileToExist,
 } from "./suiteTestUtils";
 
@@ -35,12 +35,15 @@ suite("PDC Test Suite", () => {
   ] as const;
 
   testCases.forEach(([fixture, bundleName], index) => {
-    testSDK(fixture, async () => {
-      const execution = await vscode.tasks.executeTask(tasks[index]);
-      assert.ok(execution);
+    test(
+      fixture,
+      withSDK(async () => {
+        const execution = await vscode.tasks.executeTask(tasks[index]);
+        assert.ok(execution);
 
-      const pdxPath = path.resolve(getFixturePath(fixture), bundleName);
-      await waitForFileToExist(pdxPath);
-    });
+        const pdxPath = path.resolve(getFixturePath(fixture), bundleName);
+        await waitForFileToExist(pdxPath);
+      })
+    );
   });
 });

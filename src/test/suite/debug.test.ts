@@ -10,27 +10,34 @@ import {
   cleanPDXBundles,
   getFixturePath,
   killSimulator,
-  testSDK,
+  withSDK,
   waitForFileToExist,
+  skipCI,
 } from "./suiteTestUtils";
 
 suite("Debug Test Suite", () => {
-  testSDK.skip("basic-configuration", "darwin", async () => {
-    await vscode.commands.executeCommand("workbench.action.debug.start");
+  test(
+    "basic-configuration",
+    withSDK(
+      "darwin",
+      skipCI(async () => {
+        await vscode.commands.executeCommand("workbench.action.debug.start");
 
-    const pdxPath = path.resolve(
-      getFixturePath("basic-configuration"),
-      "Basic Configuration.pdx"
-    );
-    await waitForFileToExist(pdxPath);
+        const pdxPath = path.resolve(
+          getFixturePath("basic-configuration"),
+          "Basic Configuration.pdx"
+        );
+        await waitForFileToExist(pdxPath);
 
-    const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-    assert.ok(socket);
-    socket.destroy();
+        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
+        assert.ok(socket);
+        socket.destroy();
 
-    await vscode.commands.executeCommand("workbench.action.debug.stop");
+        await vscode.commands.executeCommand("workbench.action.debug.stop");
 
-    await killSimulator();
-    await cleanPDXBundles();
-  });
+        await killSimulator();
+        await cleanPDXBundles();
+      })
+    )
+  );
 });

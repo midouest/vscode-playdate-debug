@@ -65,6 +65,12 @@ export class ConfigurationResolver {
     let outputPath = outputPathConfig;
     if (!outputPath) {
       outputPath = workspaceRoot;
+    } else if (
+      typeof outputPath === "object" &&
+      "sdkFolder" in outputPath &&
+      outputPath.sdkFolder === "simulatorGames"
+    ) {
+      outputPath = path.resolve(sdkPath, "Disk/Games");
     }
     outputPath = toAbsolute(workspaceRoot, outputPath);
 
@@ -74,7 +80,7 @@ export class ConfigurationResolver {
         const pdxInfo = await readPDXInfo(sourcePath);
         productName = pdxInfo.name;
       } catch (err) {
-        // noop
+        productName = path.basename(sourcePath);
       }
     }
 

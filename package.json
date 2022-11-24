@@ -106,9 +106,25 @@
           "scope": "resource"
         },
         "playdate-debug.outputPath": {
-          "type": "string",
+          "type": [
+            "string",
+            "object"
+          ],
           "description": "Output directory for the compiled game bundle. By default, the extension will use the workspace root folder as the output path.",
-          "scope": "resource"
+          "scope": "resource",
+          "properties": {
+            "sdkFolder": {
+              "type": "string",
+              "enum": [
+                "simulatorGames"
+              ],
+              "enumDescriptions": [
+                "Write the compiled game bundle to the /Disk/Games directory in the Playdate SDK. This will cause the Playdate Simulator to display the game in the list of installed games"
+              ],
+              "description": "Use a special folder within the Playdate SDK as the output path",
+              "default": false
+            }
+          }
         },
         "playdate-debug.productName": {
           "type": "string",

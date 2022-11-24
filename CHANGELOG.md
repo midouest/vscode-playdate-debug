@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `incrementBuildNumber` configuration option on `pdc` task will auto-increment the pdxinfo buildNumber property after each successful build
+- `outputPath` workspace configuration option can be used to output to `/Disk/Games` folder in the Playdate SDK
 
 ## [1.8.2] - 2022-11-21
 

@@ -127,6 +127,11 @@
         "type": "pdc",
         "when": "customExecutionSupported",
         "properties": {
+          "incrementBuildNumber": {
+            "type": "boolean",
+            "description": "Increment the buildNumber property in pdxinfo after each build",
+            "default": false
+          },
           "strip": {
             "type": "boolean",
             "description": "Strip debug symbols",

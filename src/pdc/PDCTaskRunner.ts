@@ -1,4 +1,10 @@
-import { OnTaskRunnerMessage, TaskRunner } from "../core";
+import {
+  incrementBuildNumber,
+  OnTaskRunnerMessage,
+  readPDXInfo,
+  TaskRunner,
+  writePDXInfo,
+} from "../core";
 import { exec } from "../util";
 
 import { getPDCCommand, GetPDCCommandOptions } from "./getPDCCommand";
@@ -16,7 +22,7 @@ export interface PDCTaskRunnerOptions {
   verbose?: boolean;
   quiet?: boolean;
   skipUnknown?: boolean;
-  main?: string;
+  incrementBuildNumber?: boolean;
 }
 
 /**
@@ -33,6 +39,15 @@ export class PDCTaskRunner implements TaskRunner {
     onMessage("Compiling...");
     onMessage(`> ${pdcCommand}`);
     await exec(pdcCommand);
+
+    if (!this.options.incrementBuildNumber) {
+      return;
+    }
+
+    const { sourcePath } = this.options;
+    const pdxInfo = await readPDXInfo(sourcePath);
+    incrementBuildNumber(pdxInfo);
+    await writePDXInfo(pdxInfo, sourcePath);
   }
 
   private getPDCOptions(): GetPDCCommandOptions {

@@ -5,10 +5,10 @@ import * as vscode from "vscode";
 
 import { toAbsolute } from "../util";
 
-import { getPDXInfo } from "./getPDXInfo";
-import { getSDKPath } from "./getSDKPath";
-import { getSDKVersion } from "./getSDKVersion";
 import { getWorkspaceRoot } from "./getWorkspaceRoot";
+import { readPDXInfo } from "./readPDXInfo";
+import { readSDKPath } from "./readSDKPath";
+import { readSDKVersion } from "./readSDKVersion";
 
 export interface Configuration {
   sdkPath: string;
@@ -49,12 +49,12 @@ export class ConfigurationResolver {
 
     let sdkPath = sdkPathConfig;
     if (!sdkPath) {
-      sdkPath = await getSDKPath();
+      sdkPath = await readSDKPath();
     } else {
       sdkPath = toAbsolute(workspaceRoot, sdkPath);
     }
 
-    const sdkVersion = await getSDKVersion(sdkPath);
+    const sdkVersion = await readSDKVersion(sdkPath);
 
     let sourcePath = sourcePathConfig;
     if (!sourcePath) {
@@ -71,7 +71,7 @@ export class ConfigurationResolver {
     let productName = productNameConfig;
     if (!productName) {
       try {
-        const pdxInfo = await getPDXInfo(sourcePath);
+        const pdxInfo = await readPDXInfo(sourcePath);
         productName = pdxInfo.name;
       } catch (err) {
         // noop

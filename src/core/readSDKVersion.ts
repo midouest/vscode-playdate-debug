@@ -1,7 +1,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
-export async function getSDKVersion(sdkPath: string): Promise<string> {
+export async function readSDKVersion(sdkPath: string): Promise<string> {
   const versionPath = path.resolve(sdkPath, "VERSION.txt");
   let version: string;
   try {

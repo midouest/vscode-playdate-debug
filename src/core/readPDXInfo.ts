@@ -1,22 +1,13 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
-/**
- * The pdxinfo metadata file is a simple key-value configuration format. Some of
- * the values are integers, but we don't attempt to convert any of the values to
- * their actual types.
- *
- * Currently only the name property is used.
- */
-export interface PDXInfo {
-  [key: string]: string;
-}
+import { PDXInfo } from "./PDXInfo";
 
 /**
- * getPDXInfo reads the metadata contained in the pdxinfo file in the source
+ * readPDXInfo reads the metadata contained in the pdxinfo file in the source
  * directory.
  */
-export async function getPDXInfo(sourcePath: string): Promise<PDXInfo> {
+export async function readPDXInfo(sourcePath: string): Promise<PDXInfo> {
   const infoPath = path.resolve(sourcePath, "pdxinfo");
   let infoText: string;
   try {

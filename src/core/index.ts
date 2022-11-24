@@ -5,3 +5,7 @@ export * from "./TaskProvider";
 export * from "./TaskRunner";
 export * from "./TaskRunnerTerminal";
 export * from "./getGamePathFromSource";
+export * from "./PDXInfo";
+export * from "./readPDXInfo";
+export * from "./writePDXInfo";
+export * from "./incrementBuildNumber";

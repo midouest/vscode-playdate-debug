@@ -45,6 +45,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
       sdkPath: sdkPathDef,
       sourcePath: sourcePathDef,
       gamePath: gamePathDef,
+      incrementBuildNumber,
     } = definition;
 
     const sdkPath = sdkPathDef ?? sdkPathConfig;
@@ -61,6 +62,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
         verbose,
         quiet,
         skipUnknown,
+        incrementBuildNumber,
       });
       return new TaskRunnerTerminal(runner);
     });

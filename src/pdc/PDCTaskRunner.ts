@@ -44,10 +44,14 @@ export class PDCTaskRunner implements TaskRunner {
       return;
     }
 
-    const { sourcePath } = this.options;
-    const pdxInfo = await readPDXInfo(sourcePath);
-    incrementBuildNumber(pdxInfo);
-    await writePDXInfo(pdxInfo, sourcePath);
+    try {
+      const { sourcePath } = this.options;
+      const pdxInfo = await readPDXInfo(sourcePath);
+      incrementBuildNumber(pdxInfo);
+      await writePDXInfo(pdxInfo, sourcePath);
+    } catch (err) {
+      // noop
+    }
   }
 
   private getPDCOptions(): GetPDCCommandOptions {

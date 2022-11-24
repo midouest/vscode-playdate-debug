@@ -4,10 +4,10 @@ import * as path from "path";
 import { PDXInfo } from "./PDXInfo";
 
 /**
- * getPDXInfo reads the metadata contained in the pdxinfo file in the source
+ * readPDXInfo reads the metadata contained in the pdxinfo file in the source
  * directory.
  */
-export async function getPDXInfo(sourcePath: string): Promise<PDXInfo> {
+export async function readPDXInfo(sourcePath: string): Promise<PDXInfo> {
   const infoPath = path.resolve(sourcePath, "pdxinfo");
   let infoText: string;
   try {

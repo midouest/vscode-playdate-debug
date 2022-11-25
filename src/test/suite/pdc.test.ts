@@ -4,6 +4,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 
 import { TaskType } from "../../constants";
+import { runTask } from "../../util";
 
 import {
   assertTaskFixture,
@@ -38,8 +39,7 @@ suite("PDC Test Suite", () => {
     test(
       fixture,
       withSDK(async () => {
-        const execution = await vscode.tasks.executeTask(tasks[index]);
-        assert.ok(execution);
+        await runTask(tasks[index]);
 
         const pdxPath = path.resolve(getFixturePath(fixture), bundleName);
         await waitForFileToExist(pdxPath);

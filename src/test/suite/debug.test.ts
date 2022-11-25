@@ -1,10 +1,6 @@
-import * as assert from "assert";
 import * as path from "path";
 
 import * as vscode from "vscode";
-
-import { SIMULATOR_DEBUG_PORT } from "../../constants";
-import { waitForDebugPort } from "../../util";
 
 import {
   cleanPDXBundles,
@@ -13,6 +9,7 @@ import {
   withSDK,
   waitForFileToExist,
   skipCI,
+  waitForSimulatorDebugPort,
 } from "./suiteTestUtils";
 
 suite("Debug Test Suite", () => {
@@ -29,10 +26,7 @@ suite("Debug Test Suite", () => {
         );
         await waitForFileToExist(pdxPath);
 
-        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-        assert.ok(socket);
-        socket.destroy();
-
+        await waitForSimulatorDebugPort();
         await vscode.commands.executeCommand("workbench.action.debug.stop");
 
         await killSimulator();

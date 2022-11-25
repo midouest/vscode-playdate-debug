@@ -3,9 +3,6 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { SIMULATOR_DEBUG_PORT } from "../../constants";
-import { waitForDebugPort } from "../../util";
-
 import {
   assertTaskFixture,
   cleanPDXBundles,
@@ -15,6 +12,7 @@ import {
   withSDK,
   waitForFileToExist,
   skipCI,
+  waitForSimulator,
 } from "./suiteTestUtils";
 
 suite("Combined Test Suite", () => {
@@ -31,7 +29,6 @@ suite("Combined Test Suite", () => {
   test(
     "basic-configuration",
     withSDK(
-      "darwin",
       skipCI(async () => {
         const execution = await vscode.tasks.executeTask(defaultBuildTask);
         assert.ok(execution);
@@ -42,10 +39,7 @@ suite("Combined Test Suite", () => {
         );
         await waitForFileToExist(pdxPath);
 
-        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-        assert.ok(socket);
-        socket.destroy();
-
+        await waitForSimulator();
         await killSimulator();
         await cleanPDXBundles();
       })

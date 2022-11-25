@@ -2,13 +2,13 @@ import * as assert from "assert";
 
 import * as vscode from "vscode";
 
-import { SIMULATOR_DEBUG_PORT, TaskType } from "../../constants";
-import { waitForDebugPort } from "../../util";
+import { TaskType } from "../../constants";
 
 import {
   assertTaskFixture,
   killSimulator,
   skipCI,
+  waitForSimulator,
   withSDK,
 } from "./suiteTestUtils";
 
@@ -30,15 +30,11 @@ suite("Playdate Simulator Test Suite", () => {
   test(
     "playdate-simulator-configuration",
     withSDK(
-      "darwin",
       skipCI(async () => {
         const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
         assert.ok(execution);
 
-        const socket = await waitForDebugPort(SIMULATOR_DEBUG_PORT);
-        assert.ok(socket);
-        socket.destroy();
-
+        await waitForSimulator();
         await killSimulator();
       })
     )

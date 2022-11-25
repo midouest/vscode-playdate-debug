@@ -7,8 +7,9 @@ import * as util from "util";
 import * as glob from "glob";
 import * as vscode from "vscode";
 
+import { SIMULATOR_DEBUG_PORT } from "../../constants";
 import { getKillSimulatorCommand } from "../../simulator";
-import { exec } from "../../util";
+import { exec, wait, waitForDebugPort } from "../../util";
 import {
   getPlaydateSDKFixturePath,
   getWorkspaceFixturesPath,
@@ -29,12 +30,82 @@ export function getFixtureWorkspaceFolder(
   return vscode.workspace.getWorkspaceFolder(uri);
 }
 
+async function assertRunningUnix(
+  processName: string,
+  expectedCount: number
+): Promise<void> {
+  const command = `ps -x | grep -v grep | grep -c "${processName}"`;
+  let count = 0;
+  try {
+    const { stdout } = await exec(command);
+    count = parseInt(stdout.trim());
+  } catch (err) {
+    // noop
+  }
+  assert.strictEqual(count, expectedCount);
+}
+
+export async function assertSimulatorRunning(expectedCount = 1): Promise<void> {
+  const { platform } = process;
+
+  if (platform === "darwin") {
+    await assertRunningUnix("Playdate Simulator.app", expectedCount);
+    return;
+  }
+
+  if (platform === "win32") {
+    const { stdout } = await exec("tasklist");
+    const matches = Array.from(stdout.matchAll(/PlaydateSimulator\.exe/));
+    const count = matches.length;
+    assert.strictEqual(count, expectedCount);
+    return;
+  }
+
+  if (platform === "linux") {
+    await assertRunningUnix("PlaydateSimulator", expectedCount);
+    return;
+  }
+
+  throw new Error(`Unsupported platform: ${platform}`);
+}
+
+export async function assertExists(filePath: string): Promise<void> {
+  try {
+    await fsPromises.access(filePath, fs.constants.F_OK);
+  } catch (err) {
+    throw new Error(`${filePath} does not exist`);
+  }
+}
+
+interface WaitForSimulatorOptions {
+  maxRetries: number;
+  retryTimeout: number;
+}
+
+export async function waitForSimulator(
+  options: Partial<WaitForSimulatorOptions> = {}
+): Promise<void> {
+  const maxRetries = options.maxRetries ?? 25;
+  const retryTimeout = options.retryTimeout ?? 200;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      await assertSimulatorRunning();
+      return;
+    } catch (err) {
+      // noop
+    }
+    await wait(retryTimeout);
+  }
+  const elapsed = maxRetries * retryTimeout;
+  throw new Error(`Playdate Simulator was not running after ${elapsed}ms`);
+}
+
 export async function waitForFileToExist(
   watchFile: string,
   timeout = 2000
 ): Promise<void> {
   try {
-    await fsPromises.access(watchFile, fs.constants.F_OK);
+    await assertExists(watchFile);
     return;
   } catch (err) {
     // noop
@@ -134,4 +205,8 @@ export function findTask(
   name: string
 ): vscode.Task | undefined {
   return tasks.find((task) => task.name === name);
+}
+
+export async function waitForSimulatorDebugPort(): Promise<void> {
+  await waitForDebugPort(SIMULATOR_DEBUG_PORT);
 }

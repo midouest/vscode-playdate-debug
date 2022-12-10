@@ -4,7 +4,7 @@ export async function runTask(task: vscode.Task): Promise<void> {
   const execution = await vscode.tasks.executeTask(task);
 
   return new Promise((resolve, reject) => {
-    vscode.tasks.onDidEndTaskProcess((event) => {
+    const disposable = vscode.tasks.onDidEndTaskProcess((event) => {
       const { execution: eventExecution, exitCode } = event;
       if (eventExecution !== execution) {
         return;
@@ -15,6 +15,8 @@ export async function runTask(task: vscode.Task): Promise<void> {
       } else {
         resolve();
       }
+
+      disposable.dispose();
     });
   });
 }

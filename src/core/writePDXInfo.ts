@@ -32,7 +32,9 @@ export async function writePDXInfo(
   const lines = [];
   for (const key of keyOrder) {
     const value = pdxInfo[key];
-    lines.push(`${key}=${value}`);
+    if (value !== undefined) {
+      lines.push(`${key}=${value}`);
+    }
   }
 
   const infoPath = path.resolve(sourcePath, "pdxinfo");

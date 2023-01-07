@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+### Changed
+
+- Run/debug editor contents command stops running playdate debug sessions
+
 ### Fixed
 
 - `incrementBuildNumber` only outputs keys that are present in the original file

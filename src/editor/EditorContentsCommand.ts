@@ -11,13 +11,17 @@ import { PDCTaskProvider } from "../pdc";
 import { SimulatorTaskProvider } from "../simulator";
 import { runTask } from "../util";
 
+import { DebugSessionRegistry } from "./DebugSessionRegistry";
+
 @injectable()
 export class EditorContentsCommand {
   constructor(
     @inject(ConfigurationResolver) private config: ConfigurationResolver,
     @inject(PDCTaskProvider) private pdcTaskProvider: PDCTaskProvider,
     @inject(SimulatorTaskProvider)
-    private simulatorTaskProvider: SimulatorTaskProvider
+    private simulatorTaskProvider: SimulatorTaskProvider,
+    @inject(DebugSessionRegistry)
+    private debugSessionRegistry: DebugSessionRegistry
   ) {}
 
   async execute(resource?: vscode.Uri, debug = false): Promise<void> {
@@ -59,6 +63,8 @@ export class EditorContentsCommand {
     if (debugUnsupported) {
       return;
     }
+
+    await this.debugSessionRegistry.stopAll();
 
     const parentOptions = this.getParentOptions(debug);
     await vscode.debug.startDebugging(

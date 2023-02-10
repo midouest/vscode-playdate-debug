@@ -10,15 +10,17 @@ import { Fixer } from "./Fixer";
 
 @injectable()
 export class FixerFactory {
-  async buildFixer(): Promise<Fixer> {
-    const enabledFixes = [
-      new FixLaunchResponse(),
-      new FixRestartResponse(),
-      new FixSupportsRestartRequest(),
-      new FixSupportsTerminateRequest(),
-      new FixVariablesReference(),
-      new FixBreakpointVerified(),
-    ];
+  async buildFixer(disableWorkarounds = false): Promise<Fixer> {
+    const enabledFixes = disableWorkarounds
+      ? []
+      : [
+          new FixLaunchResponse(),
+          new FixRestartResponse(),
+          new FixSupportsRestartRequest(),
+          new FixSupportsTerminateRequest(),
+          new FixVariablesReference(),
+          new FixBreakpointVerified(),
+        ];
     const fixer = new Fixer(enabledFixes);
     return Promise.resolve(fixer);
   }

@@ -3,10 +3,7 @@ import * as net from "net";
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
-import {
-  CROSS_PLATFORM_DEBUG_SDK_VERSION,
-  SIMULATOR_DEBUG_PORT,
-} from "../constants";
+import { CROSS_PLATFORM_DEBUG_SDK_VERSION } from "../constants";
 import { ConfigurationResolver } from "../core";
 import { WaitForDebugPortOptions } from "../util";
 
@@ -35,8 +32,12 @@ export class ProxyDebugAdapterDescriptorFactory
   ): Promise<vscode.DebugAdapterDescriptor | undefined> {
     this.server?.close();
 
-    const { disableWorkarounds, logDebugAdapter, retryTimeout, maxRetries } =
-      session.configuration;
+    const {
+      disableWorkarounds: disableWorkaroundsConfig,
+      logDebugAdapter,
+      retryTimeout,
+      maxRetries,
+    } = session.configuration;
 
     const config = await this.config.resolve(session.workspaceFolder);
     if (!config) {
@@ -44,9 +45,9 @@ export class ProxyDebugAdapterDescriptorFactory
     }
 
     const { sdkVersion } = config;
-    if (sdkVersion >= CROSS_PLATFORM_DEBUG_SDK_VERSION || disableWorkarounds) {
-      return new vscode.DebugAdapterServer(SIMULATOR_DEBUG_PORT);
-    }
+    const disableWorkarounds =
+      disableWorkaroundsConfig ||
+      sdkVersion >= CROSS_PLATFORM_DEBUG_SDK_VERSION;
 
     const options: Partial<WaitForDebugPortOptions> = {};
     if (retryTimeout !== undefined) {
@@ -56,7 +57,7 @@ export class ProxyDebugAdapterDescriptorFactory
       options.maxRetries = maxRetries;
     }
 
-    const fixer = await this.fixerFactory.buildFixer();
+    const fixer = await this.fixerFactory.buildFixer(disableWorkarounds);
     const logger = this.loggerFactory.createLogger(logDebugAdapter);
 
     this.server = await ProxyServer.start(fixer, logger, options);

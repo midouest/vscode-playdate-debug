@@ -8,8 +8,8 @@ mock-debug.txt
 *.vsix
 .DS_Store
 *.pdx
-fixtures/PlaydateSDK-1.12.3/*
-!fixtures/PlaydateSDK-1.12.3/VERSION.txt
+fixtures/PlaydateSDK-*/*
+!fixtures/PlaydateSDK-*/VERSION.txt
 .nyc_output/
 coverage/
 tmp/

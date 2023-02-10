@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Extended default timeout to 10 seconds
+
 ### Fixed
 
 - Extension waits for simulator to launch before connecting to debug adapter in SDK 1.13

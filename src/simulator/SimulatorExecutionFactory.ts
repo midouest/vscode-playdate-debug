@@ -8,9 +8,9 @@ import {
   ConfigurationResolver,
 } from "../core";
 
+import { SimulatorLinuxTaskRunner } from "./SimulatorLinuxTaskRunner";
 import { SimulatorMacOSTaskRunner } from "./SimulatorMacOSTaskRunner";
 import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";
-import { createSimulatorExecutionLinux } from "./createSimulatorExecutionLinux";
 
 /**
  * The SimulatorExecutionFactory is responsible for configuring the VS Code
@@ -67,11 +67,14 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       }
 
       case "linux": {
-        return await createSimulatorExecutionLinux({
+        const runner = new SimulatorLinuxTaskRunner({
           sdkPath,
           openGamePath,
           kill,
         });
+        return new vscode.CustomExecution(
+          async () => new TaskRunnerTerminal(runner)
+        );
       }
 
       default:

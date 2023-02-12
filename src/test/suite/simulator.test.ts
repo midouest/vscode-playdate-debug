@@ -15,7 +15,7 @@ import {
 suite("Playdate Simulator Test Suite", () => {
   let playdateSimulatorTask: vscode.Task;
 
-  suiteSetup(async () => {
+  setup(async () => {
     const tasks = await vscode.tasks.fetchTasks({ type: TaskType.simulator });
     assert.strictEqual(tasks.length, 3);
     assertTaskFixture(tasks[0], "basic-configuration");

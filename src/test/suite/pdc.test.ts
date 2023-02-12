@@ -17,7 +17,7 @@ import {
 suite("PDC Test Suite", () => {
   let tasks: vscode.Task[];
 
-  suiteSetup(async () => {
+  setup(async () => {
     tasks = await vscode.tasks.fetchTasks({ type: TaskType.pdc });
     assert.strictEqual(tasks.length, 3);
     assertTaskFixture(tasks[0], "basic-configuration");
@@ -25,7 +25,7 @@ suite("PDC Test Suite", () => {
     assertTaskFixture(tasks[2], "pdc-configuration");
   });
 
-  suiteTeardown(async () => {
+  teardown(async () => {
     await cleanPDXBundles();
   });
 

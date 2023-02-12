@@ -18,7 +18,7 @@ import {
 suite("Combined Test Suite", () => {
   let defaultBuildTask: vscode.Task;
 
-  suiteSetup(async () => {
+  setup(async () => {
     const tasks = await vscode.tasks.fetchTasks();
     const task = findTask(tasks, "Playdate: Build and Run");
     assert.ok(task);

@@ -16,20 +16,15 @@ import {
 } from "./suiteTestUtils";
 
 suite("Combined Test Suite", () => {
-  let defaultBuildTask: vscode.Task;
-
-  setup(async () => {
-    const tasks = await vscode.tasks.fetchTasks();
-    const task = findTask(tasks, "Playdate: Build and Run");
-    assert.ok(task);
-    assertTaskFixture(task, "basic-configuration");
-    defaultBuildTask = task;
-  });
-
   test(
     "basic-configuration",
     withSDK(
       skipCI(async () => {
+        const tasks = await vscode.tasks.fetchTasks();
+        const defaultBuildTask = findTask(tasks, "Playdate: Build and Run");
+        assert.ok(defaultBuildTask);
+        assertTaskFixture(defaultBuildTask, "basic-configuration");
+
         const execution = await vscode.tasks.executeTask(defaultBuildTask);
         assert.ok(execution);
 

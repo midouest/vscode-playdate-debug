@@ -13,24 +13,22 @@ import {
 } from "./suiteTestUtils";
 
 suite("Playdate Simulator Test Suite", () => {
-  let playdateSimulatorTask: vscode.Task;
-
-  setup(async () => {
-    const tasks = await vscode.tasks.fetchTasks({ type: TaskType.simulator });
-    assert.strictEqual(tasks.length, 3);
-    assertTaskFixture(tasks[0], "basic-configuration");
-    assertTaskFixture(tasks[1], "override-configuration");
-
-    playdateSimulatorTask = assertTaskFixture(
-      tasks[2],
-      "playdate-simulator-configuration"
-    );
-  });
-
   test(
     "playdate-simulator-configuration",
     withSDK(
       skipCI(async () => {
+        const tasks = await vscode.tasks.fetchTasks({
+          type: TaskType.simulator,
+        });
+        assert.strictEqual(tasks.length, 3);
+        assertTaskFixture(tasks[0], "basic-configuration");
+        assertTaskFixture(tasks[1], "override-configuration");
+
+        const playdateSimulatorTask = assertTaskFixture(
+          tasks[2],
+          "playdate-simulator-configuration"
+        );
+
         const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
         assert.ok(execution);
 

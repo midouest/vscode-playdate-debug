@@ -49,7 +49,7 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
     const simulatorPath = quote(
       path.resolve(sdkPath, "bin", "PlaydateSimulator")
     );
-    const args = openGamePath ? [openGamePath] : [];
+    const args = openGamePath ? [quote(openGamePath)] : [];
 
     const command = `${simulatorPath} ${args.join(" ")}`;
 

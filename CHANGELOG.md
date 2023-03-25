@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+### Changed
+
+- Show error message on windows and linux when Playdate SDK version does not support debugging
+
 ### Fixed
 
 - The Linux simulator task correctly handles game paths with spaces

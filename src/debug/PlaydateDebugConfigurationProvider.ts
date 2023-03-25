@@ -3,6 +3,7 @@ import * as path from "path";
 import { inject, injectable } from "inversify";
 import * as vscode from "vscode";
 
+import { CROSS_PLATFORM_DEBUG_SDK_VERSION } from "../constants";
 import { ConfigurationResolver } from "../core";
 
 /**
@@ -32,7 +33,19 @@ export class PlaydateDebugConfigurationProvider
       sdkPath,
       sourcePath: sourcePathConfig,
       gamePath: gamePathConfig,
+      sdkVersion,
     } = workspaceConfig;
+
+    if (
+      process.platform !== "darwin" &&
+      sdkVersion < CROSS_PLATFORM_DEBUG_SDK_VERSION
+    ) {
+      throw new Error(
+        `The Playdate debugger is not supported on Playdate SDK version ${sdkVersion}.
+         Please upgrade to Playdate SDK version ${CROSS_PLATFORM_DEBUG_SDK_VERSION}
+         or later.`
+      );
+    }
 
     let sourcePath = sourcePathConfig;
     let gamePath = gamePathConfig;

@@ -19,8 +19,8 @@ export class ProxyServer {
   private simulatorSocket!: net.Socket;
 
   private constructor(
-    private fixer: Fixer,
-    private logger: DebugAdapterLogger
+    private fixer: Fixer | null,
+    private logger: DebugAdapterLogger | null
   ) {}
 
   /**
@@ -30,8 +30,8 @@ export class ProxyServer {
    * on the socket server to accept incoming connections from VS Code.
    */
   static async start(
-    fixer: Fixer,
-    logger: DebugAdapterLogger,
+    fixer: Fixer | null,
+    logger: DebugAdapterLogger | null,
     options: Partial<WaitForDebugPortOptions> = {}
   ): Promise<net.Server> {
     const proxy = new ProxyServer(fixer, logger);
@@ -67,9 +67,14 @@ export class ProxyServer {
   }
 
   private proxyClientData(dataIn: Buffer): void {
-    this.logger.log(dataIn.toString(), "client");
-    const messages = decodeMessages(dataIn);
+    this.logger?.log(dataIn.toString(), "client");
 
+    if (!this.fixer) {
+      this.simulatorSocket?.write(dataIn);
+      return;
+    }
+
+    const messages = decodeMessages(dataIn);
     for (const message of messages) {
       const response = this.fixer.onProxyClient(message);
       if (response) {
@@ -83,9 +88,14 @@ export class ProxyServer {
   }
 
   private proxySimulatorData(dataIn: Buffer): void {
-    this.logger.log(dataIn.toString(), "server");
-    const messages = decodeMessages(dataIn);
+    this.logger?.log(dataIn.toString(), "server");
 
+    if (!this.fixer) {
+      this.clientSocket?.write(dataIn);
+      return;
+    }
+
+    const messages = decodeMessages(dataIn);
     for (const message of messages) {
       this.fixer.onProxyServer(message);
 

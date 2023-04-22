@@ -35,3 +35,6 @@ export enum Command {
 
 /** The Playdate SDK version that supports debugging on all platforms */
 export const CROSS_PLATFORM_DEBUG_SDK_VERSION = "1.13.0";
+
+/** The Playdate SDK version that introduced breaking changes for path handling on Windows */
+export const WIN32_FORWARD_SLASH_SDK_VERSION = "1.13.5";

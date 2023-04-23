@@ -1,5 +1,6 @@
 import * as path from "path";
 
+import { WIN32_FORWARD_SLASH_SDK_VERSION } from "../constants";
 import { quote } from "../util";
 
 export interface GetPDCCommandOptions {
@@ -11,32 +12,33 @@ export interface GetPDCCommandOptions {
   verbose?: boolean;
   quiet?: boolean;
   skipUnknown?: boolean;
+  sdkVersion: string;
 }
 
 export function getPDCCommand(options: GetPDCCommandOptions) {
+  let { input } = options;
   const {
     sdkPath,
-    input,
     output,
     strip,
     noCompress,
     verbose,
     quiet,
     skipUnknown,
+    sdkVersion,
   } = options;
 
   const executable = quote(path.join(sdkPath, "bin", "pdc"));
 
-  const requiredArgs = [
-    "-sdkpath",
-    quote(sdkPath),
-    quote(input),
-    quote(output),
-  ];
-
   const optionalArgs = [];
   if (input.endsWith(".lua")) {
     optionalArgs.push("--main");
+    if (
+      process.platform === "win32" &&
+      sdkVersion >= WIN32_FORWARD_SLASH_SDK_VERSION
+    ) {
+      input = input.split(path.win32.sep).join(path.posix.sep);
+    }
   }
   if (strip) {
     optionalArgs.push("--strip");
@@ -53,6 +55,13 @@ export function getPDCCommand(options: GetPDCCommandOptions) {
   if (skipUnknown) {
     optionalArgs.push("--skip-unknown");
   }
+
+  const requiredArgs = [
+    "-sdkpath",
+    quote(sdkPath),
+    quote(input),
+    quote(output),
+  ];
 
   const args = optionalArgs.concat(requiredArgs);
   return `${executable} ${args.join(" ")}`;

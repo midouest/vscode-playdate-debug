@@ -34,6 +34,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
       sdkPath: sdkPathConfig,
       sourcePath: sourcePathConfig,
       gamePath: gamePathConfig,
+      sdkVersion,
     } = config;
 
     const {
@@ -63,6 +64,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
         quiet,
         skipUnknown,
         incrementBuildNumber,
+        sdkVersion,
       });
       return new TaskRunnerTerminal(runner);
     });

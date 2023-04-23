@@ -18,22 +18,9 @@ Unofficial Playdate debug extension for Visual Studio Code on macOS, Windows and
 
 ## Quick setup
 
-### Run and debug current Lua file
-
-The extension can build, run and debug the current Lua file in the editor with zero configuration as long the [automatic configuration conditions](#automatic) are met.
-
-When you open a Lua file in the editor after installing the extension, you will now see a
-launch icon and dropdown menu in the editor toolbar. Clicking the launch icon or selecting an item from the dropdown menu will build and run the current Lua file in the Playdate Simulator. The "Debug file in Playdate Simulator" option will enable breakpoints to be hit.
-
-![Tooltip](/images/tooltip.png)
-
-![Dropdown Menu](/images/dropdown-menu.png)
-
 ### Tasks and debug launcher
 
-A [cookiecutter project template](https://github.com/midouest/cookiecutter-playdate) is available for quickly generating new projects from the command line.
-
-Alternatively, you can copy the following `.vscode/tasks.json` and `.vscode/launch.json` configuration:
+Copy the following `.vscode/tasks.json` and `.vscode/launch.json` configuration:
 
 ```json
 // .vscode/tasks.json
@@ -79,7 +66,28 @@ Alternatively, you can copy the following `.vscode/tasks.json` and `.vscode/laun
 }
 ```
 
+The debugger can be launched from the "Run and Debug view" by selecting the "Playdate: Debug" launch configuration and then clicking the "Start Debugging" button.
+
+![Run and Debug view](/images/run-and-debug-view.png)
+
+![Start Debugging](/images/start-debugging.png)
+
+A [cookiecutter project template](https://github.com/midouest/cookiecutter-playdate) is available for quickly generating new projects with the above configuration from the command line.
+
 See the [basic configuration example](/fixtures/workspace/basic-configuration) for more information.
+
+### Run and debug current Lua file
+
+**NOTE:** The "Run/Debug file in Playdate Simulator" command is intended to be a shortcut for prototyping and learning. It is recommended to use the [task and launch configuration above](#tasks-and-debug-launcher).
+
+The extension can build, run and debug the current Lua file in the editor with zero configuration as long the [automatic configuration conditions](#automatic) are met.
+
+When you open a Lua file in the editor after installing the extension, you will now see a
+launch icon and dropdown menu in the editor toolbar. Clicking the launch icon or selecting an item from the dropdown menu will build and run the current Lua file in the Playdate Simulator. The "Debug file in Playdate Simulator" option will enable breakpoints to be hit.
+
+![Tooltip](/images/tooltip.png)
+
+![Dropdown Menu](/images/dropdown-menu.png)
 
 ## Configuration
 

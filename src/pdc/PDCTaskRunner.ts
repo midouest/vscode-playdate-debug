@@ -37,22 +37,20 @@ export class PDCTaskRunner implements TaskRunner {
     const pdcOptions = this.getPDCOptions();
     const pdcCommand = getPDCCommand(pdcOptions);
 
+    if (this.options.incrementBuildNumber) {
+      try {
+        const { sourcePath } = this.options;
+        const pdxInfo = await readPDXInfo(sourcePath);
+        incrementBuildNumber(pdxInfo);
+        await writePDXInfo(pdxInfo, sourcePath);
+      } catch (err) {
+        // noop
+      }
+    }
+
     onMessage("Compiling...");
     onMessage(`> ${pdcCommand}`);
     await exec(pdcCommand);
-
-    if (!this.options.incrementBuildNumber) {
-      return;
-    }
-
-    try {
-      const { sourcePath } = this.options;
-      const pdxInfo = await readPDXInfo(sourcePath);
-      incrementBuildNumber(pdxInfo);
-      await writePDXInfo(pdxInfo, sourcePath);
-    } catch (err) {
-      // noop
-    }
   }
 
   private getPDCOptions(): GetPDCCommandOptions {

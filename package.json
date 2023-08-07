@@ -245,6 +245,30 @@
                 "default": 50
               }
             }
+          },
+          "attach": {
+            "properties": {
+              "logDebugAdapter": {
+                "type": "boolean",
+                "description": "True if the extension should log messages to and from the Playdate Simulator while debugging",
+                "default": false
+              },
+              "disableWorkarounds": {
+                "type": "boolean",
+                "description": "True if the extension should disable workarounds for issues communicating between VSCode and the Playdate Simulator",
+                "default": false
+              },
+              "retryTimeout": {
+                "type": "number",
+                "description": "Time in milliseconds to wait between attempts to connect to the Playdate Simulator",
+                "default": 200
+              },
+              "maxRetries": {
+                "type": "number",
+                "description": "Maximum number of times the extension will attempt to connect to the Playdate Simulator before aborting",
+                "default": 50
+              }
+            }
           }
         },
         "initialConfigurations": [

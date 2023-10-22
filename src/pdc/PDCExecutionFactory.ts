@@ -31,6 +31,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
     }
 
     const {
+      workspaceRoot,
       sdkPath: sdkPathConfig,
       sourcePath: sourcePathConfig,
       gamePath: gamePathConfig,
@@ -55,6 +56,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
 
     const execution = new vscode.CustomExecution(async () => {
       const runner = new PDCTaskRunner({
+        workspaceRoot,
         sdkPath,
         sourcePath,
         gamePath,

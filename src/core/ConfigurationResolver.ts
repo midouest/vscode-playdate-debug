@@ -11,6 +11,7 @@ import { readSDKPath } from "./readSDKPath";
 import { readSDKVersion } from "./readSDKVersion";
 
 export interface Configuration {
+  workspaceRoot: string;
   sdkPath: string;
   sdkVersion: string;
   sourcePath: string;
@@ -88,6 +89,7 @@ export class ConfigurationResolver {
     const gamePath = productPath + ".pdx";
 
     return {
+      workspaceRoot,
       sdkPath,
       sdkVersion,
       sourcePath,

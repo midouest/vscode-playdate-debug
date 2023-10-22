@@ -14,6 +14,7 @@ import { getPDCCommand, GetPDCCommandOptions } from "./getPDCCommand";
  * `tasks.json`.
  */
 export interface PDCTaskRunnerOptions {
+  workspaceRoot: string;
   sdkPath: string;
   sourcePath: string;
   gamePath: string;
@@ -34,6 +35,7 @@ export class PDCTaskRunner implements TaskRunner {
   constructor(private options: PDCTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
+    const { workspaceRoot } = this.options;
     const pdcOptions = this.getPDCOptions();
     const pdcCommand = getPDCCommand(pdcOptions);
 
@@ -50,7 +52,7 @@ export class PDCTaskRunner implements TaskRunner {
 
     onMessage("Compiling...");
     onMessage(`> ${pdcCommand}`);
-    await exec(pdcCommand);
+    await exec(pdcCommand, { cwd: workspaceRoot });
   }
 
   private getPDCOptions(): GetPDCCommandOptions {

@@ -44,6 +44,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
       verbose,
       quiet,
       skipUnknown,
+      libPath,
       sdkPath: sdkPathDef,
       sourcePath: sourcePathDef,
       gamePath: gamePathDef,
@@ -65,6 +66,7 @@ export class PDCExecutionFactory implements TaskExecutionFactory {
         verbose,
         quiet,
         skipUnknown,
+        libPath,
         incrementBuildNumber,
         sdkVersion,
       });

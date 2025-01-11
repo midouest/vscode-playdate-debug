@@ -170,6 +170,14 @@
             "type": "boolean",
             "description": "Skip unrecognized files instead of copying them to the pdx folder",
             "default": false
+          },
+          "libPath": {
+            "type": "array",
+            "description": "List of paths to additional libraries to include in the build",
+            "items": {
+              "type": "string"
+            },
+            "default": []
           }
         }
       },

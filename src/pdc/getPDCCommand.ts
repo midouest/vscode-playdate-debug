@@ -12,6 +12,7 @@ export interface GetPDCCommandOptions {
   verbose?: boolean;
   quiet?: boolean;
   skipUnknown?: boolean;
+  libPath?: string[];
   sdkVersion: string;
 }
 
@@ -25,6 +26,7 @@ export function getPDCCommand(options: GetPDCCommandOptions) {
     verbose,
     quiet,
     skipUnknown,
+    libPath,
     sdkVersion,
   } = options;
 
@@ -54,6 +56,11 @@ export function getPDCCommand(options: GetPDCCommandOptions) {
   }
   if (skipUnknown) {
     optionalArgs.push("--skip-unknown");
+  }
+  if (libPath) {
+    libPath.forEach((lib) => {
+      optionalArgs.push("--libpath", quote(lib));
+    });
   }
 
   const requiredArgs = [

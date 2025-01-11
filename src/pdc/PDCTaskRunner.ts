@@ -25,6 +25,7 @@ export interface PDCTaskRunnerOptions {
   skipUnknown?: boolean;
   incrementBuildNumber?: boolean;
   sdkVersion: string;
+  libPath?: string[];
 }
 
 /**
@@ -65,6 +66,7 @@ export class PDCTaskRunner implements TaskRunner {
       verbose,
       quiet,
       skipUnknown,
+      libPath,
       sdkVersion,
     } = this.options;
 
@@ -77,6 +79,7 @@ export class PDCTaskRunner implements TaskRunner {
       verbose,
       quiet,
       skipUnknown,
+      libPath,
       sdkVersion,
     };
   }

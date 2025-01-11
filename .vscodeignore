@@ -14,3 +14,10 @@ sampleWebWorkerWorkspace
 sampleWorkspace
 fixtures
 tmp
+coverage
+images
+scripts
+.github
+.husky
+.prettierignore
+.c8rc.json

@@ -58,9 +58,9 @@ export function getPDCCommand(options: GetPDCCommandOptions) {
     optionalArgs.push("--skip-unknown");
   }
   if (libPath) {
-    libPath.forEach((lib) => {
+    for (const lib of libPath) {
       optionalArgs.push("--libpath", quote(lib));
-    });
+    }
   }
 
   const requiredArgs = [

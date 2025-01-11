@@ -16,6 +16,7 @@ fixtures
 tmp
 coverage
 images
+!images/icon@2x.png
 scripts
 .github
 .husky

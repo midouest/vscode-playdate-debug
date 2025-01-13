@@ -13,5 +13,20 @@
 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
+  },
+
+  "extension-test-runner.debugOptions": {
+    "runtimeExecutable": "${execPath}",
+    "args": [
+      "${workspaceFolder}/fixtures/workspace/fixtures.code-workspace",
+      "--disable-extensions",
+      "--extensionDevelopmentPath=${workspaceFolder}",
+      "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+    ],
+    "env": {
+      "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK-1.12.3"
+    },
+    "outFiles": ["${workspaceFolder}/out/**/*.js"],
+    "preLaunchTask": "${defaultBuildTask}"
   }
 }

@@ -1,4 +1,4 @@
-import * as child_process from "child_process";
+import * as childProcess from "child_process";
 import * as path from "path";
 
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
@@ -32,7 +32,7 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
       onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);
-      } catch (err) {
+      } catch (_err) {
         // noop
       }
     }
@@ -42,7 +42,7 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
       if (result.stdout.length > 0) {
         return;
       }
-    } catch (err) {
+    } catch (_err) {
       // noop
     }
 
@@ -56,7 +56,7 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
     onMessage("Starting Playdate Simulator...");
     onMessage(`> ${command}`);
 
-    const child = child_process.spawn(simulatorPath, args, {
+    const child = childProcess.spawn(simulatorPath, args, {
       shell: true,
       detached: true,
       stdio: "ignore",

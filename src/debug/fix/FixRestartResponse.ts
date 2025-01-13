@@ -17,7 +17,6 @@ export class FixRestartResponse implements OnProxyClient, OnProxyServer {
       command: "restart",
       success: true,
       seq: this.simulatorSeq + 1,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       request_seq: message.seq,
     };
     this.simulatorSeqOffset += 1;

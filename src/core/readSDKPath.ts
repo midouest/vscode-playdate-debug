@@ -19,7 +19,7 @@ export async function readSDKPath(): Promise<string> {
   if (process.platform === "darwin") {
     try {
       sdkPath = await readSDKPathConfig();
-    } catch (err) {
+    } catch (_err) {
       // noop
     }
   }

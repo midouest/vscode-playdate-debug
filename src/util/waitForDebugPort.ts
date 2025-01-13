@@ -54,7 +54,7 @@ export async function waitForDebugPort(
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await connect(port, connectTimeout);
-    } catch (err) {
+    } catch (_err) {
       await wait(retryTimeout);
     }
   }

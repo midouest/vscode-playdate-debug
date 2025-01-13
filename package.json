@@ -7,7 +7,7 @@
   "icon": "images/icon@2x.png",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.64.0"
+    "vscode": "^1.96.0"
   },
   "categories": [
     "Debuggers"
@@ -25,47 +25,48 @@
     "src/**/*.ts": "eslint --fix"
   },
   "scripts": {
-    "prepare": "husky install",
-    "compile": "tsc -p ./",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --tsconfig=./tsconfig.json --external:vscode --format=cjs --platform=node --outfile=dist/extension.js",
-    "watch": "yarn esbuild-base --sourcemap --sources-content=false --watch",
-    "build": "yarn esbuild-base --sourcemap --sources-content=false",
-    "package": "vsce package",
-    "publish": "vsce publish",
-    "publish-pre-release": "vsce publish --pre-release",
-    "vscode:prepublish": "rimraf dist && yarn esbuild-base --minify",
-    "lint": "eslint",
-    "pretest": "rimraf out && yarn compile && yarn lint && yarn typecheck",
+    "vscode:prepublish": "yarn run package",
+    "compile": "yarn run check-types && yarn run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "yarn run check-types && yarn run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
     "test": "node ./out/test/runTest.js",
     "test:coverage": "c8 yarn test",
-    "test:ci": "yarn test:coverage --ci"
+    "test:ci": "yarn test:coverage --ci",
+    "prepare": "husky"
   },
   "dependencies": {
     "@vscode/vsce": "^2.15.0",
-    "inversify": "^6.0.1",
-    "reflect-metadata": "^0.1.13"
+    "inversify": "^6.2.1",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.0",
-    "@types/node": "^16.18.3",
-    "@types/vscode": "^1.64.0",
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "@vscode/test-electron": "^2.1.3",
-    "c8": "^7.12.0",
-    "esbuild": "^0.14.21",
-    "eslint": "^8.9.0",
-    "eslint-import-resolver-typescript": "^2.7.0",
-    "eslint-plugin-import": "^2.25.4",
-    "glob": "^7.2.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.3.7",
-    "mocha": "^9.2.0",
-    "prettier": "^2.6.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.5.5"
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "c8": "^10.1.3",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-import": "^2.31.0",
+    "glob": "^7.1.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "mocha": "^10.2.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
   },
   "main": "./dist/extension.js",
   "activationEvents": [

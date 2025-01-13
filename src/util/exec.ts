@@ -1,7 +1,7 @@
-import * as child_process from "child_process";
+import * as childProcess from "child_process";
 import * as util from "util";
 
-export const exec = util.promisify(child_process.exec);
+export const exec = util.promisify(childProcess.exec);
 
 export interface ExecError {
   stderr: string;

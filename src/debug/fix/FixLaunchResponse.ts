@@ -17,7 +17,6 @@ export class FixLaunchResponse implements OnProxyClient, OnProxyServer {
       command: "launch",
       success: true,
       seq: this.simulatorSeq + 1,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       request_seq: message.seq,
     };
     this.simulatorSeqOffset += 1;

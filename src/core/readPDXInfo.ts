@@ -12,7 +12,7 @@ export async function readPDXInfo(sourcePath: string): Promise<PDXInfo> {
   let infoText: string;
   try {
     infoText = await fs.readFile(infoPath, "utf-8");
-  } catch (err) {
+  } catch (_err) {
     throw new Error(`Could not read pdxinfo file at ${infoPath}`);
   }
   const infoLines = infoText.split("\n");

@@ -127,7 +127,7 @@ function decodeMessages(data: Buffer): any[] {
     let contentLength: number;
     try {
       contentLength = parseInt(contentLengthData, 10);
-    } catch (err) {
+    } catch (_err) {
       throw new Error(
         "Failed to decode message: Content-Length data must be an integer"
       );
@@ -140,7 +140,7 @@ function decodeMessages(data: Buffer): any[] {
 
     try {
       messages.push(JSON.parse(message));
-    } catch (err) {
+    } catch (_err) {
       throw new Error(
         "Failed to decode message: content must be in JSON format"
       );

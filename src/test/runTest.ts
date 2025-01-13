@@ -30,13 +30,11 @@ async function main() {
       extensionTestsPath,
       launchArgs: [fixturesCodeWorkspacePath, "--disable-extensions"],
       extensionTestsEnv: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         PLAYDATE_SDK_PATH: playdateSDKPath,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         CI: ci ? "true" : undefined,
       },
     });
-  } catch (err) {
+  } catch (_err) {
     console.error("Failed to run tests");
     process.exit(1);
   }

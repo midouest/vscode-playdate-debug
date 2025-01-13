@@ -41,7 +41,7 @@ export async function writePDXInfo(
   const data = lines.join("\n") + "\n";
   try {
     await fs.writeFile(infoPath, data);
-  } catch (err) {
+  } catch (_err) {
     throw new Error(`Could not write pdxinfo file at ${infoPath}`);
   }
 }

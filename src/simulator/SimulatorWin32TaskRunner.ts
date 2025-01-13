@@ -1,4 +1,4 @@
-import * as child_process from "child_process";
+import * as childProcess from "child_process";
 import * as path from "path";
 
 import { OnTaskRunnerMessage, TaskRunner } from "../core";
@@ -32,7 +32,7 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
       onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);
-      } catch (err) {
+      } catch (_err) {
         // noop
       }
     } else {
@@ -53,7 +53,7 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
     const args = openGamePath ? [quote(openGamePath)] : [];
     onMessage(`> ${simulatorPath} ${args.join(" ")}`);
 
-    const child = child_process.spawn(simulatorPath, args, {
+    const child = childProcess.spawn(simulatorPath, args, {
       shell: true,
       detached: true,
       stdio: "ignore",

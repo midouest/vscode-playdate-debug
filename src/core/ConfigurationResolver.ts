@@ -80,7 +80,7 @@ export class ConfigurationResolver {
       try {
         const pdxInfo = await readPDXInfo(sourcePath);
         productName = pdxInfo.name;
-      } catch (err) {
+      } catch (_err) {
         productName = path.basename(sourcePath);
       }
     }

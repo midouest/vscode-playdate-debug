@@ -4,7 +4,7 @@ import * as fsPromises from "fs/promises";
 import * as path from "path";
 import * as util from "util";
 
-import * as glob from "glob";
+import glob from "glob";
 import * as vscode from "vscode";
 
 import { SIMULATOR_DEBUG_PORT } from "../../constants";
@@ -23,7 +23,7 @@ export function getFixturePath(fixture: string): string {
 }
 
 export function getFixtureWorkspaceFolder(
-  fixture: string
+  fixture: string,
 ): vscode.WorkspaceFolder | undefined {
   const fixturePath = getFixturePath(fixture);
   const uri = vscode.Uri.file(fixturePath);
@@ -32,14 +32,14 @@ export function getFixtureWorkspaceFolder(
 
 async function assertRunningUnix(
   processName: string,
-  expectedCount: number
+  expectedCount: number,
 ): Promise<void> {
   const command = `ps -x | grep -v grep | grep -c "${processName}"`;
   let count = 0;
   try {
     const { stdout } = await exec(command);
     count = parseInt(stdout.trim());
-  } catch (err) {
+  } catch (_err) {
     // noop
   }
   assert.strictEqual(count, expectedCount);
@@ -72,7 +72,7 @@ export async function assertSimulatorRunning(expectedCount = 1): Promise<void> {
 export async function assertExists(filePath: string): Promise<void> {
   try {
     await fsPromises.access(filePath, fs.constants.F_OK);
-  } catch (err) {
+  } catch (_err) {
     throw new Error(`${filePath} does not exist`);
   }
 }
@@ -83,7 +83,7 @@ interface WaitForSimulatorOptions {
 }
 
 export async function waitForSimulator(
-  options: Partial<WaitForSimulatorOptions> = {}
+  options: Partial<WaitForSimulatorOptions> = {},
 ): Promise<void> {
   const maxRetries = options.maxRetries ?? 25;
   const retryTimeout = options.retryTimeout ?? 200;
@@ -91,7 +91,7 @@ export async function waitForSimulator(
     try {
       await assertSimulatorRunning();
       return;
-    } catch (err) {
+    } catch (_err) {
       // noop
     }
     await wait(retryTimeout);
@@ -102,12 +102,12 @@ export async function waitForSimulator(
 
 export async function waitForFileToExist(
   watchFile: string,
-  timeout = 2000
+  timeout = 2000,
 ): Promise<void> {
   try {
     await assertExists(watchFile);
     return;
-  } catch (err) {
+  } catch (_err) {
     // noop
   }
 
@@ -126,7 +126,7 @@ export async function waitForFileToExist(
         return;
       }
     }
-  } catch (err) {
+  } catch (_err) {
     throw new Error(`File at ${watchFile} did not exist after ${timeout}ms`);
   }
 }
@@ -137,7 +137,7 @@ export async function cleanPDXBundles(): Promise<void> {
   const matches = await asyncGlob(pattern);
 
   const removeAll = matches.map((match) =>
-    fsPromises.rm(match, { recursive: true, force: true })
+    fsPromises.rm(match, { recursive: true, force: true }),
   );
   await Promise.all(removeAll);
 }
@@ -145,11 +145,11 @@ export async function cleanPDXBundles(): Promise<void> {
 export function withSDK(fn: Mocha.AsyncFunc): Mocha.AsyncFunc;
 export function withSDK(
   platform: NodeJS.Platform,
-  fn: Mocha.AsyncFunc
+  fn: Mocha.AsyncFunc,
 ): Mocha.AsyncFunc;
 export function withSDK(
   fnOrPlatform: Mocha.AsyncFunc | NodeJS.Platform,
-  fnOrUndefined?: Mocha.AsyncFunc
+  fnOrUndefined?: Mocha.AsyncFunc,
 ): Mocha.AsyncFunc {
   let fn: Mocha.AsyncFunc;
   let platform: NodeJS.Platform | undefined;
@@ -169,7 +169,7 @@ export function withSDK(
 
     try {
       await fsPromises.access(binPath, fs.constants.F_OK);
-    } catch (err) {
+    } catch (_err) {
       this.skip();
     }
 
@@ -188,7 +188,7 @@ export function skipCI(fn: Mocha.AsyncFunc): Mocha.AsyncFunc {
 
 export function assertTaskFixture(
   task: vscode.Task,
-  fixture: string
+  fixture: string,
 ): vscode.Task {
   assert.ok(typeof task.scope === "object");
   assert.strictEqual(task.scope.name, fixture);
@@ -197,12 +197,16 @@ export function assertTaskFixture(
 
 export async function killSimulator(): Promise<void> {
   const killCommand = getKillSimulatorCommand();
-  await exec(killCommand);
+  try {
+    await exec(killCommand);
+  } catch (err) {
+    console.error("Error killing simulator: ", err);
+  }
 }
 
 export function findTask(
   tasks: vscode.Task[],
-  name: string
+  name: string,
 ): vscode.Task | undefined {
   return tasks.find((task) => task.name === name);
 }

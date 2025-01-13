@@ -1,7 +1,7 @@
 import * as path from "path";
 
-import * as glob from "glob";
-import * as Mocha from "mocha";
+import glob from "glob";
+import Mocha from "mocha";
 import "reflect-metadata";
 
 export function run(): Promise<void> {
@@ -32,7 +32,7 @@ export function run(): Promise<void> {
             resolve();
           }
         });
-      } catch (err) {
+      } catch (_err) {
         console.error(err);
         reject(err);
       }

@@ -46,7 +46,7 @@ export class PDCTaskRunner implements TaskRunner {
         const pdxInfo = await readPDXInfo(sourcePath);
         incrementBuildNumber(pdxInfo);
         await writePDXInfo(pdxInfo, sourcePath);
-      } catch (err) {
+      } catch (_err) {
         // noop
       }
     }

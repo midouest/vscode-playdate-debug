@@ -30,7 +30,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
       onMessage(`> ${killCommand}`);
       try {
         await exec(killCommand);
-      } catch (err) {
+      } catch (_err) {
         // noop
       }
     }

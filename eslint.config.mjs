@@ -1,6 +1,7 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
-import pluginImport from "eslint-plugin-import";
+import importPlugin from "eslint-plugin-import";
+import globals from "globals";
 
 export default [
   {
@@ -8,14 +9,29 @@ export default [
   },
   {
     plugins: {
-      "@typescript-eslint": typescriptEslint,
-      import: pluginImport,
+      "@typescript-eslint": typescriptEslintPlugin,
+      import: importPlugin,
     },
 
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 2022,
       sourceType: "module",
+      globals: {
+        ...globals.node,
+        ...globals.mocha,
+      },
+    },
+
+    settings: {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts"],
+      },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+        },
+      },
     },
 
     rules: {

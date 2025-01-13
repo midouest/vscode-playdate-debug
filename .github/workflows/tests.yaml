@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build extension
-        run: yarn build
+        run: yarn compile
       - name: Install PlaydateSDK (macOS)
         run: ./scripts/installSDKMacOS.sh
         if: runner.os == 'macOS'

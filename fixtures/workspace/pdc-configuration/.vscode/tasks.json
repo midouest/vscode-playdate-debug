@@ -11,7 +11,9 @@
       "noCompress": true,
       "verbose": true,
       "quiet": true,
-      "skipUnknown": true
+      "skipUnknown": true,
+      "incrementBuildNumber": true,
+      "libPath": ["/path/to/my/libs"]
     }
   ]
 }

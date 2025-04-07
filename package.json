@@ -1,7 +1,7 @@
 {
   "name": "playdate-debug",
   "displayName": "Playdate Debug",
-  "version": "1.18.1",
+  "version": "1.19.0",
   "publisher": "midouest",
   "description": "Unofficial Playdate debug extension for macOS, Windows and Ubuntu",
   "icon": "images/icon@2x.png",
@@ -195,6 +195,13 @@
             "type": "boolean",
             "description": "True if any running simulator processes should be killed before launching a new one. Defaults to false.",
             "default": false
+          },
+          "argv": {
+            "type": "array",
+            "description": "Additional launch arguments passed to the Playdate game",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

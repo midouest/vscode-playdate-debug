@@ -14,6 +14,7 @@ export interface SimulatorWin32TaskRunnerOptions {
   sdkPath: string;
   openGamePath?: string;
   kill?: boolean;
+  argv?: string[];
 }
 
 /**
@@ -24,7 +25,7 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
   constructor(private options: SimulatorWin32TaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
-    const { sdkPath, openGamePath, kill } = this.options;
+    const { sdkPath, openGamePath, kill, argv } = this.options;
 
     if (kill === true) {
       onMessage("Stopping Playdate Simulator...");
@@ -48,9 +49,18 @@ export class SimulatorWin32TaskRunner implements TaskRunner {
 
     onMessage("Starting Playdate Simulator...");
     const simulatorPath = quote(
-      path.resolve(sdkPath, "bin", "PlaydateSimulator.exe")
+      path.resolve(sdkPath, "bin", "PlaydateSimulator.exe"),
     );
-    const args = openGamePath ? [quote(openGamePath)] : [];
+    const args = [];
+    if (openGamePath) {
+      args.push(quote(openGamePath));
+
+      if (argv?.length) {
+        for (const arg of argv) {
+          args.push(quote(arg));
+        }
+      }
+    }
     onMessage(`> ${simulatorPath} ${args.join(" ")}`);
 
     const child = childProcess.spawn(simulatorPath, args, {

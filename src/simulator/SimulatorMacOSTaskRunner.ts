@@ -12,6 +12,7 @@ export interface SimulatorMacOSTaskRunnerOptions {
   sdkPath: string;
   openGamePath?: string;
   kill?: boolean;
+  argv?: string[];
 }
 
 /**
@@ -22,7 +23,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
   constructor(private options: SimulatorMacOSTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
-    const { sdkPath, openGamePath, kill } = this.options;
+    const { sdkPath, openGamePath, kill, argv } = this.options;
 
     if (kill === true) {
       onMessage("Stopping Playdate Simulator...");
@@ -39,6 +40,7 @@ export class SimulatorMacOSTaskRunner implements TaskRunner {
     const command = getMacOSSimulatorCommand({
       sdkPath,
       openGamePath,
+      argv,
     });
     onMessage(`> ${command}`);
 

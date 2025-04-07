@@ -14,6 +14,7 @@ export interface SimulatorLinuxTaskRunnerOptions {
   sdkPath: string;
   openGamePath?: string;
   kill?: boolean;
+  argv?: string[];
 }
 
 /**
@@ -24,7 +25,7 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
   constructor(private options: SimulatorLinuxTaskRunnerOptions) {}
 
   async run(onMessage: OnTaskRunnerMessage): Promise<void> {
-    const { sdkPath, openGamePath, kill } = this.options;
+    const { sdkPath, openGamePath, kill, argv } = this.options;
 
     if (kill === true) {
       onMessage("Stopping Playdate Simulator...");
@@ -47,9 +48,18 @@ export class SimulatorLinuxTaskRunner implements TaskRunner {
     }
 
     const simulatorPath = quote(
-      path.resolve(sdkPath, "bin", "PlaydateSimulator")
+      path.resolve(sdkPath, "bin", "PlaydateSimulator"),
     );
-    const args = openGamePath ? [quote(openGamePath)] : [];
+    const args = [];
+    if (openGamePath) {
+      args.push(quote(openGamePath));
+
+      if (argv?.length) {
+        for (const arg of argv) {
+          args.push(quote(arg));
+        }
+      }
+    }
 
     const command = `${simulatorPath} ${args.join(" ")}`;
 

@@ -8,7 +8,8 @@
       "problemMatcher": ["$pdc-external"],
       "label": "Playdate: Run",
       "openGame": false,
-      "kill": true
+      "kill": true,
+      "argv": ["easter", "egg"]
     }
   ]
 }

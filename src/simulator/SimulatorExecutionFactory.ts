@@ -20,12 +20,12 @@ import { SimulatorWin32TaskRunner } from "./SimulatorWin32TaskRunner";
 export class SimulatorExecutionFactory implements TaskExecutionFactory {
   constructor(
     @inject(ConfigurationResolver)
-    private config: ConfigurationResolver
+    private config: ConfigurationResolver,
   ) {}
 
   async createExecution(
     definition: vscode.TaskDefinition,
-    scope: vscode.WorkspaceFolder | vscode.TaskScope
+    scope: vscode.WorkspaceFolder | vscode.TaskScope,
   ): Promise<TaskExecution | undefined> {
     const config = await this.config.resolve(scope);
     if (!config) {
@@ -37,6 +37,7 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
       kill,
       sdkPath: sdkPathDef,
       gamePath: gamePathDef,
+      argv,
     } = definition;
     const { sdkPath: sdkPathConfig, gamePath: gamePathConfig } = config;
     const sdkPath = sdkPathDef ?? sdkPathConfig;
@@ -49,9 +50,10 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
           sdkPath,
           openGamePath,
           kill,
+          argv,
         });
         return new vscode.CustomExecution(
-          async () => new TaskRunnerTerminal(runner)
+          async () => new TaskRunnerTerminal(runner),
         );
       }
 
@@ -60,9 +62,10 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
           sdkPath,
           openGamePath,
           kill,
+          argv,
         });
         return new vscode.CustomExecution(
-          async () => new TaskRunnerTerminal(runner)
+          async () => new TaskRunnerTerminal(runner),
         );
       }
 
@@ -71,15 +74,16 @@ export class SimulatorExecutionFactory implements TaskExecutionFactory {
           sdkPath,
           openGamePath,
           kill,
+          argv,
         });
         return new vscode.CustomExecution(
-          async () => new TaskRunnerTerminal(runner)
+          async () => new TaskRunnerTerminal(runner),
         );
       }
 
       default:
         throw new Error(
-          `error: platform '${process.platform}' is not supported`
+          `error: platform '${process.platform}' is not supported`,
         );
     }
   }

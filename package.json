@@ -195,6 +195,13 @@
             "type": "boolean",
             "description": "True if any running simulator processes should be killed before launching a new one. Defaults to false.",
             "default": false
+          },
+          "argv": {
+            "type": "array",
+            "description": "Additional launch arguments passed to the Playdate game",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

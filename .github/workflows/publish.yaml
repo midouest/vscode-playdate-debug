@@ -49,7 +49,21 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Determine release type
+        id: release_type
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Version: $VERSION"
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          echo "Minor: $MINOR"
+          if [ $((MINOR % 2)) -eq 1 ]; then
+            echo "Publishing as pre-release"
+            echo "prerelease_flag=--pre-release" >> $GITHUB_OUTPUT
+          else
+            echo "Publishing as stable release"
+            echo "prerelease_flag=" >> $GITHUB_OUTPUT
+          fi
       - name: Package extension
         run: npx vsce package --yarn
       - name: Publish to VSCode Marketplace
-        run: npx vsce publish --yarn -p ${{ secrets.VSCE_PAT }}
+        run: npx vsce publish --yarn ${{ steps.release_type.outputs.prerelease_flag }} -p ${{ secrets.VSCE_PAT }}

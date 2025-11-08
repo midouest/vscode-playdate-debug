@@ -63,7 +63,7 @@ jobs:
             echo "Publishing as stable release"
             echo "prerelease_flag=" >> $GITHUB_OUTPUT
           fi
-      - name: Package extension
-        run: npx vsce package --yarn
       - name: Publish to VSCode Marketplace
         run: npx vsce publish --yarn ${{ steps.release_type.outputs.prerelease_flag }} -p ${{ secrets.VSCE_PAT }}
+      - name: Publish to Open VSX Registry
+        run: npx ovsx publish --yarn ${{ steps.release_type.outputs.prerelease_flag }} -p ${{ secrets.OVSX_PAT }}

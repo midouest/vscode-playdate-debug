@@ -53,10 +53,3 @@ jobs:
         run: npx vsce package --yarn
       - name: Publish to VSCode Marketplace
         run: npx vsce publish --yarn -p ${{ secrets.VSCE_PAT }}
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          files: playdate-debug-*.vsix
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

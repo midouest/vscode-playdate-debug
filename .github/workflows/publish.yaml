@@ -49,7 +49,7 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Package extension
-        run: npx vsce package --yarn
       - name: Publish to VSCode Marketplace
         run: npx vsce publish --yarn -p ${{ secrets.VSCE_PAT }}
+      - name: Publish to Open VSX Registry
+        run: npx ovsx publish --yarn -p ${{ secrets.OVSX_PAT }}

@@ -21,7 +21,6 @@ import {
   withSDK,
   waitForFileToExist,
   getFixtureWorkspaceFolder,
-  skipCI,
 } from "./suiteTestUtils";
 
 suite("PDC Test Suite", () => {
@@ -71,35 +70,33 @@ suite("PDC Test Suite", () => {
 
   test(
     "pdc-configuration",
-    withSDK(
-      skipCI(async () => {
-        const fixture = "pdc-configuration";
-        const index = 2;
+    withSDK(async () => {
+      const fixture = "pdc-configuration";
+      const index = 2;
 
-        const tasks = await vscode.tasks.fetchTasks({ type: TaskType.pdc });
-        assert.strictEqual(tasks.length, 3);
-        assertTaskFixture(tasks[0], "basic-configuration");
-        assertTaskFixture(tasks[1], "override-configuration");
-        assertTaskFixture(tasks[index], fixture);
+      const tasks = await vscode.tasks.fetchTasks({ type: TaskType.pdc });
+      assert.strictEqual(tasks.length, 3);
+      assertTaskFixture(tasks[0], "basic-configuration");
+      assertTaskFixture(tasks[1], "override-configuration");
+      assertTaskFixture(tasks[index], fixture);
 
-        const { sourcePath } = await resolveConfig(fixture);
-        const originalPDXInfo = await readPDXInfo(sourcePath);
-        assert.strictEqual(originalPDXInfo.buildNumber, "1");
+      const { sourcePath } = await resolveConfig(fixture);
+      const originalPDXInfo = await readPDXInfo(sourcePath);
+      assert.strictEqual(originalPDXInfo.buildNumber, "1");
 
-        await runTask(tasks[index]);
+      await runTask(tasks[index]);
 
-        const pdxPath = path.resolve(
-          getFixturePath(fixture),
-          "PDC Configuration.pdx",
-        );
-        await waitForFileToExist(pdxPath);
+      const pdxPath = path.resolve(
+        getFixturePath(fixture),
+        "PDC Configuration.pdx",
+      );
+      await waitForFileToExist(pdxPath);
 
-        const pdxInfo = await readPDXInfo(sourcePath);
-        assert.strictEqual(pdxInfo.buildNumber, "2");
+      const pdxInfo = await readPDXInfo(sourcePath);
+      assert.strictEqual(pdxInfo.buildNumber, "2");
 
-        await cleanPDXBundles();
-        await writePDXInfo(originalPDXInfo, sourcePath);
-      }),
-    ),
+      await cleanPDXBundles();
+      await writePDXInfo(originalPDXInfo, sourcePath);
+    }),
   );
 });

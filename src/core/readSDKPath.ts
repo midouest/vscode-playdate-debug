@@ -27,7 +27,7 @@ export async function readSDKPath(): Promise<string> {
   if (!sdkPath) {
     throw new Error(
       "Could not find the Playdate SDK. " +
-        "Please ensure that the PlaydateSDK is installed and the PLAYDATE_SDK_PATH environment variable is set"
+        "Please ensure that the PlaydateSDK is installed and the PLAYDATE_SDK_PATH environment variable is set",
     );
   }
 

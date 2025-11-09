@@ -17,12 +17,12 @@ export class PlaydateDebugConfigurationProvider
 {
   constructor(
     @inject(ConfigurationResolver)
-    private config: ConfigurationResolver
+    private config: ConfigurationResolver,
   ) {}
 
   async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
-    config: vscode.DebugConfiguration
+    config: vscode.DebugConfiguration,
   ): Promise<vscode.DebugConfiguration | undefined | null> {
     const workspaceConfig = await this.config.resolve(folder);
     if (!workspaceConfig) {
@@ -43,7 +43,7 @@ export class PlaydateDebugConfigurationProvider
       throw new Error(
         `The Playdate debugger is not supported on Playdate SDK version ${sdkVersion}.
          Please upgrade to Playdate SDK version ${CROSS_PLATFORM_DEBUG_SDK_VERSION}
-         or later.`
+         or later.`,
       );
     }
 

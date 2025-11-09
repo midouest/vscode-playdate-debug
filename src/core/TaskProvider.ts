@@ -23,7 +23,7 @@ export interface TaskProviderOptions {
 export class TaskProvider implements vscode.TaskProvider {
   constructor(
     @unmanaged() private factory: TaskExecutionFactory,
-    @unmanaged() private options: TaskProviderOptions
+    @unmanaged() private options: TaskProviderOptions,
   ) {}
 
   async provideTasks(): Promise<vscode.Task[]> {
@@ -38,7 +38,7 @@ export class TaskProvider implements vscode.TaskProvider {
 
   async resolveTask(
     task: vscode.Task,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): Promise<vscode.Task> {
     const { definition, scope } = task;
     try {
@@ -50,7 +50,7 @@ export class TaskProvider implements vscode.TaskProvider {
 
   async createTask(
     maybeDefinition?: vscode.Task["definition"],
-    maybeScope?: vscode.Task["scope"]
+    maybeScope?: vscode.Task["scope"],
   ): Promise<vscode.Task> {
     const { type, problemMatchers, name, source } = this.options;
     const definition = maybeDefinition ?? { type };
@@ -63,20 +63,20 @@ export class TaskProvider implements vscode.TaskProvider {
       name,
       source,
       execution,
-      problemMatchers
+      problemMatchers,
     );
   }
 
   protected createErrorTask(
     error: unknown,
     maybeDefinition?: vscode.Task["definition"],
-    maybeScope?: vscode.Task["scope"]
+    maybeScope?: vscode.Task["scope"],
   ): vscode.Task {
     const { type, problemMatchers, name, source } = this.options;
     const definition = maybeDefinition ?? { type };
     const scope = maybeScope ?? vscode.TaskScope.Workspace;
     const execution = new vscode.CustomExecution(() =>
-      Promise.resolve(new TaskProviderErrorTerminal(error))
+      Promise.resolve(new TaskProviderErrorTerminal(error)),
     );
 
     return new vscode.Task(
@@ -85,7 +85,7 @@ export class TaskProvider implements vscode.TaskProvider {
       name,
       source,
       execution,
-      problemMatchers
+      problemMatchers,
     );
   }
 }

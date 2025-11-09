@@ -26,7 +26,7 @@ suite("Playdate Simulator Test Suite", () => {
 
         const playdateSimulatorTask = assertTaskFixture(
           tasks[2],
-          "playdate-simulator-configuration"
+          "playdate-simulator-configuration",
         );
 
         const execution = await vscode.tasks.executeTask(playdateSimulatorTask);
@@ -34,7 +34,7 @@ suite("Playdate Simulator Test Suite", () => {
 
         await waitForSimulator();
         await killSimulator();
-      })
-    )
+      }),
+    ),
   );
 });

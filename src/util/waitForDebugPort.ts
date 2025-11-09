@@ -44,7 +44,7 @@ const DEFAULT_DEBUG_PORT_OPTIONS: WaitForDebugPortOptions = {
  */
 export async function waitForDebugPort(
   port: number,
-  options: Partial<WaitForDebugPortOptions> = DEFAULT_DEBUG_PORT_OPTIONS
+  options: Partial<WaitForDebugPortOptions> = DEFAULT_DEBUG_PORT_OPTIONS,
 ): Promise<net.Socket | undefined> {
   const { connectTimeout, retryTimeout, maxRetries } = {
     ...DEFAULT_DEBUG_PORT_OPTIONS,

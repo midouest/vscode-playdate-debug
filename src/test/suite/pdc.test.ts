@@ -30,7 +30,9 @@ suite("PDC Test Suite", () => {
     const loaded = ExtensionModule.load(CoreModule);
     assert.ok(loaded);
 
-    configResolver = loaded.container.resolve(ConfigurationResolver);
+    configResolver = loaded.container.get(ConfigurationResolver, {
+      autobind: true,
+    });
     assert.ok(configResolver);
   });
 

@@ -20,11 +20,11 @@ const knownKeyOrder: PDXInfoKey[] = [
 
 export async function writePDXInfo(
   pdxInfo: PDXInfo,
-  sourcePath: string
+  sourcePath: string,
 ): Promise<void> {
   const knownKeys: string[] = knownKeyOrder;
   const unknownKeys = Object.keys(pdxInfo).filter(
-    (key) => !knownKeys.includes(key)
+    (key) => !knownKeys.includes(key),
   );
   const unknownKeyOrder = sort(unknownKeys, compareAlphabetic);
   const keyOrder = knownKeys.concat(unknownKeyOrder);

@@ -20,7 +20,7 @@ export class ProxyServer {
 
   private constructor(
     private fixer: Fixer | null,
-    private logger: DebugAdapterLogger | null
+    private logger: DebugAdapterLogger | null,
   ) {}
 
   /**
@@ -32,7 +32,7 @@ export class ProxyServer {
   static async start(
     fixer: Fixer | null,
     logger: DebugAdapterLogger | null,
-    options: Partial<WaitForDebugPortOptions> = {}
+    options: Partial<WaitForDebugPortOptions> = {},
   ): Promise<net.Server> {
     const proxy = new ProxyServer(fixer, logger);
     await proxy.connect(options);
@@ -48,7 +48,7 @@ export class ProxyServer {
   }
 
   private async connect(
-    options: Partial<WaitForDebugPortOptions> = {}
+    options: Partial<WaitForDebugPortOptions> = {},
   ): Promise<void> {
     // The Playdate Simulator's debug adapter protocol server takes ~250ms to
     // respond on the debug port after launching the app. waitForDebugPort will
@@ -116,7 +116,7 @@ function decodeMessages(data: Buffer): any[] {
     const prefixIndex = payload.indexOf(CONTENT_LENGTH_PREFIX);
     if (prefixIndex < 0) {
       throw new Error(
-        "Failed to decode message: expected Content-Length prefix"
+        "Failed to decode message: expected Content-Length prefix",
       );
     }
 
@@ -129,7 +129,7 @@ function decodeMessages(data: Buffer): any[] {
       contentLength = parseInt(contentLengthData, 10);
     } catch (_err) {
       throw new Error(
-        "Failed to decode message: Content-Length data must be an integer"
+        "Failed to decode message: Content-Length data must be an integer",
       );
     }
 
@@ -142,7 +142,7 @@ function decodeMessages(data: Buffer): any[] {
       messages.push(JSON.parse(message));
     } catch (_err) {
       throw new Error(
-        "Failed to decode message: content must be in JSON format"
+        "Failed to decode message: content must be in JSON format",
       );
     }
   }

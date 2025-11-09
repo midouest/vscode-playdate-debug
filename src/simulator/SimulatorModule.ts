@@ -9,17 +9,19 @@ import { SimulatorTaskProvider } from "./SimulatorTaskProvider";
 
 export class SimulatorModule extends ExtensionModule {
   protected get containerModule(): ContainerModule {
-    return new ContainerModule((bind) => {
-      bind(SimulatorExecutionFactory).toSelf();
-      bind(SimulatorTaskProvider).toSelf();
+    return new ContainerModule((options) => {
+      options.bind(SimulatorExecutionFactory).toSelf();
+      options.bind(SimulatorTaskProvider).toSelf();
     });
   }
 
   activate(): ActivateResult {
-    const simulatorTaskProvider = this.container.resolve(SimulatorTaskProvider);
+    const simulatorTaskProvider = this.container.get(SimulatorTaskProvider, {
+      autobind: true,
+    });
     return vscode.tasks.registerTaskProvider(
       TaskType.simulator,
-      simulatorTaskProvider
+      simulatorTaskProvider,
     );
   }
 }

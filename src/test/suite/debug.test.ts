@@ -22,7 +22,7 @@ suite("Debug Test Suite", () => {
 
         const pdxPath = path.resolve(
           getFixturePath("basic-configuration"),
-          "Basic Configuration.pdx"
+          "Basic Configuration.pdx",
         );
         await waitForFileToExist(pdxPath);
 
@@ -31,7 +31,7 @@ suite("Debug Test Suite", () => {
 
         await killSimulator();
         await cleanPDXBundles();
-      })
-    )
+      }),
+    ),
   );
 });

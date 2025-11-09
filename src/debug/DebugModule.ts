@@ -10,30 +10,32 @@ import { FixerFactory } from "./fix";
 
 export class DebugModule extends ExtensionModule {
   protected get containerModule(): ContainerModule {
-    return new ContainerModule((bind) => {
-      bind(PlaydateDebugConfigurationProvider).toSelf();
-      bind(FixerFactory).toSelf();
-      bind(ProxyDebugAdapterDescriptorFactory).toSelf();
+    return new ContainerModule((options) => {
+      options.bind(PlaydateDebugConfigurationProvider).toSelf();
+      options.bind(FixerFactory).toSelf();
+      options.bind(ProxyDebugAdapterDescriptorFactory).toSelf();
     });
   }
 
   activate(): ActivateResult {
-    const configProvider = this.container.resolve(
-      PlaydateDebugConfigurationProvider
+    const configProvider = this.container.get(
+      PlaydateDebugConfigurationProvider,
+      { autobind: true },
     );
     const configProviderDisposable =
       vscode.debug.registerDebugConfigurationProvider(
         DebugType.playdate,
-        configProvider
+        configProvider,
       );
 
-    const descriptorFactory = this.container.resolve(
-      ProxyDebugAdapterDescriptorFactory
+    const descriptorFactory = this.container.get(
+      ProxyDebugAdapterDescriptorFactory,
+      { autobind: true },
     );
     const descriptorFactoryDisposable =
       vscode.debug.registerDebugAdapterDescriptorFactory(
         DebugType.playdate,
-        descriptorFactory
+        descriptorFactory,
       );
 
     return [configProviderDisposable, descriptorFactoryDisposable];

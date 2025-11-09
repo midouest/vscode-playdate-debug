@@ -24,11 +24,11 @@ export class ProxyDebugAdapterDescriptorFactory
 
   constructor(
     @inject(ConfigurationResolver) private config: ConfigurationResolver,
-    @inject(FixerFactory) private fixerFactory: FixerFactory
+    @inject(FixerFactory) private fixerFactory: FixerFactory,
   ) {}
 
   async createDebugAdapterDescriptor(
-    session: vscode.DebugSession
+    session: vscode.DebugSession,
   ): Promise<vscode.DebugAdapterDescriptor | undefined> {
     this.server?.close();
 

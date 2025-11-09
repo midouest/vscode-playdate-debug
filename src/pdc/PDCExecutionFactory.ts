@@ -18,12 +18,12 @@ import { PDCTaskRunner } from "./PDCTaskRunner";
 export class PDCExecutionFactory implements TaskExecutionFactory {
   constructor(
     @inject(ConfigurationResolver)
-    private config: ConfigurationResolver
+    private config: ConfigurationResolver,
   ) {}
 
   async createExecution(
     definition: vscode.TaskDefinition,
-    scope: vscode.WorkspaceFolder | vscode.TaskScope
+    scope: vscode.WorkspaceFolder | vscode.TaskScope,
   ): Promise<TaskExecution | undefined> {
     const config = await this.config.resolve(scope);
     if (!config) {

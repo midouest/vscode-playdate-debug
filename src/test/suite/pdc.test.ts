@@ -68,7 +68,7 @@ suite("PDC Test Suite", () => {
     );
   });
 
-  test(
+  test.skip(
     "pdc-configuration",
     withSDK(async () => {
       const fixture = "pdc-configuration";

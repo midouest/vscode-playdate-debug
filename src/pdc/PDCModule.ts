@@ -9,14 +9,16 @@ import { PDCTaskProvider } from "./PDCTaskProvider";
 
 export class PDCModule extends ExtensionModule {
   protected get containerModule(): ContainerModule {
-    return new ContainerModule((bind) => {
-      bind(PDCExecutionFactory).toSelf();
-      bind(PDCTaskProvider).toSelf();
+    return new ContainerModule((options) => {
+      options.bind(PDCExecutionFactory).toSelf();
+      options.bind(PDCTaskProvider).toSelf();
     });
   }
 
   activate(): ActivateResult {
-    const pdcTaskProvider = this.container.resolve(PDCTaskProvider);
+    const pdcTaskProvider = this.container.get(PDCTaskProvider, {
+      autobind: true,
+    });
     return vscode.tasks.registerTaskProvider(TaskType.pdc, pdcTaskProvider);
   }
 }

@@ -42,7 +42,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "inversify": "^6.2.1",
+    "inversify": "^7.10.4",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {

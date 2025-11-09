@@ -7,8 +7,8 @@ import { isFolderless } from "./getWorkspaceRoot";
 
 export class CoreModule extends ExtensionModule {
   protected get containerModule(): ContainerModule {
-    return new ContainerModule((bind) => {
-      bind(ConfigurationResolver).toSelf();
+    return new ContainerModule((options) => {
+      options.bind(ConfigurationResolver).toSelf();
     });
   }
 

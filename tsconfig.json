@@ -3,7 +3,7 @@
     "module": "Node16",
     "target": "ES2022",
     "outDir": "out",
-    "lib": ["WebWorker", "ES2020"],
+    "lib": ["WebWorker", "ES2022"],
     "sourceMap": true,
     "rootDir": "src",
     "strict": true,

@@ -17,10 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Playdate Simulator task `argv` option can send additional args to the Playdate game
 
-### Fixed
-
-- Document `incrementBuildNumber`, `libPath` and `argv` options in fixtures
-
 ## [1.18.0] - 2025-01-11
 
 ### Added

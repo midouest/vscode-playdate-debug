@@ -1,9 +1,9 @@
 export function getKillSimulatorCommand(
-  platform: NodeJS.Platform = process.platform
+  platform: NodeJS.Platform = process.platform,
 ): string {
   switch (platform) {
     case "darwin":
-      return 'killall "Playdate Simulator"';
+      return 'killall -9 "Playdate Simulator"';
     case "win32":
       return "taskkill /IM PlaydateSimulator.exe";
     case "linux":

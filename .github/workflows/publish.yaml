@@ -1,0 +1,69 @@
+name: Publish Extension
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build extension
+        run: yarn compile
+      - name: Install PlaydateSDK (macOS)
+        run: ./scripts/installSDKMacOS.sh
+        if: runner.os == 'macOS'
+      - name: Install PlaydateSDK (Linux)
+        run: ./scripts/installSDKLinux.sh
+        if: runner.os == 'Linux'
+      - name: Run tests (Linux)
+        run: xvfb-run -a yarn test:ci
+        if: runner.os == 'Linux'
+      - name: Run tests
+        run: yarn test:ci
+        if: runner.os != 'Linux'
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Determine release type
+        id: release_type
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Version: $VERSION"
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          echo "Minor: $MINOR"
+          if [ $((MINOR % 2)) -eq 1 ]; then
+            echo "Publishing as pre-release"
+            echo "prerelease_flag=--pre-release" >> $GITHUB_OUTPUT
+          else
+            echo "Publishing as stable release"
+            echo "prerelease_flag=" >> $GITHUB_OUTPUT
+          fi
+      - name: Publish to VSCode Marketplace
+        run: npx vsce publish --yarn ${{ steps.release_type.outputs.prerelease_flag }} -p ${{ secrets.VSCE_PAT }}
+      - name: Publish to Open VSX Registry
+        run: npx ovsx publish --yarn ${{ steps.release_type.outputs.prerelease_flag }} -p ${{ secrets.OVSX_PAT }}

@@ -90,9 +90,9 @@ suite("Configuration Test Suite", () => {
 
     assert.ok(sdkPath);
     assert.ok(path.isAbsolute(sdkPath));
-    assert.ok(sdkPath.endsWith(path.join("/fixtures/PlaydateSDK-1.12.3")));
+    assert.ok(sdkPath.endsWith(path.join("/fixtures/PlaydateSDK")));
 
-    assert.strictEqual(sdkVersion, "1.12.3");
+    assert.match(sdkVersion, /^\d+\.\d+\.\d+$/);
 
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(

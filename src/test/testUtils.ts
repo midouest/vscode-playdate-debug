@@ -6,7 +6,7 @@ export function getBaseFixturesPath(): string {
 
 export function getPlaydateSDKFixturePath(): string {
   const baseFixturesPath = getBaseFixturesPath();
-  return path.resolve(baseFixturesPath, "PlaydateSDK-1.12.3");
+  return path.resolve(baseFixturesPath, "PlaydateSDK");
 }
 
 export function getWorkspaceFixturesPath(): string {

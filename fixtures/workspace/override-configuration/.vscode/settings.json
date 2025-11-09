@@ -1,5 +1,5 @@
 {
-  "playdate-debug.sdkPath": "../../PlaydateSDK-1.12.3",
+  "playdate-debug.sdkPath": "../../PlaydateSDK",
   "playdate-debug.sourcePath": "../basic-configuration/source",
   "playdate-debug.outputPath": "./",
   "playdate-debug.productName": "Override Configuration"

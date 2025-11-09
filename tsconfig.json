@@ -9,7 +9,7 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata", "node", "mocha", "glob"]
+    "types": ["reflect-metadata", "node", "mocha"]
   },
   "exclude": ["node_modules"]
 }

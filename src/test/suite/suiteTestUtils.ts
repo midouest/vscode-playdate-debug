@@ -2,9 +2,8 @@ import * as assert from "assert";
 import * as fs from "fs";
 import * as fsPromises from "fs/promises";
 import * as path from "path";
-import * as util from "util";
 
-import glob from "glob";
+import { glob } from "glob";
 import * as vscode from "vscode";
 
 import { SIMULATOR_DEBUG_PORT } from "../../constants";
@@ -14,8 +13,6 @@ import {
   getPlaydateSDKFixturePath,
   getWorkspaceFixturesPath,
 } from "../testUtils";
-
-const asyncGlob = util.promisify(glob);
 
 export function getFixturePath(fixture: string): string {
   const fixturesPath = getWorkspaceFixturesPath();
@@ -137,7 +134,7 @@ export async function waitForFileToExist(
 export async function cleanPDXBundles(): Promise<void> {
   const workspaceDir = getWorkspaceFixturesPath();
   const pattern = `${workspaceDir}/**/*.pdx`;
-  const matches = await asyncGlob(pattern);
+  const matches = await glob(pattern);
 
   const removeAll = matches.map((match) =>
     fsPromises.rm(match, { recursive: true, force: true }),

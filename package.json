@@ -46,7 +46,6 @@
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "24.x",
     "@types/vscode": "^1.96.0",
@@ -60,7 +59,7 @@
     "eslint": "^9.16.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.31.0",
-    "glob": "^7.1.4",
+    "glob": "^11.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
     "mocha": "^11.7.5",

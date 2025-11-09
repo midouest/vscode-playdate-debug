@@ -84,7 +84,7 @@ suite("PDC Test Suite", () => {
       const originalPDXInfo = await readPDXInfo(sourcePath);
       assert.strictEqual(originalPDXInfo.buildNumber, "1");
 
-      await runTask(tasks[2]);
+      await runTask(tasks[index]);
 
       const pdxPath = path.resolve(
         getFixturePath(fixture),

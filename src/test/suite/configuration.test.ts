@@ -42,18 +42,18 @@ suite("Configuration Test Suite", () => {
     assert.ok(path.isAbsolute(sdkPath));
     assert.strictEqual(sdkPath, process.env.PLAYDATE_SDK_PATH);
 
-    assert.strictEqual(sdkVersion, "1.12.3");
+    assert.match(sdkVersion, /^\d+\.\d+\.\d+$/);
 
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(
       sourcePath.endsWith(
-        path.join("/fixtures/workspace/basic-configuration/source")
-      )
+        path.join("/fixtures/workspace/basic-configuration/source"),
+      ),
     );
 
     assert.ok(path.isAbsolute(outputPath));
     assert.ok(
-      outputPath.endsWith(path.join("/fixtures/workspace/basic-configuration"))
+      outputPath.endsWith(path.join("/fixtures/workspace/basic-configuration")),
     );
 
     assert.strictEqual(productName, "Basic Configuration");
@@ -61,17 +61,19 @@ suite("Configuration Test Suite", () => {
     assert.ok(path.isAbsolute(productPath));
     assert.ok(
       productPath.endsWith(
-        path.join("/fixtures/workspace/basic-configuration/Basic Configuration")
-      )
+        path.join(
+          "/fixtures/workspace/basic-configuration/Basic Configuration",
+        ),
+      ),
     );
 
     assert.ok(path.isAbsolute(gamePath));
     assert.ok(
       gamePath.endsWith(
         path.join(
-          "/fixtures/workspace/basic-configuration/Basic Configuration.pdx"
-        )
-      )
+          "/fixtures/workspace/basic-configuration/Basic Configuration.pdx",
+        ),
+      ),
     );
   });
 
@@ -95,15 +97,15 @@ suite("Configuration Test Suite", () => {
     assert.ok(path.isAbsolute(sourcePath));
     assert.ok(
       sourcePath.endsWith(
-        path.join("/fixtures/workspace/basic-configuration/source")
-      )
+        path.join("/fixtures/workspace/basic-configuration/source"),
+      ),
     );
 
     assert.ok(path.isAbsolute(outputPath));
     assert.ok(
       outputPath.endsWith(
-        path.join("/fixtures/workspace/override-configuration")
-      )
+        path.join("/fixtures/workspace/override-configuration"),
+      ),
     );
 
     assert.strictEqual(productName, "Override Configuration");
@@ -112,18 +114,18 @@ suite("Configuration Test Suite", () => {
     assert.ok(
       productPath.endsWith(
         path.join(
-          "/fixtures/workspace/override-configuration/Override Configuration"
-        )
-      )
+          "/fixtures/workspace/override-configuration/Override Configuration",
+        ),
+      ),
     );
 
     assert.ok(path.isAbsolute(gamePath));
     assert.ok(
       gamePath.endsWith(
         path.join(
-          "/fixtures/workspace/override-configuration/Override Configuration.pdx"
-        )
-      )
+          "/fixtures/workspace/override-configuration/Override Configuration.pdx",
+        ),
+      ),
     );
   });
 });

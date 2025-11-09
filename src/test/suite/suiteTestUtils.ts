@@ -49,7 +49,10 @@ export async function assertSimulatorRunning(expectedCount = 1): Promise<void> {
   const { platform } = process;
 
   if (platform === "darwin") {
-    await assertRunningUnix("Playdate Simulator.app", expectedCount);
+    await assertRunningUnix(
+      "Playdate Simulator.app/Contents/MacOS/Playdate Simulator",
+      expectedCount,
+    );
     return;
   }
 

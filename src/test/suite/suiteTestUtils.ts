@@ -34,7 +34,7 @@ async function assertRunningUnix(
   processName: string,
   expectedCount: number,
 ): Promise<void> {
-  const command = `ps -x | grep -v grep | grep -c "${processName}"`;
+  const command = `ps -x | grep -v grep | grep -v sh | grep -c "${processName}"`;
   let count = 0;
   try {
     const { stdout } = await exec(command);

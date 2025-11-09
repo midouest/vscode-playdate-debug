@@ -24,7 +24,7 @@
       "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
     ],
     "env": {
-      "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK-1.12.3"
+      "PLAYDATE_SDK_PATH": "${workspaceFolder}/fixtures/PlaydateSDK"
     },
     "outFiles": ["${workspaceFolder}/out/**/*.js"],
     "preLaunchTask": "${defaultBuildTask}"

@@ -2,7 +2,7 @@
 
 set -euxo pipefail
 
-VERSION=${1:-1.12.3}
+VERSION=${1:-latest}
 PLAYDATE_SDK=PlaydateSDK-${VERSION}
 
 rm -rf tmp/${VERSION}
@@ -20,5 +20,5 @@ fi
 mkdir out
 xar -xf "${PKG_FILE}" -C out
 cat out/PlaydateSDK.pkg/Payload | gunzip -dc | cpio -i
-rm -rf ../../fixtures/${PLAYDATE_SDK}
-mv PlaydateSDK ../../fixtures/${PLAYDATE_SDK}
+rm -rf ../../fixtures/PlaydateSDK
+mv PlaydateSDK ../../fixtures/PlaydateSDK

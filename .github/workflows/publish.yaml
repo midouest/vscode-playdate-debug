@@ -29,6 +29,9 @@ jobs:
       - name: Install PlaydateSDK (Linux)
         run: ./scripts/installSDKLinux.sh
         if: runner.os == 'Linux'
+      - name: Install PlaydateSDK (Windows)
+        run: .\scripts\createSDKFixture.ps1
+        if: runner.os == 'Windows'
       - name: Run tests (Linux)
         run: xvfb-run -a yarn test:ci
         if: runner.os == 'Linux'

@@ -5,5 +5,7 @@ set -euxo pipefail
 mkdir tmp
 cd tmp
 
-wget https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-1.12.3.tar.gz
-tar xfz PlaydateSDK-1.12.3.tar.gz -C ../fixtures/
+wget https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-latest.tar.gz
+rm -rf ../fixtures/PlaydateSDK
+mkdir ../fixtures/PlaydateSDK
+tar --strip-components 1 -xzf PlaydateSDK-latest.tar.gz -C ../fixtures/PlaydateSDK/

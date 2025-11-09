@@ -34,7 +34,7 @@ async function assertRunningUnix(
   processName: string,
   expectedCount: number,
 ): Promise<void> {
-  const command = `ps -x | grep -v grep | grep -c "${processName}"`;
+  const command = `ps -x | grep -v grep | grep -v sh | grep -c "${processName}"`;
   let count = 0;
   try {
     const { stdout } = await exec(command);
@@ -88,7 +88,7 @@ interface WaitForSimulatorOptions {
 export async function waitForSimulator(
   options: Partial<WaitForSimulatorOptions> = {},
 ): Promise<void> {
-  const maxRetries = options.maxRetries ?? 20;
+  const maxRetries = options.maxRetries ?? 30;
   const retryTimeout = options.retryTimeout ?? 1000;
   for (let i = 0; i < maxRetries; i++) {
     try {

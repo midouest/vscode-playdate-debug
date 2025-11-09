@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 export function getWorkspaceRoot(
-  scope?: vscode.Uri | vscode.WorkspaceFolder | vscode.TaskScope
+  scope?: vscode.Uri | vscode.WorkspaceFolder | vscode.TaskScope,
 ): vscode.WorkspaceFolder | undefined {
   if (scope instanceof vscode.Uri) {
     return vscode.workspace.getWorkspaceFolder(scope);

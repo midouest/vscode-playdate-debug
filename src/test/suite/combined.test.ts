@@ -30,14 +30,14 @@ suite("Combined Test Suite", () => {
 
         const pdxPath = path.resolve(
           getFixturePath("basic-configuration"),
-          "Basic Configuration.pdx"
+          "Basic Configuration.pdx",
         );
         await waitForFileToExist(pdxPath);
 
         await waitForSimulator();
         await killSimulator();
         await cleanPDXBundles();
-      })
-    )
+      }),
+    ),
   );
 });

@@ -19,21 +19,21 @@ export class DebugModule extends ExtensionModule {
 
   activate(): ActivateResult {
     const configProvider = this.container.resolve(
-      PlaydateDebugConfigurationProvider
+      PlaydateDebugConfigurationProvider,
     );
     const configProviderDisposable =
       vscode.debug.registerDebugConfigurationProvider(
         DebugType.playdate,
-        configProvider
+        configProvider,
       );
 
     const descriptorFactory = this.container.resolve(
-      ProxyDebugAdapterDescriptorFactory
+      ProxyDebugAdapterDescriptorFactory,
     );
     const descriptorFactoryDisposable =
       vscode.debug.registerDebugAdapterDescriptorFactory(
         DebugType.playdate,
-        descriptorFactory
+        descriptorFactory,
       );
 
     return [configProviderDisposable, descriptorFactoryDisposable];

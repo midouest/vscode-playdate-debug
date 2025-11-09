@@ -1,19 +1,19 @@
 {
   "folders": [
     {
-      "path": "basic-configuration"
+      "path": "basic-configuration",
     },
     {
-      "path": "override-configuration"
+      "path": "override-configuration",
     },
     {
-      "path": "pdc-configuration"
+      "path": "pdc-configuration",
     },
     {
-      "path": "playdate-simulator-configuration"
+      "path": "playdate-simulator-configuration",
     },
     {
-      "path": "debugger-configuration"
-    }
-  ]
+      "path": "debugger-configuration",
+    },
+  ],
 }

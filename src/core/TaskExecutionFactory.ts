@@ -13,6 +13,6 @@ export type TaskExecution =
 export interface TaskExecutionFactory {
   createExecution(
     definition: vscode.TaskDefinition,
-    scope: vscode.WorkspaceFolder | vscode.TaskScope
+    scope: vscode.WorkspaceFolder | vscode.TaskScope,
   ): Promise<TaskExecution | undefined>;
 }

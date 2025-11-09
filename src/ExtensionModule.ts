@@ -90,7 +90,7 @@ export abstract class ExtensionModule {
    */
   static activate(
     context: vscode.ExtensionContext,
-    classes: ExtensionModuleType[]
+    classes: ExtensionModuleType[],
   ): Container | null {
     const loaded = ExtensionModule.load(...classes);
     if (!loaded) {

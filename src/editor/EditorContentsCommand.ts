@@ -21,7 +21,7 @@ export class EditorContentsCommand {
     @inject(SimulatorTaskProvider)
     private simulatorTaskProvider: SimulatorTaskProvider,
     @inject(DebugSessionRegistry)
-    private debugSessionRegistry: DebugSessionRegistry
+    private debugSessionRegistry: DebugSessionRegistry,
   ) {}
 
   async execute(resource?: vscode.Uri, debug = false): Promise<void> {
@@ -76,7 +76,7 @@ export class EditorContentsCommand {
         sourcePath,
         gamePath,
       },
-      parentOptions
+      parentOptions,
     );
   }
 
@@ -85,13 +85,13 @@ export class EditorContentsCommand {
   }
 
   private getParentOptions(
-    debug: boolean
+    debug: boolean,
   ): vscode.DebugSessionOptions | undefined {
     return debug ? undefined : { noDebug: true };
   }
 
   private getTargetResource(
-    resource: vscode.Uri | undefined
+    resource: vscode.Uri | undefined,
   ): vscode.Uri | undefined {
     return !resource && vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.document.uri

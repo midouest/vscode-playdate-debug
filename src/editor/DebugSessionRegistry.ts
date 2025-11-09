@@ -9,11 +9,11 @@ export class DebugSessionRegistry {
 
   activate(): vscode.Disposable[] {
     const startDisposable = vscode.debug.onDidStartDebugSession((session) =>
-      this.handleStartSession(session)
+      this.handleStartSession(session),
     );
 
     const stopDisposable = vscode.debug.onDidTerminateDebugSession((session) =>
-      this.handleTerminateSession(session)
+      this.handleTerminateSession(session),
     );
 
     return [startDisposable, stopDisposable];
@@ -22,7 +22,7 @@ export class DebugSessionRegistry {
   async stopAll(): Promise<void> {
     const sessions = Array.from(this.sessions.values());
     const promises = sessions.map((session) =>
-      vscode.debug.stopDebugging(session)
+      vscode.debug.stopDebugging(session),
     );
     await Promise.all(promises);
   }

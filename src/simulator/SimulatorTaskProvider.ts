@@ -9,7 +9,7 @@ import { SimulatorExecutionFactory } from "./SimulatorExecutionFactory";
 export class SimulatorTaskProvider extends TaskProvider {
   constructor(
     @inject(SimulatorExecutionFactory)
-    simulatorFactory: SimulatorExecutionFactory
+    simulatorFactory: SimulatorExecutionFactory,
   ) {
     super(simulatorFactory, {
       type: TaskType.simulator,

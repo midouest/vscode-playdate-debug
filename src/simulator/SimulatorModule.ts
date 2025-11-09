@@ -19,7 +19,7 @@ export class SimulatorModule extends ExtensionModule {
     const simulatorTaskProvider = this.container.resolve(SimulatorTaskProvider);
     return vscode.tasks.registerTaskProvider(
       TaskType.simulator,
-      simulatorTaskProvider
+      simulatorTaskProvider,
     );
   }
 }

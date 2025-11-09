@@ -1,10 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
-labels: ''
+title: ""
+labels: ""
 assignees: midouest
-
 ---
 
 **Is your feature request related to a problem? Please describe.**

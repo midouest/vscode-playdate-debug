@@ -88,8 +88,8 @@ interface WaitForSimulatorOptions {
 export async function waitForSimulator(
   options: Partial<WaitForSimulatorOptions> = {},
 ): Promise<void> {
-  const maxRetries = options.maxRetries ?? 25;
-  const retryTimeout = options.retryTimeout ?? 200;
+  const maxRetries = options.maxRetries ?? 15;
+  const retryTimeout = options.retryTimeout ?? 1000;
   for (let i = 0; i < maxRetries; i++) {
     try {
       await assertSimulatorRunning();

@@ -59,7 +59,7 @@ export class ConfigurationResolver {
 
     let sourcePath = sourcePathConfig;
     if (!sourcePath) {
-      sourcePath = path.resolve(workspaceRoot, "source");
+      sourcePath = "source";
     }
     sourcePath = toAbsolute(workspaceRoot, sourcePath);
 
